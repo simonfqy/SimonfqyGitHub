@@ -110,8 +110,6 @@ getFreqWords<-function(document){
         thesaurus[[corpij]]<-thesaurus[[corpij]]+1
       }
     }
-    #if (i%%100==0)
-      #print(i)
   }
     
   thesaurus<-unlist(thesaurus)
