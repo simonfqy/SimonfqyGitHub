@@ -16,18 +16,16 @@ inThisLineCmpd<-cmpfun(inThisLine)
 
 #requirement: length is an integer greater than or equal to 2.
 CoocurringWords<-function(length, corpora, thesaura, lowerbound){
-  limit<-length(thesaura)
   lengthOfPhrases<-vapply(regmatches(names(thesaura), gregexpr(',', names(thesaura))), length,
                           1)+1
   oneLessWord<-names(thesaura[lengthOfPhrases==length-1])
   words<-vapply(oneLessWord, strsplit, list("brand"), 
                 split=',')
   lengthOneLess<-length(oneLessWord)
-  lengthCorpora<-length(corpora)
   
   frequentList<-list()
   wordsAtLevel<-vector()
-  linesWithFreq<<-list()  
+  linesWithFreq<-list()  
   
   InnerPermutation<-function(wordLista, wordListb, length, corpora, lowerbound){
     #construct a new phrase and test whether it is frequent.
@@ -94,26 +92,26 @@ getFreqWords<-function(document){
   thesaurus<-list()
   size<-length(corpus)
   corpora<-list()
-  for (i in 1:size){
-    corpi <- corpus[[i]]
+  for (corpi in corpus){
+    #corpi <- corpus[[i]]
     corpi <- unlist(strsplit(corpi, split = ' '))
     trash <- corpi %in% ''
     corpi <- unique(corpi[!trash])
-    corpora[[i]]<-corpi
+    corpora<-c(corpora, list(corpi))
     titleLength <- length(corpi)
-    for (j in 1:titleLength){
-      if (is.null(thesaurus[[corpi[j]]])){
-        thesaurus[[corpi[j]]] <- 1
+    for (corpij in corpi){
+      if (is.null(thesaurus[[corpij]])){
+        thesaurus[[corpij]] <- 1
         #count <- c(count, 1)
       }
       else{
         #position <- match(corpi[j], thesaurus)
         #count[position] <- count[position]+1
-        thesaurus[[corpi[j]]]<-thesaurus[[corpi[j]]]+1
+        thesaurus[[corpij]]<-thesaurus[[corpij]]+1
       }
     }
-    if (i%%100==0)
-      print(i)
+    #if (i%%100==0)
+      #print(i)
   }
     
   thesaurus<-unlist(thesaurus)
