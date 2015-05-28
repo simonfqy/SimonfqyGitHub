@@ -2,16 +2,13 @@ library(readr)
 library(ggvis)
 library(tm)
 library(compiler)
-#library(plyr)
 train<-read_csv("train.csv")
 #test<-read_csv("test.csv")
-#detach("package:party", unload=TRUE)
 
 #Now start the Apriori Algorithm, mining the frequently appearing words in 
 #product_titles.
 goodTrain<-train[which(train$median_relevance>=2.5), ]
 
-#enableJIT(1)
 inThisLine<-function(corporaLine, words){
   length(intersect(corporaLine, words))==length(words)
 }
@@ -47,7 +44,6 @@ CoocurringWords<-function(length, corpora, thesaura, lowerbound){
         #wordsInPrevious<-vapply(wordsAtLevel, strsplit, list("string"), split=',')
         if(any(vapply(wordsAtLevel, setequal, TRUE, 
                       wordsInPhrase))){
-          #browser()
           duplicate <- TRUE
           return(subList<-NULL)
         }
@@ -56,10 +52,8 @@ CoocurringWords<-function(length, corpora, thesaura, lowerbound){
     
     phrase<-paste(wordsInPhrase, collapse=',')
     whetherInLine<-vapply(corpora,inThisLineCmpd, TRUE, words=wordsInPhrase)
-    if (length >= 3){
+    if (length >= 3)
       wordsAtLevel<<-c(wordsAtLevel, list(wordsInPhrase))  
-      #browser()
-    } 
     #after iterating through the whole corpora, we could count it.
     if(sum(whetherInLine) < lowerbound)
       return (subList<-NULL)
@@ -154,7 +148,6 @@ getFreqWords<-function(document){
       thesaurus<-c(thesaurus, append)
       break
     }
-    
     thesaurus<-c(thesaurus, append)
   }
   
@@ -180,5 +173,4 @@ getFreqWords<-function(document){
 #  frequentWords
 }
 getFreqWordsCompiled<-cmpfun(getFreqWords)
-#set.seed(0)
 system.time(freqWords<-getFreqWordsCompiled(goodTrain$product_title))
