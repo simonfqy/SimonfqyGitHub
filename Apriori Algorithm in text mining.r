@@ -3,7 +3,6 @@ library(ggvis)
 library(tm)
 library(compiler)
 train<-read_csv("train.csv")
-#test<-read_csv("test.csv")
 
 #Now start the Apriori Algorithm, mining the frequently appearing words in 
 #product_titles.
