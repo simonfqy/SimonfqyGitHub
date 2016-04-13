@@ -17,7 +17,7 @@ public class CourseTime implements Comparable<CourseTime> {
 	/**
 	 * Constructor REQUIRES: start as non-null in format HH:MM and end as
 	 * non-null in format HH:MM with start before end 
-	 * EFFECTS: object¡@initialized or IllegalCourseTimeException occurs if strings are
+	 * EFFECTS: objectÂ¡@initialized or IllegalCourseTimeException occurs if strings are
 	 * incorrectly formatted
 	 */
 	public CourseTime(String start, String end)
