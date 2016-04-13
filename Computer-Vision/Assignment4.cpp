@@ -4,7 +4,6 @@
 
 // Assignment4 Source File 
 // Student Name: Feng Qingyuan
-// UID: 3035029512
 
 ////////////////////////////////////////////////////////////////////////////////
 // A brief description of C2DPoint and C3DPoint
