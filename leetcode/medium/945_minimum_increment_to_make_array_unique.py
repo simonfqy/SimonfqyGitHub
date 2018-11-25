@@ -64,3 +64,31 @@ class Solution:
                 ans += A[i-1]*give + (give+1)*give/2
                 taken -= give
         return int(ans)
+   
+  """Third solution: it is a Java solution from discussion section. Clearly, similar to solution 2, it uses a sorted array, but
+     contrary to the 2 solutions above, it could increment an element even if it is unique. 
+     TAKEAWAY: this is a somewhat surprising solution. It might not be as widely applicable as solution 1, more like a specifically
+     tailored solution to this problem. But it is still the most elegant one."""
+
+  class Solution:
+    def minIncrementForUnique(self, A):
+        """
+        :type A: List[int]
+        :rtype: int
+        """
+        A.sort()
+        ans = element_to_insert = 0
+        
+        for val in A:
+            if val > element_to_insert:
+                # Do not increment ans if the current value is higher than the last 'inserted' value, which means
+                # the current value does not need to be incremented to take a unique position.
+                element_to_insert = val + 1
+                continue
+               
+            # Unlike previous 2 solutions, this solution might increment an element even if it is unique. i.e., the lower
+            # "crowded" section could push the current unique element up.
+            ans += element_to_insert - val
+            element_to_insert += 1
+            
+        return ans
