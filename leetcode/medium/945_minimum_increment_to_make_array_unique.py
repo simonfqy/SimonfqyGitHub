@@ -68,7 +68,7 @@ class Solution:
   """Third solution: it is a Java solution from discussion section. Clearly, similar to solution 2, it uses a sorted array, but
      contrary to the 2 solutions above, it could increment an element even if it is unique. 
      TAKEAWAY: this is a somewhat surprising solution. It might not be as widely applicable as solution 1, more like a specifically
-     tailored solution to this problem. But it is still the most elegant one."""
+     tailored solution to this problem. But it is still an elegant one."""
 
   class Solution:
     def minIncrementForUnique(self, A):
@@ -92,3 +92,19 @@ class Solution:
             element_to_insert += 1
             
         return ans
+   
+"""Fourth solution: from the discussion page. Conceptually similar to the 3rd solution, in that the 'crowded' lower section
+   can 'squeeze' those unique elements 'up'. Even more elegant than the 3rd solution, though slightly slower.
+   The amount of ingenuity and the analysis capability to model and simplify the problem is astonishing."""
+class Solution:
+   def minIncrementForUnique(self, A):
+        """
+        :type A: List[int]
+        :rtype: int
+        """
+        res = need = 0
+        for i in sorted(A):
+            # need is the position for the next element to be placed.
+            res += max(need - i, 0)
+            need = max(need + 1, i + 1)
+        return res
