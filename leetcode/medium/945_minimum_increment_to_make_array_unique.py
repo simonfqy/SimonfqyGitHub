@@ -37,3 +37,30 @@ class Solution:
             current_elem += 1
         
         return total_increment
+
+      
+"""Second solution:
+   From the official solution. It uses sorting to make the array ordered and has some desirable properties. It then uses the number
+   of inserted elements in the 'gaps' between elements in A to calculate the result. Interestingly, it only records the number of
+   elements to find a place, stored in 'taken' and 'give' variables. Their values are reflected in the variable 'ans'.
+   It is shorter and more efficient than the first solution."""      
+
+ class Solution:
+    def minIncrementForUnique(self, A):
+        """
+        :type A: List[int]
+        :rtype: int
+        """
+        A.sort()
+        A.append(100000)
+        ans = taken = 0
+        
+        for i in range(1, len(A)):
+            if A[i] == A[i-1]:
+                taken += 1
+                ans -= A[i]
+            else:
+                give = min(taken, A[i] - A[i-1] - 1)
+                ans += A[i-1]*give + (give+1)*give/2
+                taken -= give
+        return int(ans)
