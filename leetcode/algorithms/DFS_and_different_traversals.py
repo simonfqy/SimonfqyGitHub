@@ -31,6 +31,7 @@ def dfs_iterative(graph, start):
 
     return path
     
+    
 """
 The DFS of binary trees has 3 traversal orders: preorder, inorder and postorder. The recursive implementations are very easy to write 
 and understand.
@@ -41,15 +42,13 @@ def printInorder(root):
     if root: 
         printInorder(root.left) 
         print(root.val)
-        printInorder(root.right) 
-  
+        printInorder(root.right)   
   
 def printPostorder(root):   
     if root:   
         printPostorder(root.left) 
         printPostorder(root.right) 
-        print(root.val), 
-  
+        print(root.val)  
   
 def printPreorder(root):   
     if root:   
@@ -57,14 +56,16 @@ def printPreorder(root):
         printPreorder(root.left) 
         printPreorder(root.right) 
         
+        
 # Iterative implementation
 def printInorder(node):
     stack = []
-    while stack and node:
-        if node: # this is a normal call, recurse
+    # Use the stack to manage traversal.
+    while stack or node:
+        if node: # this is a normal call, go to the left child.
             stack.append(node)
             node = node.left
-        else: # we are now returning: pop and print the current node
+        else: # If the current node is empty, get the higher-level node by popping the stack and returning its value.
             node = stack.pop()
             print(node.value)
             node = node.right
