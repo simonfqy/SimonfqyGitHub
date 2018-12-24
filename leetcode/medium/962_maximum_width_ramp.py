@@ -1,6 +1,6 @@
 """
 Link to the problem: https://leetcode.com/problems/maximum-width-ramp/
-Solution 1:
+Solution 1 Explanation:
 stack s contains the indices of the elements. The indices stored in s are increasing, while the elements corresponding to these indices 
 are decreasing. It is guaranteed to include A[0], as well as the minimum of A.
 In the second for loop, the indices are looped in decreasing order. Whenever an element corresponding to a s stack entry is no larger 
