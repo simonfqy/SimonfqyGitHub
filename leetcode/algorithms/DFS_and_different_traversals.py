@@ -57,7 +57,7 @@ def printPreorder(root):
         printPreorder(root.right) 
         
         
-# Iterative implementation
+# Iterative implementation of in-order traversal.
 def printInorder(node):
     stack = []
     # Use the stack to manage traversal.
