@@ -69,5 +69,35 @@ def printInorder(node):
             node = stack.pop()
             print(node.value)
             node = node.right
-   
+ 
+# Iterative implementation of post-order traversal. It is a bit more complicated than in-order traversal. 
+# Basic rationale: if we want to use a stack to pop the elements in a post-order traversal, we need to fill in the stack in the order
+# or [root, right, left]. This is similar to the pre-order traversal of the tree, except that the left and right are switched. In light
+# of this, we need to use two stacks, one for getting a pre-order traversal and pushing the nodes to the second stack, the second stack
+# pops the elements in the order of post-order traversal.
+def postOrderIterative(root):   
+    if root is None: 
+        return          
+      
+    # Create two stacks  
+    s1 = [] 
+    s2 = [] 
+      
+    # Push root to first stack 
+    s1.append(root) 
+      
+    # Run while first stack is not empty 
+    while s1:           
+        # Pop an item from s1 and append it to s2 
+        node = s1.pop() 
+        s2.append(node)       
+        # Push left and right children of removed item to s1 
+        if node.left: 
+            s1.append(node.left) 
+        if node.right: 
+            s1.append(node.right)   
+        # Print all elements of second stack 
+    while s2: 
+        node = s2.pop() 
+        print node.data, 
 
