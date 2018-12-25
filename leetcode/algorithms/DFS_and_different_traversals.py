@@ -99,5 +99,5 @@ def postOrderIterative(root):
         # Print all elements of second stack 
     while s2: 
         node = s2.pop() 
-        print node.data, 
+        print node.data
 
