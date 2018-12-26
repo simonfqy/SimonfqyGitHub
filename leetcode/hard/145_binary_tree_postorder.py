@@ -27,3 +27,26 @@ class Solution:
             node = s2.pop()
             ret_list.append(node.val)
         return ret_list
+
+# A simpler solution officially recommended. Since a list is output, we can simply use pre-order (with reversed left-right order)
+# and then return the reversed final list.
+class Solution:
+    
+    def postorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """   
+        ret_list = []
+        if root is None:
+            return ret_list
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            ret_list.append(node.val)
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            
+        return ret_list[::-1]
