@@ -26,9 +26,7 @@ class Solution:
             size = len(queue)
             this_level_elements = []
             for _ in range(size):
-                head = queue.popleft()
-                if head is None:
-                    continue
+                head = queue.popleft()                
                 this_level_elements.append(head.val)
                 if head.left is not None:
                     queue.append(head.left)
