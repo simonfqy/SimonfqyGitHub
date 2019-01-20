@@ -1,4 +1,5 @@
 """
+Link: https://www.lintcode.com/problem/topological-sorting/description
 Definition for a Directed graph node
 class DirectedGraphNode:
     def __init__(self, x):
