@@ -16,7 +16,91 @@ Component, (3) Topological Sorting; Shortest Path in Simple Graph.
 如果发现某个点的入度被减去 1 之后变成了 0，则放入队列中。
 直到队列为空时，算法结束，
 """
+# BFS without level-order traversal
+from collections import deque
+
+queue = deque()
+seen = set() 
+
+seen.add(start)
+queue.append(start)
+while len(queue):
+    head = queue.popleft()
+    for neighbor in head.neighbors:
+        if neighbor not in seen:
+            seen.add(neighbor)
+            queue.append(neighbor)
+
+# BFS with level order traversal
+from collections import deque
+
+queue = deque()
+seen = set()
+
+seen.add(start)
+queue.append(start)
+while len(queue):
+    size = len(queue)
+    for _ in range(size):
+        head = queue.popleft()
+        for neighbor in head.neighbors:
+            if neighbor not in seen:
+                seen.add(neighbor)
+                queue.append(neighbor)
+                
+# 使用两个队列的BFS。该方法并无特别优点，仅仅更能体现BFS分层的效果。
+from collections import deque 
+
+queue1, queue2 = deque(), deque()
+seen = set()
+
+seen.add(start)
+queue1.append(start)
+currentLevel = 0
+while len(queue1):
+    size = len(queue1)
+    for _ in range(size):
+        head = queue1.popleft()
+        for neighbor in head.neighbors:
+            if neighbor not in seen:
+                seen.add(neighbor)
+                queue2.append(neighbor)
+    queue1, queue2 = queue2, queue1
+    queue2.clear()
+    currentLevel += 1
+
+# 使用Dummy Node进行BFS。用 dummy node 来做占位符。即，在队列中每一层节点的结尾，都放一个 null（or None in Python，nil in Ruby），
+# 来表示这一层的遍历结束了。避免了使用size，加深嵌套层次。
+from collections import deque
+
+queue = deque()
+seen = set()
+
+seen.add(start)
+queue.append(start)
+queue.append(None)
+currentLevel = 0
+while len(queue) > 1:
+    head = queue.popleft()
+    if head == None:
+        currentLevel += 1
+        queue.append(None)
+        continue
+    for neighbor in head.neighbors:
+        if neighbor not in seen:
+            seen.add(neighbor)
+            queue.append(neighbor)
+    
+    
 # Bidirectional BFS
+"""
+双向宽度优先搜索 (Bidirectional BFS) 算法适用于如下的场景：
+
+无向图
+所有边的长度都为 1 或者长度都一样
+同时给出了起点和终点
+以上 3 个条件都满足的时候，可以使用双向宽度优先搜索来求出起点和终点的最短距离。
+"""
 from collections import deque
 
 def doubleBFS(start, end):
