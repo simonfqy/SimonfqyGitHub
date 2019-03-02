@@ -18,7 +18,7 @@ class Solution:
             return -1
         if target == "":
             return 0
-        prime = 31
+        prime = 101 # Changing this number can actually affect the performance.
         BASE = 999983
         n = len(source)
         m = len(target)
