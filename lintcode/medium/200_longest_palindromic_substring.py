@@ -127,3 +127,53 @@ class Solution:
                 self.fill_table_until_false(is_palindrome_tbl, s, n, start_ind, end_ind)
                 
         return s[self.start : self.longest + self.start]
+    
+'''
+This solution uses Manacher's algorithm and is provided by Jiuzhang.com.
+'''
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+   
+    def longestPalindrome(self, s):
+        # write your code here
+       
+        if not s:
+            return ''
+
+        # Using manacher's algorithm
+        # abba => #a#b#b#a#
+        chars = []
+        for c in s:
+            chars.append('#')
+            chars.append(c)
+        chars.append('#')
+        
+        n = len(chars)
+        palindrome = [0] * n
+        palindrome[0] = 1
+        
+        mid, longest = 0, 1
+        for i in range(1, n):
+            length = 1
+            if mid + longest > i:
+                mirror = mid - (i - mid)
+                length = min(palindrome[mirror], mid + longest - i)
+
+            while i + length < len(chars) and i - length >= 0:
+                if chars[i + length] != chars[i - length]:
+                    break;
+                length += 1
+            
+            if length > longest:
+                longest = length
+                mid = i
+            
+            palindrome[i] = length
+        
+        # remove the extra #
+        longest = longest - 1
+        start = (mid - 1) // 2 - (longest - 1) // 2
+        return s[start:start + longest]
