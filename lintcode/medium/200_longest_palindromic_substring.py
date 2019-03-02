@@ -128,6 +128,49 @@ class Solution:
                 
         return s[self.start : self.longest + self.start]
     
+    
+'''
+This is the solution given in Jiuzhang.com, using dynamic programming. It is much more concise than my own implementation.
+'''
+    
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+   
+    def longestPalindrome(self, s):
+        # write your code here
+       
+        if not s:
+            return ''
+
+        n = len(s)
+        
+        is_palindrome_tbl = [[False] * n for _ in range(n)]
+        # This version does not have a "populating row 0" operation like I did. It turns out that it is unnecessary.
+        for i in range(n):
+            # Gives rise to odd-length palindromic substrings
+            is_palindrome_tbl[i][i] = True
+            if i > 0:
+                # This gives rise to even-length palindromic substrings. It is smarter than my own implementation.
+                is_palindrome_tbl[i][i - 1] = True
+        
+        longest = 1
+        start, end = 0, 0
+        
+        # This is a different loop structure. It uses length and does not use an end_ind as a running index.
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                # j is the ending index.
+                j = i + length - 1
+                is_palindrome_tbl[i][j] = s[i] == s[j] and is_palindrome_tbl[i + 1][j - 1]
+                if is_palindrome_tbl[i][j] and length > longest:
+                    longest = length
+                    start, end = i, j
+        return s[start : end + 1]
+    
+    
 '''
 This solution uses Manacher's algorithm and is provided by Jiuzhang.com.
 '''
