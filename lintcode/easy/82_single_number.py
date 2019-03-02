@@ -1,6 +1,6 @@
 '''
 Link: https://www.lintcode.com/problem/single-number/description
-It uses XOR operation, which is bitwise or. The operands in XOR are interchangeable, and 0^x = x, a^a = 0, hence the result.
+It uses ^ operation, which is bitwise XOR. The operands in bitwise XOR are interchangeable, and 0^x = x, a^a = 0, hence the result.
 Solution provided by Jiuzhang.com.
 '''
 class Solution:
