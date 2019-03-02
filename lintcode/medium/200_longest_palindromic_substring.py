@@ -63,3 +63,67 @@ class Solution:
         if self.longest < right - left - 1:
             self.longest = right - left - 1
             self.start = left + 1 
+     
+    
+'''
+The following implementation uses Dynamic Programming (DP). I implemented it myself based on the idea that I was taught.
+'''
+class Solution:
+    """
+    @param s: input string
+    @return: the longest palindromic substring
+    """
+    def is_palindrome(self, s, left, right):
+        while left <= right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+    
+    def fill_table_until_false(self, is_palindrome_tbl, s, n, start_ind_local, end_ind_local):
+        while is_palindrome_tbl[start_ind_local][end_ind_local] == True:
+            # Check whether the bigger substring that encloses it is palindromic
+            start_ind_local -= 1
+            end_ind_local += 1
+            if start_ind_local >= 0 and end_ind_local < n and s[start_ind_local] == s[end_ind_local]:
+                is_palindrome_tbl[start_ind_local][end_ind_local] = True
+                if end_ind_local - start_ind_local + 1 > self.longest:
+                    self.longest = end_ind_local + 1 - start_ind_local
+                    self.start = start_ind_local
+            else:
+                break            
+    
+    def longestPalindrome(self, s):
+        # write your code here
+        if s is None:
+            return ''
+        n = len(s)
+        is_palindrome_tbl = [[False]*n for _ in range(n)]
+        self.longest = 0
+        self.start = 0
+        # Populate the first list in the table.
+        for i in range(n):
+            if self.is_palindrome(s, 0, i):
+                is_palindrome_tbl[0][i] = True
+                if i + 1 > self.longest:
+                    self.longest = i + 1
+            # Each character is palindromic with itself.
+            is_palindrome_tbl[i][i] = True
+        
+        # Check whether there are palindromes longer than 1.
+        for start_ind in range(n-1):
+            for end_ind in range(start_ind, n):
+                # Check whether those substrings with length 2 are actually palindromic. Otherwise
+                # they will not be covered, and the program only checks odd-lengthed strings.
+                if end_ind - start_ind == 1 and self.is_palindrome(s, start_ind, end_ind):
+                    is_palindrome_tbl[start_ind][end_ind] = True
+                    if 2 > self.longest:
+                        self.longest = 2
+                        self.start = start_ind
+                # If a string s[start_ind][end_ind] is palindromic and has length > 2, then s[start_ind+1][end_ind-1]
+                # must also be palindromic. It is not true the other way around. The following function takes care of
+                # this scenario and check the possible palindromic substring by expanding the already palindromic 'kernel'.
+                self.fill_table_until_false(is_palindrome_tbl, s, n, start_ind, end_ind)
+                
+        return s[self.start : self.longest + self.start]
