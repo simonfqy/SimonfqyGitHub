@@ -159,7 +159,11 @@ class Solution:
         longest = 1
         start, end = 0, 0
         
-        # This is a different loop structure. It uses length and does not use an end_ind as a running index.
+        # This is a different loop structure. It uses length and does not use an end_ind as a running index. Because
+        # it uses length as the outer loop and i(starting index) as the inner loop, we have multiple chances of resetting
+        # i to the very beginning, thus avoiding the 'while' loop used in my own implementation in the function
+        # self.fill_table_until_false(). The end_ind does not have this problem in either implementations, because we only 
+        # depend on end_ind - 1, which is, by definition, already checked and instantiated.
         for length in range(2, n + 1):
             for i in range(n - length + 1):
                 # j is the ending index.
