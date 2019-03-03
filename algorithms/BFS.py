@@ -2,11 +2,12 @@
 All right is reserved by Jiuzhang.
 Typical use cases of Breadth First Search: Traversal in graph, which can be further divided into (1) Level Order Traversal, (2) Connected
 Component, (3) Topological Sorting; Shortest Path in Simple Graph.
-在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）。
+在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）:
 
-每个顶点出现且只出现一次；
-若A在序列中排在B的前面，则在图中不存在从B到A的路径。
+1. 每个顶点出现且只出现一次；
+2. 若A在序列中排在B的前面，则在图中不存在从B到A的路径。
 也可以定义为：拓扑排序是对有向无环图的顶点的一种排序，它使得如果存在一条从顶点A到顶点B的路径，那么在排序中B出现在A的后面。
+一张图的拓扑序列可以有很多个，也可能没有。拓扑排序只需要找到其中一个序列，无需找到所有序列。
 
 拓扑排序的算法是典型的宽度优先搜索算法，其大致流程如下：
 
@@ -41,6 +42,7 @@ seen.add(start)
 queue.append(start)
 while len(queue):
     size = len(queue)
+    # You will do something here, otherwise level order traversal is not necessary.
     for _ in range(size):
         head = queue.popleft()
         for neighbor in head.neighbors:
