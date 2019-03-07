@@ -40,7 +40,7 @@ class Solution:
         start, end, found = self.do_binary_search(row_to_inspect, target)
         if found:
             return True
-        return row_to_inspect[start] == target or row_to_inspect[end] == target:
+        return row_to_inspect[start] == target or row_to_inspect[end] == target
                         
             
     def do_binary_search(self, list_to_search, target):
