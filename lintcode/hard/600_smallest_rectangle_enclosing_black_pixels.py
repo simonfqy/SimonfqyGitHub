@@ -45,3 +45,79 @@ class Solution:
                 seen.add(this_node)
                 queue.append(this_node)
         return ((max_y - min_y + 1) * (max_x - min_x + 1))
+    
+# The solution based on the one given in Jiuzhang.com.
+class Solution:
+    """
+    @param image: a binary matrix with '0' and '1'
+    @param x: the location of one of the black pixels
+    @param y: the location of one of the black pixels
+    @return: an integer
+    """
+    def minArea(self, image, x, y):
+        # write your code here
+        if image is None or not len(image) or not len(image[0]) or image[0] is None:
+            return 0
+        
+        start, end = 0, x
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if self.is_row_black(image, mid):
+                end = mid
+            else:
+                start = mid
+        if self.is_row_black(image, start):
+            first_row_ind = start
+        elif self.is_row_black(image, end):
+            first_row_ind = end
+        
+        start, end = x, len(image) - 1 
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if self.is_row_black(image, mid):
+                start = mid
+            else:
+                end = mid
+        if self.is_row_black(image, end):
+            last_row_ind = end
+        elif self.is_row_black(image, start):
+            last_row_ind = start
+        
+        start, end = 0, y
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if self.is_col_black(image, mid):
+                end = mid
+            else:
+                start = mid
+        if self.is_col_black(image, start):
+            first_col_ind = start
+        elif self.is_col_black(image, end):
+            first_col_ind = end
+            
+        start, end = y, len(image[0]) - 1 
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if self.is_col_black(image, mid):
+                start = mid
+            else:
+                end = mid
+        if self.is_col_black(image, end):
+            last_col_ind = end
+        elif self.is_col_black(image, start):
+            last_col_ind = start
+        
+        return (last_col_ind - first_col_ind + 1) * (last_row_ind - first_row_ind + 1)
+    
+    
+    def is_row_black(self, image, row_num):
+        for col in range(len(image[0])):
+            if image[row_num][col] == '1':
+                return True
+        return False
+    
+    def is_col_black(self, image, col_num):
+        for row in range(len(image)):
+            if image[row][col_num] == '1':
+                return True
+        return False 
