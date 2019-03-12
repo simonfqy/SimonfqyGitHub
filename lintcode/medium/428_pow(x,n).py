@@ -19,6 +19,7 @@ class Solution:
         output = 1
         while n > 0:
             if n % 2 == 1:
+                # The formulation of "binary number" is very helpful for understanding.
                 output = x * output 
             x *= x
             n = n // 2
