@@ -59,3 +59,26 @@ public class Solution {
         }
     }
 }
+
+// My own iterative solution.
+public class Solution {
+    /**
+     * @param a: A 32bit integer
+     * @param b: A 32bit integer
+     * @param n: A 32bit integer
+     * @return: An integer
+     */
+    public int fastPower(int a, int b, int n) {
+        // write your code here
+        long ans = 1;
+        long base = a;
+        while (n > 0){
+            if (n % 2 == 1){
+                ans = (ans * base) % b;
+            }
+            base = (base * base) % b;
+            n = n / 2;
+        }        
+        return (int) (ans % b);
+    }
+}
