@@ -37,3 +37,31 @@ class Solution:
             left += 1
             right -= 1
         return True
+    
+    
+# This solution is based on the one given in Jiuzhang. Almost copying.
+class Solution:
+    """
+    @param s: a string
+    @return: nothing
+    """
+    def validPalindrome(self, s):
+        # Write your code here
+        left = 0
+        right = len(s) - 1
+        while left < right:
+            if s[left] != s[right]:
+                break
+            left += 1
+            right -= 1
+        if left >= right:
+            return True
+        return self.is_palindrome(s, left + 1, right) or self.is_palindrome(s, left, right - 1)
+    
+    def is_palindrome(self, s, left, right):
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
