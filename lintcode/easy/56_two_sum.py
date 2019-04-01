@@ -1,3 +1,8 @@
+'''
+Link: https://www.lintcode.com/problem/two-sum/description
+'''
+
+# My own solution, influenced by Jiuzhang.com. Uses two pointers.
 class Solution:
     """
     @param numbers: An array of Integer
@@ -22,7 +27,6 @@ class Solution:
                 return [first, last]
             if numbers[left] + numbers[right] < target:
                 left += 1
-                continue
-            if numbers[left] + numbers[right] > target:
+            else:
                 right -= 1
-                continue
+              
