@@ -38,7 +38,7 @@ class Solution:
             return []
         res = [0] * (n - k + 1)
         res[0] = sum(nums[:k])
-        for i in range(0, n - k):
-            res[i + 1] = res[i] - nums[i] + nums[i + k]
+        for i in range(1, n - k + 1):
+            res[i] = res[i - 1] - nums[i - 1] + nums[i + k - 1]
             
         return res
