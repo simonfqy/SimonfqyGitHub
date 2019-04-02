@@ -31,3 +31,23 @@ class Solution:
                 return current
             number += 1
             current = current.next
+            
+            
+# My solution based on the hint given in Jiuzhang.com.            
+class Solution:
+    """
+    @param head: the head of linked list.
+    @return: a middle node of the linked list
+    """
+    def middleNode(self, head):
+        # write your code here
+        fast = head
+        slow = head
+        number = 0
+        while fast != None and fast.next != None:
+            fast = fast.next
+            number += 1
+            if number % 2 == 0:
+                slow = slow.next
+            
+        return slow
