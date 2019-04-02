@@ -28,3 +28,21 @@ class Solution:
             if slow == fast:
                 return True
         return False
+    
+    
+# Another of my solution using set.    
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @return: True if it has a cycle, or false
+    """
+    def hasCycle(self, head):
+        # write your code here        
+        current = head
+        node_set = set()
+        while current is not None:
+            if current in node_set:
+                return True
+            node_set.add(current)
+            current = current.next
+        return False
