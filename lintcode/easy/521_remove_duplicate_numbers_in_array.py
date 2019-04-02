@@ -1,5 +1,6 @@
 '''
 Link: https://www.lintcode.com/problem/remove-duplicate-numbers-in-array/description
+It is in the section of two-pointer problems.
 '''
 
 # My own solution based on the hint in Jiuzhang.com. Uses set.
@@ -43,3 +44,24 @@ class Solution:
                 length += 1
                 
         return length
+    
+# My own solution given Jiuzhang's hint. Two pointers
+class Solution:
+    """
+    @param nums: an array of integers
+    @return: the number of unique integers
+    """
+    def deduplication(self, nums):
+        # write your code here
+        if len(nums) < 1:
+            return 0
+        fast = slow = 0
+        nums.sort()
+        while fast < len(nums):
+            if nums[fast] == nums[slow]:
+                fast += 1
+                continue
+            # Now the two pointers point to different values.
+            slow += 1
+            nums[slow] = nums[fast]
+        return slow + 1
