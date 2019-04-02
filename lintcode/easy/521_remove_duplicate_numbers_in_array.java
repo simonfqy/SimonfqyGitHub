@@ -43,3 +43,24 @@ public class Solution {
         return result;
     }
 }
+
+// Written by me. 
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: the number of unique integers
+     */
+    public int deduplication(int[] nums) {
+        // write your code here
+        HashSet<Integer> set = new HashSet<>();
+        int result = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (!set.contains(nums[i])){
+                set.add(nums[i]);
+                nums[result] = nums[i];
+                result++;
+            }
+        }
+        return result;
+    }
+}
