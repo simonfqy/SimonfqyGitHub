@@ -65,3 +65,23 @@ class Solution:
             slow += 1
             nums[slow] = nums[fast]
         return slow + 1
+
+# The solution given in Jiuzhang.com. Better than mine.    
+class Solution:
+    """
+    @param nums: an array of integers
+    @return: the number of unique integers
+    """
+    def deduplication(self, nums):
+        # write your code here
+        n = len(nums)
+        if n <= 0:
+            return 0
+        nums.sort()
+        left = 1
+        for i in range(1, n):
+            # This if block captures the pattern that only those edge elements are unique values.
+            if nums[i] != nums[i - 1]:
+                nums[left] = nums[i]
+                left += 1
+        return left
