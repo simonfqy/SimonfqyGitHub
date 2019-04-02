@@ -1,5 +1,9 @@
 '''
 Link: https://www.lintcode.com/problem/window-sum/description
+
+Relevant problems:
+http://www.lintcode.com/problem/sliding-window-median/
+http://www.lintcode.com/problem/sliding-window-maximum/
 '''
 
 # My own solution.
