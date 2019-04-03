@@ -39,3 +39,55 @@ class Solution:
                 
         self.quick_sort(A, start, right)
         self.quick_sort(A, left, end)
+        
+
+# Also copied from the teachings of Jiuzhang.com. Uses merge sort.       
+class Solution:
+    """
+    @param A: an integer array
+    @return: nothing
+    """
+    def sortIntegers2(self, A):
+        # write your code here
+        temp = [0] * len(A)
+        # Pass the temp array as a parameter to avoid claiming new space in each invocation of merge_sort().
+        self.merge_sort(A, 0, len(A) - 1, temp)
+        
+    
+    def merge_sort(self, A, start, end, temp):
+        if start >= end:
+            return
+        left_end = (start + end) // 2
+        self.merge_sort(A, start, left_end, temp)
+        self.merge_sort(A, left_end + 1, end, temp)
+        self.merge(A, start, end, temp)
+        
+    
+    def merge(self, A, start, end, temp):
+        left_end = (start + end) // 2
+        temp_ind = start
+        left_index = start
+        right_index = left_end + 1
+        
+        while left_index <= left_end and right_index <= end:
+            if A[left_index] <= A[right_index]:
+                temp[temp_ind] = A[left_index]
+                left_index += 1
+            else:
+                temp[temp_ind] = A[right_index]
+                right_index += 1
+            temp_ind += 1
+            
+        while left_index <= left_end:
+            temp[temp_ind] = A[left_index]
+            temp_ind += 1
+            left_index += 1
+            
+        while right_index <= end:
+            temp[temp_ind] = A[right_index]
+            temp_ind += 1
+            right_index += 1
+            
+        for i in range(start, end + 1):
+            # Copy the values from temp array to the original array.
+            A[i] = temp[i]
