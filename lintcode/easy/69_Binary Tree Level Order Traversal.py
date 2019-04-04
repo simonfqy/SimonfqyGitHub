@@ -25,6 +25,8 @@ class Solution:
         while queue:
             size = len(queue)
             this_level_elements = []
+            # The key is that, each time the size variable is assigned value, the nodes in the queue
+            # are all of the same level in the binary tree. This makes the for loop viable.
             for _ in range(size):
                 head = queue.popleft()                
                 this_level_elements.append(head.val)
