@@ -11,7 +11,7 @@ def quick_sort(A, start, end):
     while left <= right:
         while left <= right and A[left] < pivot:
             left += 1
-        while left <= right and A[right] < pivot:
+        while left <= right and A[right] > pivot:
             right -= 1
         if left <= right:
             A[left], A[right] = A[right], A[left]
