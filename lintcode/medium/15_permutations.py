@@ -30,6 +30,8 @@ class Solution:
         for i, num in enumerate(nums):
             if not ind_availability[i]:
                 continue
+            # In fact we don't need this_lvl_unavailable_inds, since the elements in nums[] is
+            # iterating in order, there is no chance that the next if block will be used.
             if i in this_lvl_unavailable_inds:
                 continue
             perm = list(permutation)
