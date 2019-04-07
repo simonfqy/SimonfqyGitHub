@@ -3,7 +3,10 @@ https://www.lintcode.com/problem/strstr-ii/description
 This is an extended version of the strstr question in the easy category. A solution is here:
 https://github.com/simonfqy/SimonfqyGitHub/blob/36bf717fbb3a3a7e9bca2883f5d1759941cdc9f6/lintcode/easy/13_implement_strstr().py#L5
 This version requires that the time complexity is O(n+m), where n is the length of the source string, m is the length of the target.
-This implementation uses Rabin-Karp algorithm. Basically it uses hash function.
+This implementation uses Rabin-Karp algorithm. Basically it uses hash function to accelerate the comparison process. If the hash
+codes of two text segments are unequal, then we can be sure that the two text segments are unequal. The calculation of the hash code
+in the source text uses a window and is more efficient than brute-force calculation, since the hash codes of the text segments
+depend on their previous counterparts.
 '''
 
 class Solution:
