@@ -6,7 +6,7 @@ This version requires that the time complexity is O(n+m), where n is the length 
 This implementation uses Rabin-Karp algorithm. Basically it uses hash function to accelerate the comparison process. If the hash
 codes of two text segments are unequal, then we can be sure that the two text segments are unequal. The calculation of the hash code
 in the source text uses a window and is more efficient than brute-force calculation, since the hash codes of the text segments
-depend on their previous counterparts.
+depend on their previous counterparts in the sliding window.
 '''
 
 class Solution:
