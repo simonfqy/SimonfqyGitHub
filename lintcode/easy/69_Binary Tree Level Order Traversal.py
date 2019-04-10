@@ -94,3 +94,34 @@ class Solution:
                     next_queue.append(node.right)
             queue = next_queue
         return results
+    
+    
+# Using dummy nodes. My own solution based on the teachings from Jiuzhang.com.
+from collections import deque
+class Solution:
+    """
+    @param root: A Tree
+    @return: Level order a list of lists of integer
+    """
+    def levelOrder(self, root):
+        # write your code here
+        output_list = []
+        if root is None:
+            return output_list
+        queue = deque()
+        queue.append(root)
+        queue.append(None)
+        output_list.append([])
+        while len(queue) > 1:
+            this_node = queue.popleft()
+            if this_node is None:
+                this_level_nodes = []
+                output_list.append(this_level_nodes)
+                queue.append(None)
+                continue
+            if this_node.left is not None:
+                queue.append(this_node.left)
+            if this_node.right is not None:
+                queue.append(this_node.right)
+            output_list[-1].append(this_node.val)
+        return output_list
