@@ -26,8 +26,6 @@ class Solution:
         length = 0
         nrows = len(grid)
         ncols = len(grid[0])
-        # if grid[destination[0], destination[1]] == 1:
-        #     return -1
         source_visited, dest_visited = set([(source.x, source.y)]), set([(destination.x, destination.y)])
         queue_source, queue_dest = deque([(source.x, source.y)]), deque([(destination.x, destination.y)])
         offsets = [[-1, -2], [-2, -1], [1, -2], [-2, 1], [-1, 2], [2, -1], [1, 2], [2, 1]]
