@@ -2,7 +2,8 @@
 Link: https://www.lintcode.com/problem/knight-shortest-path/description
 '''
 
-# I used bidirectional BFS.
+# I used bidirectional BFS. The problem with this question is that, if you directly use
+# sets and queues containing Point objects, you will get memory exceeding limit error.
 """
 Definition for a point.
 class Point:
