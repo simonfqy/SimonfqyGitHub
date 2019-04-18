@@ -9,6 +9,8 @@ def quick_sort(A, start, end):
     left, right = start, end
     pivot = A[(start + end) // 2]
     while left <= right:
+        # The A[left] < pivot and A[right] > pivot conditions in the following two if statements
+        # cannot be changed to <= or >=.
         while left <= right and A[left] < pivot:
             left += 1
         while left <= right and A[right] > pivot:
