@@ -63,3 +63,38 @@ class Solution:
             if slow == fast:
                 return slow
         return None
+
+    
+    
+# 本参考程序来自九章算法，由 @九章算法 提供。版权所有，转发请注明出处。
+# - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+# - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
+# - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
+# - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
+
+
+from lintcode import ListNode
+
+class Solution:
+    """
+    @param head: The first node of the linked list.
+    @return: the node where the cycle begins. 
+                If there is no cycle, return null
+    """
+    def detectCycle(self, head):
+        # write your code here
+        if head == None or head.next == None:
+            return None
+        slow = fast = head      	#初始化快指针和慢指针
+        while fast and fast.next:	
+            slow = slow.next
+            fast = fast.next.next
+            if fast == slow:		#快慢指针相遇
+                break
+        if slow == fast:
+            slow = head				#从头移动慢指针
+            while slow != fast:
+                slow = slow.next
+                fast = fast.next
+            return slow				#两指针相遇处即为环的入口
+        return None
