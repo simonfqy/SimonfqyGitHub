@@ -2,6 +2,7 @@
 Link: https://www.lintcode.com/problem/partition-array-ii/description
 '''
 
+# I did not completely come up with this solution correctly. I had to refer to the sort colors problem solution.
 class Solution:
     """
     @param nums: an integer array
