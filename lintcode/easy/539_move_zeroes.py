@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/move-zeroes/description
 '''
 
-# My own solution.
+# My own solution. Conceptually similar to bubble sort.
 class Solution:
     """
     @param nums: an integer array
