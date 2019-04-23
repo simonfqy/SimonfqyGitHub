@@ -74,3 +74,38 @@ class Solution:
             root.neighbors.append(self.cloneGraph(item))
 
         return root
+    
+
+# My own solution after doing it the second time after 17 days.
+from collections import deque
+class Solution:
+
+    def __init__(self):
+        self.dict = {}
+        
+    """
+    @param: node: A undirected graph node
+    @return: A undirected graph node
+    """
+    def cloneGraph(self, node):
+        if node is None:
+            return None
+        # First create copies of the nodes, then set the neighbors attribute of them.
+        queue = deque([node])
+        visited = set([node])
+        orig_node_to_copied_node = dict()
+        while queue:
+            this_node = queue.popleft()
+            if this_node not in orig_node_to_copied_node:
+                orig_node_to_copied_node[this_node] = UndirectedGraphNode(this_node.label)
+            for nd in this_node.neighbors:
+                if nd in visited:
+                    continue
+                queue.append(nd)
+                visited.add(nd)
+                
+        head = orig_node_to_copied_node[node]
+        for orig_node, copied_node in orig_node_to_copied_node.items():
+            for nb in orig_node.neighbors:
+                copied_node.neighbors.append(orig_node_to_copied_node[nb])
+        return head
