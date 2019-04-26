@@ -62,10 +62,12 @@ def printInorder(node):
     stack = []
     # Use the stack to manage traversal.
     while stack or node:
-        if node: # this is a normal call, go to the left child.
+        if node: # this is a normal call, go to the left child. We want to get to the leftmost leaf.
             stack.append(node)
             node = node.left
         else: # If the current node is empty, get the higher-level node by popping the stack and returning its value.
+            # Since we only append the nodes when the node is non-null, we are guaranteed to get meaningful values via
+            # popping the stack. After popping the node, dive into its right subtree.
             node = stack.pop()
             print(node.value)
             node = node.right
