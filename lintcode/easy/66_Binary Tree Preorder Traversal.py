@@ -19,6 +19,10 @@ class Solution:
         stack = [root]
         output_list = []
         while stack:
+            # Note that we can simply mimic the way BFS populates its queue. There is no need to
+            # keep the top element in the queue until starting accessing the right subtree: just 
+            # storing the node.right in the stack will do the job, popping the top element will not
+            # wreak havoc.
             node = stack.pop()
             output_list.append(node.val)
             if node.right:
@@ -28,7 +32,8 @@ class Solution:
         return output_list
     
     
-# My own solution, 3 months after the previous one.
+# My own solution, 3 months after the previous one. Followed the inorder iterative traversal.
+# Not as efficient as the previous solution.
 class Solution:
     """
     @param root: A Tree
