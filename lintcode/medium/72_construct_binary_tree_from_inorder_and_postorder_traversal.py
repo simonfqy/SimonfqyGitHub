@@ -43,3 +43,29 @@ class Solution:
         root.right = self.get_subtree(inorder, postorder, in_end_ind - right_subtree_size + 1, 
             in_end_ind, post_end_ind - right_subtree_size, post_end_ind - 1)
         return root
+
+
+# Lessons from this solution: sometimes we should try to pass as few parameters into the functions as possible,
+# which can simplify the problem a great deal.
+# 本参考程序来自九章算法，由 @九章算法 提供。版权所有，转发请注明出处。
+# - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+# - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
+# - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
+# - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
+
+
+from lintcode import TreeNode
+
+class Solution:
+    """
+    @param inorder : A list of integers that inorder traversal of a tree
+    @param postorder : A list of integers that postorder traversal of a tree
+    @return : Root of a tree
+    """
+    def buildTree(self, inorder, postorder):
+        if not inorder: return None # inorder is empty
+        root = TreeNode(postorder[-1])
+        rootPos = inorder.index(postorder[-1])
+        root.left = self.buildTree(inorder[ : rootPos], postorder[ : rootPos])
+        root.right = self.buildTree(inorder[rootPos + 1 : ], postorder[rootPos : -1])
+        return root
