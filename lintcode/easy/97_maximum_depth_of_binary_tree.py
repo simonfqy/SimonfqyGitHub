@@ -63,3 +63,28 @@ class Solution:
             self.max_depth = curr_depth
         self.helper(root.left, curr_depth + 1)
         self.helper(root.right, curr_depth + 1)
+        
+        
+# Following a student's solution. Basically just records the depth along with each node 
+# as a tuple in the stack.        
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: An integer
+    """
+    def maxDepth(self, root):
+        # write your code here
+        max_depth = 0
+        if root is None:
+            return max_depth
+        max_depth += 1
+        stack = [(root, max_depth)]
+        while stack:
+            node, depth = stack.pop()
+            max_depth = max(depth, max_depth)
+            if node.right:
+                stack.append((node.right, depth + 1))
+            if node.left:
+                stack.append((node.left, depth + 1))
+            
+        return max_depth
