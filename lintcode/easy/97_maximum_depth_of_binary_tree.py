@@ -13,7 +13,6 @@ class Solution:
         if root is None:
             return 0
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
-
     
     
 # Iterative solution using BFS.
@@ -40,3 +39,27 @@ class Solution:
                     queue.append(node.right)
                 
         return depth
+    
+
+# From the Java version of Jiuzhang.com's solution. 遍历 instead of 分治。
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: An integer
+    """
+    def maxDepth(self, root):
+        # write your code here
+        self.max_depth = 0
+        if root is None:
+            return self.max_depth
+        self.helper(root, 1)
+                
+        return self.max_depth
+        
+    def helper(self, root, curr_depth):
+        if root is None:
+            return
+        if curr_depth > self.max_depth:
+            self.max_depth = curr_depth
+        self.helper(root.left, curr_depth + 1)
+        self.helper(root.right, curr_depth + 1)
