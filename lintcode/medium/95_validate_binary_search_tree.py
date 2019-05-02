@@ -56,5 +56,37 @@ class Solution:
             return False
         return (self.is_valid(root.left, lower_bound, root_val) and self.is_valid(
             root.right, root_val, upper_bound))
-    
-    
+ 
+
+# Copied from the Java version in Jiuzhang's video lectures.   
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        # write your code here
+        if root is None:
+            return True
+        is_bst, _, _ = self.get_validity_and_extremes(root)
+        return is_bst
+        
+    def get_validity_and_extremes(self, root):
+        if root is None:
+            return True, None, None
+        root_val = root.val
+        left_is_bst, left_min, left_max = self.get_validity_and_extremes(root.left)
+        if not left_is_bst or (left_max is not None and left_max >= root_val):
+            return False, None, None
+        right_is_bst, right_min, right_max = self.get_validity_and_extremes(root.right)
+        if not right_is_bst or (right_min is not None and right_min <= root_val):
+            return False, None, None
+        if left_min is not None:
+            min_val = left_min
+        else:
+            min_val = root_val
+        if right_max is not None:
+            max_val = right_max
+        else:
+            max_val = root_val
+        return True, min_val, max_val
