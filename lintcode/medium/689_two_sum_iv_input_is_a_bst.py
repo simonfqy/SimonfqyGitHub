@@ -26,8 +26,7 @@ class Solution:
                 self.get_left_node()
             else:
                 self.get_right_node()
-        return
-    
+        return    
     
     def get_left_node(self):
         while self.left_stack or self.left_node_to_push:
@@ -52,3 +51,30 @@ class Solution:
                 self.right_node = self.right_node_to_push
                 self.right_node_to_push = self.right_node_to_push.left
                 return
+            
+# Following Jiuzhang's solution.            
+class Solution:
+    """
+    @param: : the root of tree
+    @param: : the target sum
+    @return: two numbers from tree which sum is n
+    """
+
+    def twoSum(self, root, n):
+        # write your code here
+        if root is None:
+            return None
+        value_to_look_for = set()
+        stack = []
+        node = root
+        while stack or node:
+            if node is not None:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                if node.val in value_to_look_for:
+                    return [n - node.val, node.val]
+                value_to_look_for.add(n - node.val)
+                node = node.right
+        return None
