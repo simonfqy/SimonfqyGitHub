@@ -38,8 +38,10 @@ class Solution:
                 self.left_node_to_push = self.left_stack.pop()
                 self.left_node = self.left_node_to_push
                 self.left_node_to_push = self.left_node_to_push.right
+                # Stop after one iteration. Basically traversing 1 step.
                 return
             
+    # Traversing from right to left.
     def get_right_node(self):
         while self.right_stack or self.right_node_to_push:
             if self.right_node_to_push is not None:
