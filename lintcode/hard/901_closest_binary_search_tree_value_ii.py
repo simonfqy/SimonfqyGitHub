@@ -72,3 +72,61 @@ class Solution:
                 self.right_node_pointer = self.right_node_to_push
                 self.right_node_to_push = self.right_node_to_push.right
                 return
+            
+# A brute-force solution with O(n) time complexity. But it does not cause time limit exceeded problems.
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @param k: the given k
+    @return: k values in the BST that are closest to the target
+    """
+    def closestKValues(self, root, target, k):
+        # write your code here
+        stack = []
+        node = root
+        values = []
+        while stack or node:
+            if node is not None:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                values.append(node.val)
+                node = node.right
+        first_greater_pos = self.get_first_greater_pos(values, target)
+        # It is fine if all of the entries are smaller than target.
+        return self.get_k_values(values, first_greater_pos, target, k)
+        
+    def get_first_greater_pos(self, values, target):
+        left, right = 0, len(values) - 1
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if values[mid] < target:
+                left = mid
+            else:
+                right = mid
+        if values[left] >= target:
+            return left
+        return right
+        
+    def get_k_values(self, values, first_greater_pos, target, k):
+        left, right = first_greater_pos - 1, first_greater_pos
+        closest_k_values = []
+        while len(closest_k_values) < k:
+            if left < 0:
+                # can only advance right pointer.
+                closest_k_values.append(values[right])
+                right += 1
+                continue
+            if right >= len(values):
+                closest_k_values.append(values[left])
+                left -= 1
+                continue
+            if abs(values[left] - target) <= abs(values[right] - target):
+                closest_k_values.append(values[left])
+                left -= 1
+            else:
+                closest_k_values.append(values[right])
+                right += 1
+        return closest_k_values
