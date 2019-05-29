@@ -87,3 +87,33 @@ class Solution:
         self.get_subset_list(nums, curr_ind + 1, prefix, subset_list)
         # Include the current element.
         self.get_subset_list(nums, curr_ind + 1, prefix + [nums[curr_ind]], subset_list)
+        
+       
+# Using BFS.
+from collections import deque
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        # write your code here
+        
+        if nums is None or len(nums) <= 0:
+            return [[]]
+        nums.sort()
+        queue = deque([[]])
+        return self.get_subset_list(nums, queue)
+    
+    def get_subset_list(self, nums, queue):
+        subset_list = []
+        while queue:
+            subset = queue.popleft()
+            if len(subset) > 0:
+                largest_num = subset[-1]
+            subset_list.append(subset)
+            for number in nums:
+                if len(subset) > 0 and number <= largest_num:
+                    continue
+                queue.append(subset + [number])
+        return subset_list
