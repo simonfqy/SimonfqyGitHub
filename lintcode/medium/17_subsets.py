@@ -40,3 +40,30 @@ class Solution:
                 break       
             subset_list.extend(self.get_subset_list(numbers[i+1:], prefix_and_this_value_list))
         return subset_list
+
+
+# A solution using the leaf nodes only.
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        # write your code here
+        
+        if nums is None or len(nums) <= 0:
+            return [[]]
+        nums.sort()
+        subset_list = []
+        self.get_subset_list(nums, 0, [], subset_list)
+        return subset_list
+        
+    
+    def get_subset_list(self, nums, curr_ind, prefix, subset_list):
+        if curr_ind >= len(nums):
+            subset_list.append(prefix)
+            return 
+        # Do not include the current element
+        self.get_subset_list(nums, curr_ind + 1, prefix, subset_list)
+        # Include the current element.
+        self.get_subset_list(nums, curr_ind + 1, prefix + [nums[curr_ind]], subset_list)
