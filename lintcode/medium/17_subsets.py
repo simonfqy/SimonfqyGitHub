@@ -41,8 +41,7 @@ class Solution:
             subset_list.extend(self.get_subset_list(numbers[i+1:], prefix_and_this_value_list))
         return subset_list
 
-
-# A solution using the leaf nodes only.
+# Same idea, but better, more succinct solution.
 class Solution:
     """
     @param nums: A set of numbers
@@ -57,7 +56,28 @@ class Solution:
         subset_list = []
         self.get_subset_list(nums, 0, [], subset_list)
         return subset_list
-        
+    
+    def get_subset_list(self, nums, curr_ind, prefix, subset_list):
+        # All the prefixes must be appended to subset_list, since they are all valid and non-overlapping.
+        subset_list.append(prefix)
+        for i in range(curr_ind, len(nums)):
+            self.get_subset_list(nums, i + 1, prefix + [nums[i]], subset_list)
+    
+    
+# A solution using the leaf nodes only.
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        # write your code here        
+        if nums is None or len(nums) <= 0:
+            return [[]]
+        nums.sort()
+        subset_list = []
+        self.get_subset_list(nums, 0, [], subset_list)
+        return subset_list        
     
     def get_subset_list(self, nums, curr_ind, prefix, subset_list):
         if curr_ind >= len(nums):
