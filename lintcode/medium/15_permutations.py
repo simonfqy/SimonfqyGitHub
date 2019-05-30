@@ -93,3 +93,30 @@ class Solution:
                 if number in set(subset):
                     continue
                 queue.append(subset + [number])
+
+               
+# Using iterative DFS.            
+class Solution:
+    """
+    @param: nums: A list of integers.
+    @return: A list of permutations.
+    """
+    def permute(self, nums):
+        # write your code here
+        if nums is None or len(nums) <= 0:
+            return [[]]
+        output_list = []
+        stack = [[]]
+        self.get_permutations(nums, output_list, stack)
+        return output_list
+        
+    def get_permutations(self, nums, output_list, stack):
+        while stack:
+            subset = stack.pop()
+            if len(subset) == len(nums):
+                output_list.append(subset)
+                continue
+            for number in nums:
+                if number in set(subset):
+                    continue
+                stack.append(subset + [number])
