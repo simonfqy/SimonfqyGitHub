@@ -113,3 +113,43 @@ class Solution:
             self.get_permutations(nums, subset + [number], used, output_list)
             # Restore the original array. Essentially backtracking.
             used[i] = False
+            
+            
+# Follow up: using iterative solution. Much more cumbersome.
+class Solution:
+    """
+    @param: :  A list of integers
+    @return: A list of unique permutations
+    """
+
+    def permuteUnique(self, nums):
+        # write your code here
+        output_list = []
+        if nums is None:
+            return output_list
+        nums.sort()
+        stack = [([], [False for _ in nums])]
+        self.get_permutations(nums, [], output_list, stack)
+        return output_list
+        
+    def get_permutations(self, nums, subset, output_list, stack):
+        
+        while stack:
+            subset, used_arr = stack.pop()
+            # Deep copy the used_arr.
+            used = list(used_arr)
+            if len(subset) == len(nums):
+                output_list.append(subset)
+                continue
+            
+            for i, number in enumerate(nums):
+                if used[i]:
+                    continue
+                if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                    continue
+                used[i] = True
+                # Using list(used) instead of raw "used", since the array "used" will soon be overwritten,
+                # we want to keep a deep copy, not a shallow copy.
+                stack.append((subset + [number], list(used)))
+                # Overwrite it back to False for backtracking.
+                used[i] = False
