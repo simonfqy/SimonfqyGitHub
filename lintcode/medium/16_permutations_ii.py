@@ -153,3 +153,45 @@ class Solution:
                 stack.append((subset + [number], list(used)))
                 # Overwrite it back to False for backtracking.
                 used[i] = False
+                
+         
+# Another iterative solution using the 190. next permutation ii.
+class Solution:
+    """
+    @param: :  A list of integers
+    @return: A list of unique permutations
+    """
+
+    def permuteUnique(self, nums):
+        # write your code here
+        if nums is None or len(nums) <= 0:
+            return [[]]
+        output_list = []
+        nums.sort()
+        output_list.append(list(nums))
+        while self.get_ind(nums) > 0:
+            self.next_permute(nums)
+            output_list.append(list(nums))
+        return output_list
+        
+    def get_ind(self, nums):
+        for i in range(len(nums) - 1, -1, -1):
+            if i > 0 and nums[i] <= nums[i - 1]:
+                continue
+            return i
+            
+    def next_permute(self, nums):
+        ind_start_reverse = self.get_ind(nums)
+        if ind_start_reverse > 0:
+            for i in range(len(nums) - 1, -1, -1):
+                if nums[i] > nums[ind_start_reverse - 1]:
+                    nums[i], nums[ind_start_reverse - 1] = nums[ind_start_reverse - 1], nums[i]
+                    break
+        self.reverse_list(nums, ind_start_reverse, len(nums) - 1)
+        return
+    
+    def reverse_list(self, nums, start, end):
+        while start < end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start += 1
+            end -= 1
