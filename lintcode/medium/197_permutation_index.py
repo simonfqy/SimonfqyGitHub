@@ -27,3 +27,24 @@ class Solution:
             if number < A[start_index]:
                 count += 1
         return count * math.factorial(len(A) - start_index - 1) + self.get_count_earlier_arrays(A, start_index + 1)
+
+    
+# Solution from Jiuzhang.com, uses iteration instead of recursion, and the calculation of factorial is much easier
+# and economical.
+class Solution:
+    """
+    @param A: An array of integers
+    @return: A long integer
+    """
+    def permutationIndex(self, A):
+        # write your code here
+        result = 0
+        permutation = 1
+        for i in range(len(A) - 2, -1, -1):
+            count_smaller = 0
+            for j in range(i + 1, len(A)):
+                if A[j] < A[i]:
+                    count_smaller += 1
+            permutation *= len(A) - i - 1
+            result += permutation * count_smaller
+        return result + 1
