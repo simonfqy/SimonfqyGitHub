@@ -38,7 +38,7 @@ class ThreeStacks:
             return None
         element = self.array[ind_to_pop]
         trim_upper = True
-        for val in self.array[ind_to_pop:]:
+        for val in self.array[ind_to_pop + 1:]:
             if val is not None:
                 trim_upper = False
                 self.array[ind_to_pop] = None
