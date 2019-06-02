@@ -72,3 +72,37 @@ class Solution:
         return min(sum_array)
     
     
+# DFS + memoization
+# 本参考程序来自九章算法，由 @令狐冲 提供。版权所有，转发请注明出处。
+# - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+# - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
+# - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
+# - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
+
+class Solution:
+    """
+    @param triangle: a list of lists of integers
+    @return: An integer, minimum path sum
+    """
+    def minimumTotal(self, triangle):
+        return self.divide_conquer(triangle, 0, 0, {})
+        
+    # 函数返回从 x, y 出发，走到最底层的最短路径值
+    # memo 中 key 为二元组 (x, y)
+    # memo 中 value 为从 x, y 走到最底层的最短路径值
+    def divide_conquer(self, triangle, x, y, memo):
+        if x == len(triangle):
+            return 0
+            
+        # 如果找过了，就不要再找了，直接把之前找到的值返回
+        if (x, y) in memo:
+            return memo[(x, y)]
+
+        left = self.divide_conquer(triangle, x + 1, y, memo)
+        right = self.divide_conquer(triangle, x + 1, y + 1, memo)
+        
+        # 在 return 之前先把这次找到的最短路径值记录下来
+        # 避免之后重复搜索
+        memo[(x, y)] = min(left, right) + triangle[x][y]
+        return memo[(x, y)]
+    
