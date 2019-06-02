@@ -51,3 +51,24 @@ class Solution:
         return current_best
     
     
+# My own solution, uses Dynamic Programming.
+class Solution:
+    """
+    @param triangle: a list of lists of integers
+    @return: An integer, minimum path sum
+    """
+    def minimumTotal(self, triangle):
+        # write your code here
+        if len(triangle) <= 0:
+            return None
+        sum_array = [None for _ in triangle]
+        sum_array[0] = triangle[0][0]
+        for row in triangle[1:]:
+            n = len(row)
+            sum_array[n - 1] = sum_array[n - 2] + row[n - 1]
+            for i in range(n - 2, 0, -1):
+                sum_array[i] = min(sum_array[i - 1], sum_array[i]) + row[i]
+            sum_array[0] = sum_array[0] + row[0]
+        return min(sum_array)
+    
+    
