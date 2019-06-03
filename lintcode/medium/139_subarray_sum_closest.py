@@ -50,3 +50,34 @@ class Solution:
                 right -= 1
         self.sort_list(prefix_sum_and_ind_list, start, right)
         self.sort_list(prefix_sum_and_ind_list, left, end)
+
+        
+# We can directly use Python's built-in sort function. Much faster than the custom implementation.        
+class Solution:
+    """
+    @param: nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySumClosest(self, nums):
+        # write your code here
+        prefix_sum = 0
+        prefix_sum_and_ind_list = []
+        for i, number in enumerate(nums):
+            prefix_sum += number
+            prefix_sum_and_ind_list.append((prefix_sum, i))
+        prefix_sum_and_ind_list.sort()
+        prev_sum, prev_ind = 0, -1
+        min_diff = None
+        best_indices = [None, None]
+        for prefix_sum, ind in prefix_sum_and_ind_list:
+            diff = abs(prefix_sum - prev_sum)
+            return_immediately = False
+            if diff == 0:
+                return_immediately = True
+            if diff == 0 or min_diff is None or min_diff > diff:
+                min_diff = diff
+                best_indices = [min(prev_ind, ind) + 1, max(prev_ind, ind)]
+            if return_immediately:
+                return best_indices
+            prev_sum, prev_ind = prefix_sum, ind
+        return best_indices
