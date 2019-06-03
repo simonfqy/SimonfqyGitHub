@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/subarray-sum-closest/description
 '''
 
-# My own solution. Uses prefix sum array and custom-implemented Quicksort.
+# My own solution. Uses prefix sum array and custom-implemented Quicksort. Satisfies the O(nlogn) TC requirement.
 class Solution:
     """
     @param: nums: A list of integers
