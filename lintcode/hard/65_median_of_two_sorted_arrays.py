@@ -55,8 +55,7 @@ class Solution:
             # Remove the first half of both.
             num_to_remove = a_mid + b_mid - a_start - b_start + 2
             new_target_order = target_num_order - num_to_remove
-            return self.find_element_of_sorted_arrays(A, B, a_mid + 1, a_end, b_mid + 1, b_end, new_target_order)
-            
+            return self.find_element_of_sorted_arrays(A, B, a_mid + 1, a_end, b_mid + 1, b_end, new_target_order)            
         
             
     def get_designated_element(self, array, start, target_num_order):
@@ -69,3 +68,53 @@ class Solution:
         prev_ind = start + int(target_num_order) - 1
         avg_val = (array[prev_ind] + array[prev_ind + 1]) / 2
         return avg_val    
+    
+    
+# Learned from jiuzhang.com. 
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        # write your code here
+        if A is None or B is None:
+            return None
+        m, n = len(A), len(B)
+        if (m + n) % 2 == 1:
+            return self.find_element_of_sorted_arrays(A, B, 0, 0, (m + n - 1) // 2)
+        left_val = self.find_element_of_sorted_arrays(A, B, 0, 0, (m + n) // 2 - 1)
+        right_val = self.find_element_of_sorted_arrays(A, B, 0, 0, (m + n) // 2)
+        return (left_val + right_val) / 2
+        
+            
+    def find_element_of_sorted_arrays(self, A, B, a_start, b_start, target_num_order):
+        if a_start >= len(A):
+            return B[b_start + target_num_order]
+        if b_start >= len(B):
+            return A[a_start + target_num_order]
+        if target_num_order == 0:
+            return min(A[a_start], B[b_start])
+        mid_pos = (target_num_order - 1) // 2
+        # mid_pos = int((target_num_order - 1) / 2)
+        A_mid_val, B_mid_val = None, None
+        if mid_pos + a_start <= len(A) - 1:
+            A_mid_val = A[mid_pos + a_start]
+        if mid_pos + b_start <= len(B) - 1:
+            B_mid_val = B[mid_pos + b_start]
+        
+        new_target_order = target_num_order - mid_pos - 1
+        # it used to be only "<" instead of "<=", but it introduced problem as stated below.
+        if A_mid_val is None or (A_mid_val is not None and B_mid_val is not None and B_mid_val <= A_mid_val):
+            # truncate the B array.            
+            return self.find_element_of_sorted_arrays(A, B, a_start, b_start + mid_pos + 1, new_target_order)        
+        # Truncate the A array.
+        return self.find_element_of_sorted_arrays(A, B, a_start + mid_pos + 1, b_start, new_target_order)
+        # The code below introduces problem (originally the previous line was the body of an if-block, the if
+        # statement was "B_mid_val is None or ... B_mid_val > A_mid_val"). I used to think that we to handle the third 
+        # scenario in which B_mid_val == A_mid_val, but it would cause infinite loop.
+        # Truncate both arrays.
+        # new_target_order = target_num_order - (mid_pos + 1) * 2
+        # return self.find_element_of_sorted_arrays(A, B, a_start + mid_pos + 1, b_start + mid_pos + 1, \
+        #     new_target_order)
