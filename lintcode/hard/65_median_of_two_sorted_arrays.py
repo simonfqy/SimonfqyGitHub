@@ -2,6 +2,49 @@
 Link: https://www.lintcode.com/problem/median-of-two-sorted-arrays/description
 '''
 
+# A straightforward solution similar to merge sort. Has O(n + m) time complexity, not optimal.
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        # write your code here
+        if A is None or B is None:
+            return None
+        m, n = len(A), len(B)
+        # points to the element not yet visited
+        self.a_pointer, self.b_pointer = 0, 0
+        if (m + n) % 2 == 1:
+            return self.find_kth_element(A, B, (m + n + 1) // 2)
+        left = self.find_kth_element(A, B, (m + n) // 2)
+        right = self.find_kth_element(A, B, (m + n) // 2 + 1)
+        return (left + right) / 2
+    
+    def find_kth_element(self, A, B, target_order):
+        
+        while self.a_pointer < len(A) and self.b_pointer < len(B) and self.a_pointer + self.b_pointer < target_order - 1:
+            if A[self.a_pointer] <= B[self.b_pointer]:
+                self.a_pointer += 1
+            else:
+                self.b_pointer += 1
+                
+        if self.a_pointer >= len(A):
+            self.b_pointer = target_order - self.a_pointer
+            return B[self.b_pointer - 1]
+        if self.b_pointer >= len(B):
+            self.a_pointer = target_order - self.b_pointer
+            return A[self.a_pointer - 1]
+            
+        if A[self.a_pointer] <= B[self.b_pointer]:
+            self.a_pointer += 1
+            return A[self.a_pointer - 1]
+        else:
+            self.b_pointer += 1
+            return B[self.b_pointer - 1]
+        
+
 # My own solution, long and tedious, yet not correct. Has bugs.
 class Solution:
     """
