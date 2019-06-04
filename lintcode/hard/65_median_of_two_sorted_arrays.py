@@ -216,6 +216,9 @@ class Solution:
    当前 mid 的数的个数 cnt1 与 cnt2，sum = cnt1 + cnt2 即为 A 跟 B 合并后小于等于当前mid的数的个数.
 3. 如果 sum < k，即中位数肯定不是 mid，应该大于 mid，更新 start 为 mid，否则更新 end 为 mid，之后再重复第二步。
 4. 当不满足 start + 1 < end 这个条件退出二分循环时，再分别判断一下 start 跟 end ，最终返回符合要求的那个数即可。
+
+该算法使用了两层二分法，一层用于寻找第K个数，另一层用于在寻找第K个数的过程中，计算小于候选值的数字个数，其结果反馈回去，用于在第一层寻找第
+K个数。
 '''
 
 class Solution:
@@ -252,23 +255,35 @@ class Solution:
                 right = mid
         count1 = self.helper(A, left)
         count2 = self.helper(B, left)
+        # In the while loop, we usually have self.helper(A, left) + self.helper(B, left) < k, so if here we have
+        # count1 + count2 >= k, that is unusual and we can be certain that "left" is the first value that has at least
+        # k numbers no larger than it, that is, "left" is the kth value.
         if count1 + count2 >= k:
             return left
         else:
+            # Similarly, in this case we are certain that "right" is the first values with k numbers no larger than it,
+            # which means "right" is the kth value.
             return right
     
+    # Returns the number of elements in the array no larger than flag.
     def helper(self, array, flag):
         if len(array) == 0:
             return 0
-        left, right = 0 ,len(array) - 1
+        left, right = 0, len(array) - 1
         while left + 1 < right:
             mid = (left + right) // 2
             if array[mid] <= flag:
                 left = mid
-            else:
+            else:                
                 right = mid
+        # Because in the while loop, array[right] is always > flag, you would expect it to be > flag here as well.
+        # If array[right] <= flag, it is guaranteed to be the rightmost element that is no larger than flag.
         if array[right] <= flag:
             return right + 1
+        # Similar to the above. We are ensured that either array[right] or array[left] is the last element with value
+        # no larger than flag.
         if array[left] <= flag:
             return left + 1
+        # Haven't found any elements with value no larger than flag. It is an indication that all the values in the
+        # array have values larger than the flag, hence return 0.
         return 0
