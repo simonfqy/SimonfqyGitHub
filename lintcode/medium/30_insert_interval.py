@@ -10,6 +10,7 @@ class Interval(object):
         self.end = end
 """
 
+# My own solution.
 class Solution:
     """
     @param intervals: Sorted interval list.
@@ -63,4 +64,44 @@ class Solution:
                 continue
         if not new_interval_added and not exist_modified_intervals:
             new_intervals.append(newInterval)
+        return new_intervals
+
+    
+# My solution based on the teachings from Jiuzhang.com.    
+class Solution:
+    """
+    @param intervals: Sorted interval list.
+    @param newInterval: new interval.
+    @return: A new interval list.
+    """
+    def insert(self, intervals, newInterval):
+        # write your code here
+        new_left = newInterval.start
+        new_right = newInterval.end
+        if len(intervals) == 0:
+            return [newInterval]
+        new_intervals = []
+        intervals_list = list(intervals)
+        for i, intvl in enumerate(intervals):
+            left = intvl.start
+            if left < new_left:
+                continue
+            if left >= new_left:
+                intervals_list.insert(i, newInterval)
+                break
+        if len(intervals_list) == len(intervals):
+            intervals_list.append(newInterval)
+        last = intervals_list[0].end
+        for i, intvl in enumerate(intervals_list):
+            if i == 0:
+                new_intervals.append(intvl)
+                continue
+            this_left = intvl.start
+            if this_left <= last:
+                # Need to change the previous element.
+                last_intvl = new_intervals[-1]
+                last_intvl.end = max(intvl.end, last_intvl.end)
+            else:
+                new_intervals.append(intvl)
+            last = new_intervals[-1].end
         return new_intervals
