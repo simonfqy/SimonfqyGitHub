@@ -105,3 +105,28 @@ class Solution:
                 new_intervals.append(intvl)
             last = new_intervals[-1].end
         return new_intervals
+    
+    
+# This solution is from jiuzhang.com.    
+class Solution:
+    """
+    @param intervals: Sorted interval list.
+    @param newInterval: new interval.
+    @return: A new interval list.
+    """
+    def insert(self, intervals, newInterval):
+        # write your code here
+        answer = []
+        index = 0
+        while index <= len(intervals) - 1 and intervals[index].start < newInterval.start:
+            index += 1
+        intervals.insert(index, newInterval)
+        last = None
+        for intvl in intervals:
+            if last is not None and last.end >= intvl.start:
+                last.end = max(last.end, intvl.end)
+            else:
+                last = intvl
+                answer.append(last)
+        
+        return answer
