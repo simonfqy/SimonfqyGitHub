@@ -102,3 +102,29 @@ class Solution:
             last_node = last_node.next
             
         return head
+    
+    
+# Bottom-up iterative approach.    
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if lists is None or len(lists) <= 0:
+            return None
+        while len(lists) > 1:
+            new_lists = []
+            for i in range(0, len(lists), 2):
+                if i < len(lists) - 1:
+                    head = self.merge_two_sorted_linked_lists(lists[i], lists[i + 1])
+                else:
+                    head = lists[i]
+                new_lists.append(head)
+            lists = new_lists
+        return lists[0]
+                
+    # Identical to the function of the same name in the previous solution, so omitted here.
+    def merge_two_sorted_linked_lists(self, left_head, right_head):
+        pass
