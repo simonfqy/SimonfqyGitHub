@@ -81,25 +81,17 @@ class Solution:
                 right_head = right_head.next
             last_node = last_node.next
             
-        while left_head is None and right_head is not None:
+        if left_head is None and right_head is not None:
             if head is None:
                 head = right_head
-                right_head = right_head.next
-                last_node = head
-                continue
-            last_node.next = right_head
-            right_head = right_head.next
-            last_node = last_node.next
+            else:
+                last_node.next = right_head
             
-        while right_head is None and left_head is not None:
+        if right_head is None and left_head is not None:
             if head is None:
                 head = left_head
-                left_head = left_head.next
-                last_node = head
-                continue
-            last_node.next = left_head
-            left_head = left_head.next
-            last_node = last_node.next
+            else:
+                last_node.next = left_head
             
         return head
     
