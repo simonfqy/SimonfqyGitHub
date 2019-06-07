@@ -41,3 +41,64 @@ class Solution:
                 heapq.heappush(p_queue, node.next)
                 
         return head
+    
+    
+# Merge sort, top-down.
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        if lists is None or len(lists) <= 0:
+            return None
+        m = len(lists)
+        if m == 1:
+            return lists[0]
+        left_head = self.mergeKLists(lists[:m//2])
+        right_head = self.mergeKLists(lists[m//2:])
+        return self.merge_two_sorted_linked_lists(left_head, right_head)
+        
+    def merge_two_sorted_linked_lists(self, left_head, right_head):
+        head, last_node = None, None
+        while left_head is not None and right_head is not None:
+            if head is None:
+                if left_head.val <= right_head.val:
+                    head = left_head
+                    left_head = left_head.next
+                else:
+                    head = right_head
+                    right_head = right_head.next
+                last_node = head
+                continue
+            
+            if left_head.val <= right_head.val:
+                last_node.next = left_head
+                left_head = left_head.next
+            else:
+                last_node.next = right_head
+                right_head = right_head.next
+            last_node = last_node.next
+            
+        while left_head is None and right_head is not None:
+            if head is None:
+                head = right_head
+                right_head = right_head.next
+                last_node = head
+                continue
+            last_node.next = right_head
+            right_head = right_head.next
+            last_node = last_node.next
+            
+        while right_head is None and left_head is not None:
+            if head is None:
+                head = left_head
+                left_head = left_head.next
+                last_node = head
+                continue
+            last_node.next = left_head
+            left_head = left_head.next
+            last_node = last_node.next
+            
+        return head
