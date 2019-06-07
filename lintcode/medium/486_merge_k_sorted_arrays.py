@@ -30,3 +30,47 @@ class Solution:
             heapq.heappush(list_of_candidates, (arrays[array_ind][pointer_now_in_the_arr], \
                 array_ind))
         return answer
+    
+    
+# A recursive approach, top-down.
+class Solution:
+    """
+    @param arrays: k sorted integer arrays
+    @return: a sorted array
+    """
+    def mergekSortedArrays(self, arrays):
+        # write your code here
+        if arrays is None or len(arrays) <= 0:
+            return []
+        m = len(arrays)
+        if m == 1:
+            return arrays[0]
+        left_array = self.mergekSortedArrays(arrays[: m//2])
+        right_array = self.mergekSortedArrays(arrays[m//2:])
+        return self.merge_two_sorted_arrays(left_array, right_array)
+        
+        
+    def merge_two_sorted_arrays(self, array_1, array_2):
+        if array_1 is None or len(array_1) <= 0:
+            return array_2
+        if array_2 is None or len(array_2) <= 0:
+            return array_1
+        pointer_1, pointer_2 = 0, 0
+        answer = []
+        while pointer_1 < len(array_1) and pointer_2 < len(array_2):
+            if array_1[pointer_1] <= array_2[pointer_2]:
+                answer.append(array_1[pointer_1])
+                pointer_1 += 1
+                continue
+            answer.append(array_2[pointer_2])
+            pointer_2 += 1
+        
+        while pointer_1 < len(array_1):
+            answer.append(array_1[pointer_1])
+            pointer_1 += 1
+            
+        while pointer_2 < len(array_2):
+            answer.append(array_2[pointer_2])
+            pointer_2 += 1
+            
+        return answer
