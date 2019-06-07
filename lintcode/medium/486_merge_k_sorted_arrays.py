@@ -74,3 +74,31 @@ class Solution:
             pointer_2 += 1
             
         return answer
+    
+    
+# An iterative solution, bottom-up. Provided by jiuzhang.com. 
+class Solution:
+    """
+    @param arrays: k sorted integer arrays
+    @return: a sorted array
+    """
+    def mergekSortedArrays(self, arrays):
+        # write your code here
+        if arrays is None or len(arrays) <= 0:
+            return []
+        
+        while len(arrays) > 1:            
+            new_arrays = []
+            for i in range(0, len(arrays), 2):
+                if i + 1 <= len(arrays) - 1:
+                    array = self.merge_two_sorted_arrays(arrays[i], arrays[i+1])
+                else:
+                    array = arrays[i]
+                new_arrays.append(array)
+            arrays = new_arrays
+        return arrays[0]            
+        
+    # The following function is identical to the one in the previous solution, so the implementation
+    # is omitted.
+    def merge_two_sorted_arrays(self, array_1, array_2):
+        pass
