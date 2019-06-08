@@ -10,9 +10,9 @@ class Solution:
         # write your code here
         i = 0
         count = 0
-        # The limit for integers set by Python, 32 binary digits. If you set it to 
-        # (1 << i) <= num, it would be incorrect, since there are negative numbers, which has 1 on the
-        # leftmost digit in the 32 binary values.
+        # The integers have unlimited number of digits in Python, so we need to cut it off at 32 binary digits. 
+        # If you set it to (1 << i) <= num, it would be incorrect, since there are negative numbers, which has infinite 
+        # 1s on the left side.
         while i < 32:
             count += ((1 << i) & num > 0)
             i += 1
