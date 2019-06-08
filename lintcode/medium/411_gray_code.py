@@ -82,6 +82,10 @@ class Solution:
     """
     @param n: a number
     @return: Gray code
+    一个数字对应的格雷编码的计算方式是:
+
+    将其二进制第一位(从高位数)与0异或, 得到的结果为格雷码的第一位
+    之后依次将原数的第i位与生成的格雷码第i-1位做异或运算, 即可得到格雷码的第i位.
     """
     def grayCode(self, n):
         return [i ^ (i >> 1) for i in range(1 << n)]
