@@ -42,3 +42,95 @@ class Solution:
         while len(answer) < k:
             answer.append(converted_to_orig[heapq.heappop(heap)])
         return answer
+    
+    
+    
+# 本参考程序来自九章算法，由 @令狐冲 提供。版权所有，转发请注明出处。
+# - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+# - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
+# - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
+# - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
+
+
+import heapq
+
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        self.heap = []
+        for point in points:
+            dist = self.getDistance(point, origin)
+            heapq.heappush(self.heap, (-dist, -point.x, -point.y))
+            
+            if len(self.heap) > k:
+                heapq.heappop(self.heap)
+
+        ret = []
+        while len(self.heap) > 0:
+            _, x, y = heapq.heappop(self.heap)
+            ret.append(Point(-x, -y))
+
+        ret.reverse()
+        return ret
+
+    def getDistance(self, a, b):
+        return (a.x - b.x) ** 2 + (a.y - b.y) ** 2
+    
+    
+    
+ # My solution using a custom-implemented quick sort. Causes time limit exceeded problem.
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        # write your code here
+        point_to_squaresum = dict()
+        self.sort(points, origin, 0, len(points) - 1, point_to_squaresum)
+        return points[:k]
+        
+    def sort(self, points, origin, start, end, point_to_squaresum):
+        left, right = start, end
+        if right <= left:
+            return
+        pivot = points[(left + right) // 2]
+        while left <= right:
+            while left <= right and self.smaller_than(points, origin, points[left], pivot, \
+                point_to_squaresum):
+                left += 1
+            while left <= right and self.smaller_than(points, origin, pivot, points[right], \
+                point_to_squaresum):
+                right -= 1
+            if left <= right:
+                points[left], points[right] = points[right], points[left]
+                left += 1
+                right -= 1
+        self.sort(points, origin, start, right, point_to_squaresum)
+        self.sort(points, origin, left, end, point_to_squaresum)
+                
+    def smaller_than(self, points, origin, point_one, point_two, point_to_squaresum):
+        if point_one not in point_to_squaresum:
+            squaresum_one = ((point_one.x - origin.x) ** 2) + ((point_one.y - origin.y) ** 2)
+            point_to_squaresum[point_one] = squaresum_one
+        else:
+            squaresum_one = point_to_squaresum[point_one]
+            
+        if point_two not in point_to_squaresum:
+            squaresum_two = ((point_two.x - origin.x) ** 2) + ((point_two.y - origin.y) ** 2)
+            point_to_squaresum[point_two] = squaresum_two
+        else:
+            squaresum_two = point_to_squaresum[point_two]
+            
+        if squaresum_one != squaresum_two:
+            return squaresum_one < squaresum_two
+        if point_one.x != point_two.x:
+            return point_one.x < point_two.x
+        return point_one.y < point_two.y
