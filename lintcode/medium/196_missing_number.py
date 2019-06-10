@@ -29,3 +29,16 @@ class Solution:
             return right
         if right == nums[right]:
             return right + 1
+
+
+# The easy solution. Time complexity O(n).
+class Solution:
+    """
+    @param nums: An array of integers
+    @return: An integer
+    """
+    def findMissing(self, nums):
+        # write your code here
+        summation = sum(nums)
+        N = len(nums)
+        return int(N*(N+1) / 2) - summation
