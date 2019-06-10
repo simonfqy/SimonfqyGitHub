@@ -2,6 +2,8 @@
 Link: https://www.lintcode.com/problem/heapify/description
 '''
 
+# This solution is based on the teachings from jiuzhang.com. Siftup, time complexity is O(nlogn), where
+# n is the number of nodes.
 # When implementing it myself for the first time, I made a mistake: I let i traverse from largest to 0,
 # which caused problem. In fact, the siftup operation should traverse each node from root to leaf, so that 
 # no misalignment will be left out, they are all taken care of in the traversal from root to leaf.
