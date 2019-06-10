@@ -26,3 +26,25 @@ class Solution:
                 break
             A[father_ind], A[i] = A[i], A[father_ind]
             i = father_ind
+
+            
+# Similarly, sifting down, but doing so from leaf to root. O(n) time complexity.            
+class Solution:
+    """
+    @param: A: Given an integer array
+    @return: nothing
+    """
+    def heapify(self, A):
+        # write your code here
+        for i in range(len(A)-1, -1, -1):
+            self.siftdown(A, i)
+            
+    def siftdown(self, A, i):
+        while i <= (len(A) - 2) // 2:
+            son_ind = i * 2 + 1
+            if len(A) - 1 >= i * 2 + 2 and A[son_ind] > A[i * 2 + 2]:
+                son_ind = i * 2 + 2
+            if A[son_ind] >= A[i]:
+                break
+            A[son_ind], A[i] = A[i], A[son_ind]
+            i = son_ind
