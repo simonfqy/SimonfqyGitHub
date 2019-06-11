@@ -35,7 +35,7 @@ class Solution:
         for word, freq in word_to_freq.items():
             if freq == max_freq:
                 return word
-            
+                      
             
 # This solution uses regular expression. Much more powerful than the previous solution.
 # 本参考程序来自九章算法，由 @九章算法助教团队 提供。版权所有，转发请注明出处。
@@ -55,3 +55,29 @@ class Solution:
         ban = set(banned)
         words = re.findall(r'\w+', paragraph.lower())
         return collections.Counter(w for w in words if w not in ban).most_common(1)[0][0]
+    
+    
+# My own solution based on the previous one.
+import re
+class Solution:
+    """
+    @param paragraph: 
+    @param banned: 
+    @return: nothing
+    """
+    def mostCommonWord(self, paragraph, banned):
+        banned = set(banned)
+        words = re.findall(r'\w+', paragraph.lower())
+        word_to_freq = dict()
+        max_word = None
+        max_freq = 0
+        for word in words:
+            if word in banned:
+                continue
+            if word not in word_to_freq:
+                word_to_freq[word] = 0
+            word_to_freq[word] += 1
+            if word_to_freq[word] > max_freq:
+                max_freq = word_to_freq[word]
+                max_word = word
+        return max_word
