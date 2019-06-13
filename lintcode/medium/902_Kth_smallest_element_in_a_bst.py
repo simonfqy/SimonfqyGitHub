@@ -35,3 +35,31 @@ class Solution:
                 if counter == k:
                     return stack[-1].val
         return None
+
+    
+# Using the inorder traversal from stackoverflow.
+class Solution:
+    """
+    @param root: the given BST
+    @param k: the given k
+    @return: the kth smallest element in BST
+    """
+    def kthSmallest(self, root, k):
+        # write your code here
+        if root is None or k <= 0:
+            return None
+        node = root
+        stack = []
+        counter = 0
+        while node or stack:
+            if node:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                counter += 1
+                if counter == k:
+                    return node.val
+                node = node.right
+                
+        return None
