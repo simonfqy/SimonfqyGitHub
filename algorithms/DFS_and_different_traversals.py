@@ -70,7 +70,32 @@ def printInorder(node):
             # popping the stack. After popping the node, dive into its right subtree.
             node = stack.pop()
             print(node.value)
-            node = node.right
+            node = node.right            
+            
+            
+# Iterative implementation provided by jiuzhang.com      
+def inorderTraversal(self, root):
+        # write your code here
+        inorder = []
+        if root is None:
+            return inorder
+        
+        dummy = TreeNode(0)
+        dummy.right = root
+        stack = [dummy]
+        
+        while stack:
+            node = stack.pop()
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+            if stack:
+                inorder.append(stack[-1].val)
+        
+        return inorder
+    
  
 # Iterative implementation of post-order traversal. It is a bit more complicated than in-order traversal. 
 # Basic rationale: if we want to use a stack to pop the elements in a post-order traversal, we need to fill in the stack in the order
