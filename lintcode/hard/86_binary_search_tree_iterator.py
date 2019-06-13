@@ -109,3 +109,36 @@ class BSTIterator:
         # end, this one obtains the node at the beginning. This is because we have already populated the self.stack
         # in this implementation, while in my own solution the self.stack[] is empty when it was initialized.
         return node
+    
+    
+# My implementation using stackoverflow's inorder traversal.
+class BSTIterator:
+    """
+    @param: root: The root of binary tree.
+    """
+    def __init__(self, root):
+        # do intialization if necessary
+        self.stack = []
+        self.node = root
+
+    """
+    @return: True if there has next node, or false
+    """
+    def hasNext(self):
+        # write your code here
+        return self.node or len(self.stack) > 0
+
+    """
+    @return: return next node
+    """
+    def next(self):
+        # write your code here
+        while self.node or self.stack:
+            if self.node:
+                self.stack.append(self.node)
+                self.node = self.node.left
+            else:
+                self.node = self.stack.pop()
+                curt = self.node
+                self.node = self.node.right
+                return curt
