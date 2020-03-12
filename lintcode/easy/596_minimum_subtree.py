@@ -121,7 +121,7 @@ class Solution:
             self.min_root = root
         return subtree_sum
     
-# I wrote this solution after reading the second solution provided on jiuzhang.com.
+# The second solution provided on jiuzhang.com, written in my own way.
 import sys
 class Solution:
     """
