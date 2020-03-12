@@ -90,4 +90,62 @@ class Solution:
     # 3 elements are most important for 1 recursive function to be enough: subtree sum, minimum sum subtree root, minimum 
     # subtree sum value. All of them are indispensable.
     # I have to realize this when designing or implementing this recursive function.
+
     
+# I wrote this solution after reading the second solution provided on jiuzhang.com.
+# This is divide-and-conquer combined with traversal.
+import sys
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the minimum subtree
+    """
+    def findSubtree(self, root):
+        # use global variables for traversal.
+        self.min_sum = sys.maxsize
+        self.min_root = None
+        self.get_subtree_sum(root)
+        return self.min_root
+    
+    # Important thing about this function: it only returns one value.
+    def get_subtree_sum(self, root):
+        subtree_sum, left_sum, right_sum = 0, 0, 0
+        if root.left:
+            left_sum = self.get_subtree_sum(root.left)
+        if root.right:
+            right_sum = self.get_subtree_sum(root.right)
+        subtree_sum = left_sum + right_sum + root.val
+        # Overwrites the global variables. The correctness is guaranteed, trivial.
+        if subtree_sum < self.min_sum:
+            self.min_sum = subtree_sum
+            self.min_root = root
+        return subtree_sum
+    
+# I wrote this solution after reading the second solution provided on jiuzhang.com.
+import sys
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the minimum subtree
+    """
+    def findSubtree(self, root):
+        # write your code here
+        self.min_sum = sys.maxsize
+        self.min_root = None
+        self.get_subtree_sum(root)
+        return self.min_root
+    
+    def get_subtree_sum(self, root):
+        # If the root is None, we return 0 without overwriting the global variables, so this 0
+        # does not participate in comparison. We don't need to check whether root.left and/or right is None,
+        # since this function handles it in the beginning. This conforms with my previous observation: the
+        # recursive function should also handle the None input case.
+        if root is None:
+            return 0
+        left_sum = self.get_subtree_sum(root.left)
+        right_sum = self.get_subtree_sum(root.right)
+        subtree_sum = left_sum + right_sum + root.val
+        if subtree_sum < self.min_sum:
+            self.min_sum = subtree_sum
+            self.min_root = root
+        return subtree_sum
