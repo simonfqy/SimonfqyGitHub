@@ -87,9 +87,9 @@ class Solution:
     # As a general rule of thumb, let your recursive function handle the None case, and try to fix the other problems should 
     # there arise any, rather than disabling the None handling logic in the recursive function. 
     
-    # 3 elements are most important for 1 recursive function to be enough: subtree sum, minimum sum subtree root, minimum 
+    # 3 elements are necessary for 1 recursive function to be enough: subtree sum, minimum sum subtree root, minimum 
     # subtree sum value. All of them are indispensable.
-    # I have to realize this when designing or implementing this recursive function.
+    # I need to realize this when designing or implementing this recursive function.
 
     
 # I wrote this solution after reading the second solution provided on jiuzhang.com.
