@@ -90,3 +90,34 @@ class Solution:
                 stack.append(node.right)
             if node.left is not None:
                 stack.append(node.left)
+               
+            
+# Solution from jiuzhang.com. Much shorter and more elegant than my solution.            
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: A: A TreeNode in a Binary.
+    @param: B: A TreeNode in a Binary.
+    @return: Return the lowest common ancestor(LCA) of the two nodes.
+    """
+    def lowestCommonAncestor(self, root, A, B):
+        # write your code here
+        
+        # I did not realize that formulating this function as a recursive function is possible. Next time when solving 
+        # tree related questions, I need to first think of possible divide-and-conquer solutions and solve it recursively.
+        if root is None:
+            return None
+        # This if clause is quite important.
+        if root == A or root == B:
+            return root
+        # This lca candidate (whether in left or right) can be either A or B, or the lowest common ancestor of A and B.
+        # I did not realize it could be formulated like this.
+        lca_candidate_in_left = self.lowestCommonAncestor(root.left, A, B)
+        lca_candidate_in_right = self.lowestCommonAncestor(root.right, A, B)
+        
+        if lca_candidate_in_left and lca_candidate_in_right:
+            return root
+        if lca_candidate_in_left:
+            return lca_candidate_in_left
+        if lca_candidate_in_right:
+            return lca_candidate_in_right
