@@ -38,6 +38,8 @@ class Solution:
             if last_node.left != root and last_node.right != root:
                 self.path.pop()
             else:
+                # We must always remember to prevent the infinite loop from occurring. I only added this else clause after hitting the error
+                # many times.
                 break
         self.path.append(root)
         if root.val == target.val:
@@ -78,6 +80,8 @@ class Solution:
                 if last_node.left != node and last_node.right != node:
                     path.pop()
                 else:
+                    # We must always remember to prevent the infinite loop from occurring. I only added this else clause after hitting the error
+                    # many times.
                     break
             path.append(node)
             if node.val == target.val:
