@@ -90,6 +90,41 @@ class Solution:
                 stack.append(node.right)
             if node.left is not None:
                 stack.append(node.left)
+             
+# A solution from jiuzhang.com provided by students. It uses recursion to get the path.
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: A: A TreeNode in a Binary.
+    @param: B: A TreeNode in a Binary.
+    @return: Return the lowest common ancestor(LCA) of the two nodes.
+    """
+    def lowestCommonAncestor(self, root, A, B):
+        # write your code here
+        path_A = self.get_path(root, A)
+        path_B = self.get_path(root, B)
+        lca_candidate = None
+        while path_A and path_B and path_A[-1] == path_B[-1]:
+            lca_candidate = path_A.pop()
+            path_B.pop()
+        return lca_candidate
+    
+    # This is also divide-and-conquer.
+    def get_path(self, root, target):
+        if root is None:
+            return None
+        if root == target:
+            return [root]
+        # I did not think about this recursive method to get the path. This path is bottom-up.
+        # Need to remember this way of problem-solving.
+        left = self.get_path(root.left, target)
+        if left:
+            left.append(root)
+            return left
+        right = self.get_path(root.right, target)
+        if right:
+            right.append(root)
+            return right
                
             
 # Solution from jiuzhang.com. Much shorter and more elegant than my solution.            
