@@ -115,7 +115,7 @@ class Solution:
             return None
         if root == target:
             return [root]
-        # I did not think about this recursive method to get the path. This path is bottom-up.
+        # I did not think of this recursive method to get the path. This path is bottom-up.
         # Need to remember this way of problem-solving.
         left = self.get_path(root.left, target)
         if left:
