@@ -88,3 +88,32 @@ class Solution:
             self.node = root
         
         return total_size, total_sum
+    
+# Slightly modified based on the solution above.    
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the maximum average of subtree
+    """
+    def findSubtree2(self, root):
+        # write your code here
+        self.node = None
+        self.max_avg = None
+        _, _ = self.find_sub_tree(root)
+        return self.node
+        
+    # Return: sum_value, num_nodes
+    def find_sub_tree(self, root):
+        if root is None:
+            return 0, 0
+
+        left_sum, left_num_nodes = self.find_sub_tree(root.left)
+        right_sum, right_num_nodes = self.find_sub_tree(root.right)
+        total_sum = root.val + left_sum + right_sum
+        total_num_nodes = left_num_nodes + 1 + right_num_nodes
+        total_avg = total_sum/total_num_nodes
+        if self.max_avg is None or self.max_avg < total_avg:
+            self.max_avg = total_avg
+            self.node = root
+
+        return total_sum, total_num_nodes 
