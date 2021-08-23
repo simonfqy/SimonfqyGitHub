@@ -116,4 +116,40 @@ class Solution:
             self.max_avg = total_avg
             self.node = root
 
-        return total_sum, total_num_nodes 
+        return total_sum, total_num_nodes
+    
+# A variant of the solution above. Instead of using 2 global variables and 2 return values in recursive helper function, we now have 1 global variable 
+# and 3 return values in recursive helper function.
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the maximum average of subtree
+    """
+    def findSubtree2(self, root):
+        # write your code here
+        self.max_avg = None
+        max_subtree_root, _, _ = self.find_sub_tree(root)
+        return max_subtree_root
+        
+    # Return: max_subtree_root, sum_value, num_nodes
+    def find_sub_tree(self, root):
+        if root is None:
+            return None, 0, 0
+        max_subtree_root = None
+        left_max_root, left_sum, left_num_nodes = self.find_sub_tree(root.left)
+        left_max_avg = self.max_avg
+        if left_max_avg is not None:
+            max_subtree_root = left_max_root
+        right_max_root, right_sum, right_num_nodes = self.find_sub_tree(root.right)
+        right_max_avg = self.max_avg
+        if right_max_avg is not None:
+            if left_max_avg is None or right_max_avg > left_max_avg:
+                max_subtree_root = right_max_root
+        total_sum = root.val + left_sum + right_sum
+        total_num_nodes = left_num_nodes + 1 + right_num_nodes
+        total_avg = total_sum/total_num_nodes
+        if self.max_avg is None or self.max_avg < total_avg:
+            self.max_avg = total_avg
+            max_subtree_root = root
+
+        return max_subtree_root, total_sum, total_num_nodes 
