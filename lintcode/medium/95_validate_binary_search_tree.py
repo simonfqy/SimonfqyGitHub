@@ -42,20 +42,14 @@ class Solution:
     """
     def isValidBST(self, root):
         # write your code here
-        if root is None:
-            return True
-        if not self.is_valid(root.left, -math.inf, root.val):
-            return False
-        return self.is_valid(root.right, root.val, math.inf)
+        return self.is_valid_bst(root, -math.inf, math.inf)
         
-    def is_valid(self, root, lower_bound, upper_bound):
-        if root is None:
+    def is_valid_bst(self, root, min_val, max_val):
+        if not root:
             return True
-        root_val = root.val
-        if root_val <= lower_bound or root_val >= upper_bound:
+        if root.val <= min_val or root.val >= max_val:
             return False
-        return (self.is_valid(root.left, lower_bound, root_val) and self.is_valid(
-            root.right, root_val, upper_bound))
+        return self.is_valid_bst(root.left, min_val, root.val) and self.is_valid_bst(root.right, root.val, max_val)
  
 
 # Copied from the Java version in Jiuzhang's video lectures.   
