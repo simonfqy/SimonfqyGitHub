@@ -148,4 +148,38 @@ class Solution:
             min_val = left_min
         if right_max is not None:
             max_val = right_max
-        return True, min_val, max_val 
+        return True, min_val, max_val
+    
+# My solution in 2021. Essentially the same as the previous one.
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        # write your code here
+        is_valid, _, _ = self.isValidBSTRecursion(root)
+        return is_valid
+    
+    # return: isValidBST, min, max
+    def isValidBSTRecursion(self, root):
+        if not root:
+            return True, None, None
+
+        is_left_valid, left_min, left_max = self.isValidBSTRecursion(root.left)
+        is_right_valid, right_min, right_max = self.isValidBSTRecursion(root.right)
+        min_val = left_min
+        max_val = right_max
+        if not (is_left_valid and is_right_valid):
+            return False, min_val, max_val
+        is_valid = True
+        if left_max is None:
+            min_val = root.val
+        elif left_max >= root.val:
+            is_valid = False
+        if right_min is None:
+            max_val = root.val
+        elif right_min <= root.val:
+            is_valid = False
+        
+        return is_valid, min_val, max_val
