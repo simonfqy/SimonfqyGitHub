@@ -149,3 +149,37 @@ class Solution:
             self.min_sum = subtree_sum
             self.min_root = root
         return subtree_sum
+    
+# My own solution.    
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the minimum subtree
+    """
+    def findSubtree(self, root):
+        # write your code here
+        min_sum_root, _, _ = self.find_min_subtree(root)
+        return min_sum_root
+
+    # return: root of minimum sum tree, sum of the whole subtree, min_sum
+    def find_min_subtree(self, root):
+        if root is None:
+            return None, None, None
+        left_min_tree_root, left_sum, left_min = self.find_min_subtree(root.left)
+        right_min_tree_root, right_sum, right_min = self.find_min_subtree(root.right)
+        total_sum = root.val
+        total_min = None
+        min_subtree_root = None
+        if left_min_tree_root:
+            total_sum += left_sum
+            min_subtree_root = left_min_tree_root
+            total_min = left_min
+        if right_min_tree_root:
+            total_sum += right_sum
+            if total_min is None or total_min > right_min:
+                total_min = right_min
+                min_subtree_root = right_min_tree_root
+        if total_min is None or total_min > total_sum:
+            total_min = total_sum
+            min_subtree_root = root
+        return min_subtree_root, total_sum, total_min
