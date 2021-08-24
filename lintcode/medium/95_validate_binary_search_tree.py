@@ -183,3 +183,27 @@ class Solution:
             is_valid = False
         
         return is_valid, min_val, max_val
+    
+# My solution. It is very similar to the solution provided by Jiuzhang, but I came up with it independently, based on the experience I got from solving 
+# problem #597: https://github.com/simonfqy/SimonfqyGitHub/blob/9b43ce0125c485ca6ff187f2187d757c5fdb86fd/lintcode/easy/597_subtree_with_maximum_average.py#L121.
+# For variables that can only take 1 value at a given time, we can use a global variable to record it. Here it is self.prev.
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        # write your code here
+        self.prev = None
+        return self.in_order(root)
+
+    def in_order(self, root):
+        if not root:
+            return True
+        left_valid = self.in_order(root.left)
+        if not left_valid:
+            return False
+        if self.prev and self.prev.val >= root.val:
+            return False
+        self.prev = root
+        return self.in_order(root.right)
