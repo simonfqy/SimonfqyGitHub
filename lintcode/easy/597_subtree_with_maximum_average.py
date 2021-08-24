@@ -152,4 +152,37 @@ class Solution:
             self.max_avg = total_avg
             max_subtree_root = root
 
-        return max_subtree_root, total_sum, total_num_nodes 
+        return max_subtree_root, total_sum, total_num_nodes
+    
+# Similar to the first solution, which is also my own solution. Lets recursive function return 4 values. You can see that the max_subtree_root and max_avg only have
+# 1 value at a given time, so they can be substituted by global variables.
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the maximum average of subtree
+    """
+    def findSubtree2(self, root):
+        # write your code here
+        subtree_root, _, _, _ = self.dfs(root)
+        return subtree_root
+
+    # Return: max_subtree_root, max_avg_value, sum_subtree, size_subtree    
+    def dfs(self, root):
+        if root is None:
+            return None, None, 0, 0
+
+        left_max_subtree_root, left_max_avg_value, left_subtree_sum, left_subtree_size = self.dfs(root.left)
+        right_max_subtree_root, right_max_avg_value, right_subtree_sum, right_subtree_size = self.dfs(root.right)
+        max_avg_value = left_max_avg_value
+        max_subtree_root = left_max_subtree_root
+        if right_max_subtree_root:
+            if max_avg_value is None or max_avg_value < right_max_avg_value:
+                max_avg_value = right_max_avg_value
+                max_subtree_root = right_max_subtree_root
+        total_sum = root.val + left_subtree_sum + right_subtree_sum
+        total_size = 1 + left_subtree_size + right_subtree_size
+        total_avg = total_sum / total_size
+        if max_avg_value is None or max_avg_value < total_avg:
+            max_avg_value = total_avg
+            max_subtree_root = root
+        return max_subtree_root, max_avg_value, total_sum, total_size
