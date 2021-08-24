@@ -183,3 +183,32 @@ class Solution:
             total_min = total_sum
             min_subtree_root = root
         return min_subtree_root, total_sum, total_min
+    
+# This solution is slightly modified from the previous one. It now uses a global variable to store min_sum, and it is letting the sum be 0 when 
+# the node is None. More concise, but less elegant than the solution above.
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the root of the minimum subtree
+    """
+    def findSubtree(self, root):
+        # write your code here
+        self.min_sum = None
+        min_sum_root, _ = self.find_min_subtree(root)
+        return min_sum_root
+
+    # return: min sum root, sum of tree
+    def find_min_subtree(self, root):
+        if not root:
+            return None, 0
+        left_min_root, left_sum = self.find_min_subtree(root.left)
+        left_min_sum = self.min_sum 
+        right_min_root, right_sum = self.find_min_subtree(root.right)
+        overall_min_root = left_min_root
+        if left_min_sum is None or self.min_sum < left_min_sum:
+            overall_min_root = right_min_root
+        total_sum = root.val + left_sum + right_sum
+        if self.min_sum is None or total_sum < self.min_sum:
+            self.min_sum = total_sum
+            overall_min_root = root
+        return overall_min_root, total_sum
