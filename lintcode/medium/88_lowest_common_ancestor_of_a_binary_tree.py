@@ -212,3 +212,38 @@ class Solution:
         if have_a and have_b and not self.lca:
             self.lca = root
         return have_a, have_b
+    
+# Also my own solution. This one is similar to the one provided by Jiuzhang student above.    
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: A: A TreeNode in a Binary.
+    @param: B: A TreeNode in a Binary.
+    @return: Return the lowest common ancestor(LCA) of the two nodes.
+    """
+    def lowestCommonAncestor(self, root, A, B):
+        # write your code here
+        path_to_a = []
+        path_to_b = []
+        path_to_a = self.populate_path_to_node(root, path_to_a, A)
+        path_to_b = self.populate_path_to_node(root, path_to_b, B)
+        max_common_path_length = min(len(path_to_a), len(path_to_b))
+        for i in range(max_common_path_length):
+            if path_to_a[i] != path_to_b[i]:
+                return path_to_a[i - 1]
+        return path_to_a[max_common_path_length - 1]
+    
+    def populate_path_to_node(self, root, path, goal):
+        if not root:
+            return path
+        result_path = list(path)
+        result_path.append(root)
+        if root is goal:
+            return result_path
+        left_path = self.populate_path_to_node(root.left, result_path, goal)
+        if goal == left_path[-1]:
+            return left_path
+        right_path = self.populate_path_to_node(root.right, result_path, goal)
+        if goal == right_path[-1]:
+            return right_path
+        return path
