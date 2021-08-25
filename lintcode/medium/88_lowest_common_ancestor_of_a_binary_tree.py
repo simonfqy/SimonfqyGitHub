@@ -186,3 +186,29 @@ class Solution:
         if have_a and have_b:
             return root, True, True
         return None, have_a, have_b
+    
+# Similar to the solution above, but using a global variable to store lca. Now the recursive function only returns 2 values. More concise.    
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: A: A TreeNode in a Binary.
+    @param: B: A TreeNode in a Binary.
+    @return: Return the lowest common ancestor(LCA) of the two nodes.
+    """
+    def lowestCommonAncestor(self, root, A, B):
+        # write your code here
+        self.lca = None
+        self.get_lca(root, A, B)
+        return self.lca
+        
+    # return: have_A, have_B
+    def get_lca(self, root, A, B):
+        if not root:
+            return False, False
+        left_has_a, left_has_b = self.get_lca(root.left, A, B)
+        right_has_a, right_has_b = self.get_lca(root.right, A, B)
+        have_a = left_has_a or right_has_a or root == A
+        have_b = left_has_b or right_has_b or root == B
+        if have_a and have_b and not self.lca:
+            self.lca = root
+        return have_a, have_b
