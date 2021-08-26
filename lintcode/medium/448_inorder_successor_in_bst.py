@@ -69,3 +69,34 @@ class Solution:
         if root.val > p.val:
             return self.get_path_to_p(root.left, p, path_to_be_returned)
         return self.get_path_to_p(root.right, p, path_to_be_returned)
+    
+    
+# This solution comes from Jiuzhang.com.
+class Solution:
+    """
+    @param: root: The root of the BST.
+    @param: p: You need find the successor node of p.
+    @return: Successor of p.
+    """
+    def inorderSuccessor(self, root, p):
+        # write your code here
+        # First, find the position of p and set a candidate successor.
+        successor = None
+        while root and p.val != root.val:
+            if root.val > p.val:
+                successor = root
+                root = root.left
+            else:
+                root = root.right
+        # p is not found. Hence no successor.
+        if not root:
+            return None 
+        # p does not have a right subtree. Hence the successor previously assigned is the true successor.
+        if not root.right:
+            return successor
+        # p has a right subtree. Then pick the leftmost node from its right subtree.
+        root = root.right
+        while root:
+            if not root.left:
+                return root 
+            root = root.left
