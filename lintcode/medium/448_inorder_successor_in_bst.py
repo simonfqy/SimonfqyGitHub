@@ -100,3 +100,28 @@ class Solution:
             if not root.left:
                 return root 
             root = root.left
+            
+            
+# This solution also comes from Jiuzhang.com. It is recursive. Basically, we need to consider 3 scenarios:
+# 1, when the root is less than or equal to the target, the successor can only be in the right subtree if it exists.
+# 2, when the root is larger than the target, then the successor must exist. There are 2 possible scenarios:
+#   2.1, the successor is in left subtree. We simply call the function recursively on the left subtree.
+#   2.2, the successor is the root. This happens when the recursive function on the left subtree returns None.
+class Solution:
+    """
+    @param: root: The root of the BST.
+    @param: p: You need find the successor node of p.
+    @return: Successor of p.
+    """
+    def inorderSuccessor(self, root, p):
+        # write your code here
+        if not root or not p:
+            return None
+        # First go to the right subtree if the successor can only be in the right.
+        if root.val <= p.val:
+            return self.inorderSuccessor(root.right, p)
+        # Now consider root.val > p.val 
+        candidate_successor = self.inorderSuccessor(root.left, p)
+        if not candidate_successor:
+            return root
+        return candidate_successor
