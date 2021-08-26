@@ -125,3 +125,23 @@ class Solution:
         if not candidate_successor:
             return root
         return candidate_successor
+
+    
+# This solution is written by a student in Jiuzhang.com. Much more concise.
+class Solution:
+    """
+    @param: root: The root of the BST.
+    @param: p: You need find the successor node of p.
+    @return: Successor of p.
+    """
+    def inorderSuccessor(self, root, p):
+        # write your code here
+        successor = None
+        while root:
+            if root.val > p.val:
+                successor = root
+                root = root.left
+            else:
+                root = root.right
+        return successor 
+   
