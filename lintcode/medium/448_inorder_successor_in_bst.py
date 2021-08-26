@@ -54,7 +54,7 @@ class Solution:
         n = path_to_p.pop()
         while path_to_p and path_to_p[-1].right == n:
             n = path_to_p.pop()
-        if len(path_to_p) > 0:
+        if path_to_p:
             return path_to_p[-1]
         return None
     
