@@ -76,3 +76,27 @@ class Solution:
                 while stack and stack[-1].right == node:
                     node = stack.pop()
         return result
+    
+    
+# A more succinct solution from Jiuzhang.com
+class Solution:
+    """
+    @param root: A Tree
+    @return: Inorder in ArrayList which contains node values.
+    """
+    def inorderTraversal(self, root):
+        # write your code here
+        dummy = TreeNode(0)
+        dummy.right = root
+        inorder = []
+        stack = [dummy]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+            if stack:
+                inorder.append(stack[-1].val)
+        return inorder
