@@ -51,7 +51,7 @@ class Solution:
         return root
     
     
-# The solution in jiuzhang.com without recursion. 
+# The solution in jiuzhang.com, which doesn't use recursion. 
 class Solution:
     """
     @param: root: The root of the binary search tree.
