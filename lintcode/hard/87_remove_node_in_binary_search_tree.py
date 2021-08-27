@@ -34,9 +34,7 @@ class Solution:
             return root.left
         # Root has both left and right subtrees
         left_node = root.left
-        while True:
-            if not left_node.right:
-                break
+        while left_node.right:
             left_node = left_node.right
         left_node.right = root.right
         return root.left
