@@ -60,3 +60,31 @@ class Solution:
         if root.val <= k2:
             key_list.extend(self.get_suitable_key_list(root.right, k1, k2))
         return key_list
+    
+    
+# This is the solution from Jiuzhang.com. Iterative.
+class Solution:
+    """
+    @param root: param root: The root of the binary search tree
+    @param k1: An integer
+    @param k2: An integer
+    @return: return: Return all keys that k1<=key<=k2 in ascending order
+    """
+    def searchRange(self, root, k1, k2):
+        # write your code here
+        dummy = TreeNode(0)
+        dummy.right = root
+        stack = [dummy]
+        return_list = []
+        while stack:
+            node = stack.pop()
+            if node.right:
+                node = node.right
+                while node:
+                    stack.append(node)
+                    node = node.left
+            if stack:
+                node = stack[-1]
+                if node.val >= k1 and node.val <= k2:
+                    return_list.append(node.val)
+        return return_list
