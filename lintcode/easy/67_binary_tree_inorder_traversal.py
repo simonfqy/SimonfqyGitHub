@@ -100,3 +100,22 @@ class Solution:
             if stack:
                 inorder.append(stack[-1].val)
         return inorder
+    
+    
+# Recursive solution without using global variable.
+class Solution:
+    """
+    @param root: A Tree
+    @return: Inorder in ArrayList which contains node values.
+    """
+    def inorderTraversal(self, root):
+        # write your code here
+        return self.inorder_traversal(root, [])
+
+    def inorder_traversal(self, root, inorder_list):
+        if not root:
+            return inorder_list
+        inorder_list = self.inorder_traversal(root.left, inorder_list)
+        inorder_list.append(root.val)
+        inorder_list = self.inorder_traversal(root.right, inorder_list)
+        return inorder_list
