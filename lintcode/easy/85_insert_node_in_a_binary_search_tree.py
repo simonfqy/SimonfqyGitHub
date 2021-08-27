@@ -73,3 +73,52 @@ class Solution:
                     currt.right = node                    
                 currt = currt.right
         return root
+    
+    
+# A variant of a solution from a student on jiuzhang.com. I did not use a prev node as the original author did. 
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: node: insert this node into the binary search tree
+    @return: The root of the new binary search tree.
+    """
+    def insertNode(self, root, node):
+        # write your code here        
+        if not root:
+            return node
+        cur = root
+        while True:
+            candidate = cur.left if cur.val > node.val else cur.right
+            if candidate:
+                cur = candidate
+            else:
+                break
+        if cur.val > node.val:
+            cur.left = node
+        else:
+            cur.right = node
+        return root
+    
+    
+# The solution from a student on jiuzhang.com. You can see a prev node being used. The original code was in Java,
+# I translated it into Python.
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: node: insert this node into the binary search tree
+    @return: The root of the new binary search tree.
+    """
+    def insertNode(self, root, node):
+        # write your code here        
+        if not root:
+            return node
+        cur = root
+        prev = None
+        while cur:
+            prev = cur
+            cur = cur.left if cur.val > node.val else cur.right
+        if prev.val > node.val:
+            prev.left = node
+        else:
+            prev.right = node
+        return root
