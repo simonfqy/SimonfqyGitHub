@@ -37,7 +37,7 @@ class Solution:
         if not root:
             return node
         currt = root
-        while currt:
+        while True:
             if currt.val > node.val:                
                 if not currt.left:
                     currt.left = node
@@ -47,5 +47,29 @@ class Solution:
                 if not currt.right:
                     currt.right = node
                     break
+                currt = currt.right
+        return root
+    
+    
+# The solution in jiuzhang.com without recursion. 
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: node: insert this node into the binary search tree
+    @return: The root of the new binary search tree.
+    """
+    def insertNode(self, root, node):
+        # write your code here        
+        if not root:
+            return node
+        currt = root
+        while currt != node:
+            if currt.val > node.val:                
+                if not currt.left:
+                    currt.left = node                    
+                currt = currt.left
+            else:
+                if not currt.right:
+                    currt.right = node                    
                 currt = currt.right
         return root
