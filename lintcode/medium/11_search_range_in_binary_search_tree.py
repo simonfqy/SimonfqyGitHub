@@ -45,8 +45,7 @@ class Solution:
             return key_list
         key_list = self.get_suitable_key_list(root, k1, k2)    
         
-        return key_list
-        
+        return key_list      
     
     def get_suitable_key_list(self, root, k1, k2):
         key_list = []
@@ -60,6 +59,28 @@ class Solution:
         if root.val <= k2:
             key_list.extend(self.get_suitable_key_list(root.right, k1, k2))
         return key_list
+    
+    
+# Recursive solution. Conceptually similar to the one above, but more concise.
+class Solution:
+    """
+    @param root: param root: The root of the binary search tree
+    @param k1: An integer
+    @param k2: An integer
+    @return: return: Return all keys that k1<=key<=k2 in ascending order
+    """
+    def searchRange(self, root, k1, k2):
+        # write your code here
+        if not root:
+            return []
+        left_range = self.searchRange(root.left, k1, k2)
+        right_range = self.searchRange(root.right, k1, k2)
+        if root.val >= k1 and root.val <= k2:
+            return left_range + [root.val] + right_range
+        if root.val < k1:
+            return right_range
+        if root.val > k2:
+            return left_range
     
     
 # This is the solution from Jiuzhang.com. Iterative.
