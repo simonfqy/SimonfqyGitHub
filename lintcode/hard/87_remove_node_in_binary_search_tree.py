@@ -53,8 +53,8 @@ class Solution:
             return root
         node = root
         prev = None
-        # If we don't have the node.val != value condition in the while statement, prev will be assigned
-        # the value of node. In that case, prev will not be the parent of the node, but the node itself. 
+        # If we don't have the node.val != value condition in the while statement (but defer it as an if condition to break the while loop), when we
+        # reach a node whose value is what we want, prev will be equal to this node, instead of being the parent of that node. This isn't what we want. 
         while node and node.val != value:
             prev = node
             if node.val < value:
