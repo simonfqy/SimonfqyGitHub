@@ -38,3 +38,52 @@ class Solution:
             left_node = left_node.right
         left_node.right = root.right
         return root.left
+    
+    
+# My own iterative solution. 
+class Solution:
+    """
+    @param: root: The root of the binary search tree.
+    @param: value: Remove the node with given value.
+    @return: The root of the binary search tree after removal.
+    """
+    def removeNode(self, root, value):
+        # write your code here
+        if not root:
+            return root
+        node = root
+        prev = None
+        # If we don't have the node.val != value condition in the while statement, prev will be assigned
+        # the value of node. In that case, prev will not be the parent of the node, but the node itself. 
+        while node and node.val != value:
+            prev = node
+            if node.val < value:
+                node = node.right
+            else:
+                node = node.left
+        # No matching node.
+        if not node:
+            return root        
+        # Matching node found.
+        # If prev is None, it means it never entered that while loop. This means the root node
+        # is the matching node, hence we simply return the changed root node.
+        if not prev:
+            return self.obtain_new_value_for_prev_child(node)
+        if prev.val < value:
+            prev.right = self.obtain_new_value_for_prev_child(node)
+        else:
+            prev.left = self.obtain_new_value_for_prev_child(node)
+        return root
+
+    def obtain_new_value_for_prev_child(self, node):
+        if not (node.left or node.right):
+            return None
+        if node.left and not node.right:
+            return node.left
+        if node.right and not node.left:
+            return node.right
+        left_node = node.left
+        while left_node.right:            
+            left_node = left_node.right
+        left_node.right = node.right
+        return node.left
