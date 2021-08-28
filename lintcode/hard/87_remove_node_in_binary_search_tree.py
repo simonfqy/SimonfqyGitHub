@@ -70,6 +70,8 @@ class Solution:
         if not prev:
             return self.obtain_new_value_for_prev_child(node)
         if prev.val < value:
+            # If we directly assign this value to node, it will not work. We have to modify the link from prev node to the modified node,
+            # hence we need to use prev node.
             prev.right = self.obtain_new_value_for_prev_child(node)
         else:
             prev.left = self.obtain_new_value_for_prev_child(node)
