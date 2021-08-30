@@ -14,11 +14,11 @@ class Solution:
     """
     def binaryTreePaths(self, root):
         # write your code here
+        if not root:
+            return []            
         return self.get_tree_paths(root, "")
 
-    def get_tree_paths(self, root, path_prefix):
-        if not root:
-            return []
+    def get_tree_paths(self, root, path_prefix):        
         if path_prefix == "":
             path_prefix = str(root.val)
         else:
