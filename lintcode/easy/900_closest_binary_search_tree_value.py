@@ -86,3 +86,36 @@ class Solution:
             else:
                 break
         return self.closest.val
+    
+    
+# Recursive solution which is based on the previous iterative approach. Uses 1 global variable
+# to store the minimum difference obtained so far.
+import sys
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @return: the value in the BST that is closest to the target
+    """
+    def closestValue(self, root, target):
+        # write your code here
+        self.min_diff = sys.maxsize
+        return self.get_closest_node(root, target).val 
+         
+    def get_closest_node(self, root, target):
+        if not root:
+            return None
+        closest_node = None
+        if abs(root.val - target) < self.min_diff:
+            self.min_diff = abs(root.val - target)
+            closest_node = root
+        curr_min_diff = self.min_diff
+        if root.val < target:
+            closest_right = self.get_closest_node(root.right, target)
+            if self.min_diff < curr_min_diff:
+                closest_node = closest_right
+        elif root.val > target:
+            closest_left = self.get_closest_node(root.left, target)
+            if self.min_diff < curr_min_diff:
+                closest_node = closest_left
+        return closest_node
