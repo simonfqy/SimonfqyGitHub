@@ -39,7 +39,7 @@ class Solution:
 # - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
 # - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
 
-# Uses iteration instead of recursion. Pretty succinct.
+# Uses iteration instead of recursion. Pretty succinct. It also avoids calculating the absolute difference at each step, so slightly saves some time.
 class Solution:
     """
     @param root: the given BST
