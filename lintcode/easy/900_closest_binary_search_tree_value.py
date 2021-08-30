@@ -119,3 +119,33 @@ class Solution:
             if self.min_diff < curr_min_diff:
                 closest_node = closest_left
         return closest_node
+    
+# Recursive solution. Does not use global variables, the recursive function returns 2 values.
+import sys
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @return: the value in the BST that is closest to the target
+    """
+    def closestValue(self, root, target):
+        # write your code here
+        closest_node, _ = self.get_closest_node(root, target)
+        return closest_node.val 
+         
+    def get_closest_node(self, root, target):
+        if not root:
+            return None, sys.maxsize
+        closest_node = root
+        min_diff = abs(root.val - target)
+        if root.val < target:
+            closest_right, right_min_diff = self.get_closest_node(root.right, target)
+            if right_min_diff < min_diff:
+                min_diff = right_min_diff
+                closest_node = closest_right
+        elif root.val > target:
+            closest_left, left_min_diff = self.get_closest_node(root.left, target)
+            if left_min_diff < min_diff:
+                min_diff = left_min_diff
+                closest_node = closest_left
+        return closest_node, min_diff
