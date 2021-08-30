@@ -64,3 +64,29 @@ class Solution:
             else:
                 all_paths.append(path_str)
         return all_paths
+
+    
+# This an official answer in jiuzhang.com, I modified it only slightly.
+class Solution:
+    """
+    @param root: the root of the binary tree
+    @return: all root-to-leaf paths
+    """
+    def binaryTreePaths(self, root):
+        # write your code here
+        if root is None:
+            return []
+        all_paths = []
+        self.dfs(root, [str(root.val)], all_paths)
+        return all_paths
+
+    # Modifies the all_paths list passed from the input.
+    def dfs(self, root, path, all_paths):
+        if not root.left and not root.right:
+            all_paths.append('->'.join(path))
+            return
+        if root.left:
+            self.dfs(root.left, path + [str(root.left.val)], all_paths)
+        if root.right:
+            self.dfs(root.right, path + [str(root.right.val)], all_paths)
+            
