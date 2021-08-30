@@ -29,6 +29,7 @@ class Solution:
             paths_to_return.extend(self.get_tree_paths(root.left, path_prefix))
         if root.right:
             paths_to_return.extend(self.get_tree_paths(root.right, path_prefix))
+        # Leaf node case, so paths_to_return was never populated.
         if len(paths_to_return) == 0:
             return [path_prefix]
         return paths_to_return
