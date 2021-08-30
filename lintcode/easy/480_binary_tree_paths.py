@@ -46,10 +46,12 @@ class Solution:
         # write your code here
         if not root:
             return []
+        # Every string in the tuple is the path leading to the current node.
         queue = deque([(root, '')])        
         all_paths = []
         while queue:
             node, path_str = queue.pop()
+            # Add the current node to the end of the path to make it complete.
             if path_str != '':
                 path_str += "->"
             path_str += str(node.val)
