@@ -61,3 +61,28 @@ class Solution:
         if abs(upper.val - target) <= abs(lower.val - target):
             return upper.val
         return lower.val
+    
+    
+# My own solution. Uses iterative approach.
+import sys
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @return: the value in the BST that is closest to the target
+    """
+    def closestValue(self, root, target):
+        # write your code here
+        self.closest = None
+        self.min_diff = sys.maxsize
+        while root:
+            if abs(root.val - target) < self.min_diff:
+                self.closest = root
+                self.min_diff = abs(root.val - target)
+            if root.val < target:
+                root = root.right
+            elif root.val > target:
+                root = root.left
+            else:
+                break
+        return self.closest.val
