@@ -52,6 +52,29 @@ class Solution:
                 stack.append(node.left)
                 
                 
+# An iterative solution provided by jiuzhang.com. I translated it from Java to Python. It is similar to my iterative solution
+# above, but is simpler because it doesn't make use of a prev node. Instead, it uses current node directly.
+class Solution:    
+    """
+    @param root: a TreeNode, the root of the binary tree
+    @return: nothing
+    """
+    def flatten(self, root):
+        # write your code here
+        if not root:
+            return
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if stack:
+                node.right = stack[-1]
+                node.left = None
+                
+                
 # Recursive solution provided by jiuzhang.com. Uses a global variable last_node. 
 class Solution:
     last_node = None
@@ -95,3 +118,5 @@ class Solution:
             root.left = None       
         # This is a compact statement which returns the first non-null entity. 
         return right_last or left_last or root 
+    
+  
