@@ -91,6 +91,31 @@ class Solution:
         if root.right:
             self.dfs(root.right, path + [str(root.right.val)], all_paths)
             
+            
+# This also an official answer in jiuzhang.com. It is a traversal, whose only difference from the previous
+# solution is that, now we have nodes instead of node values in the "path" parameter of dfs().
+class Solution:
+    """
+    @param root: the root of the binary tree
+    @return: all root-to-leaf paths
+    """
+    def binaryTreePaths(self, root):
+        # write your code here
+        if not root:
+            return []
+        all_paths = []
+        self.dfs(root, [root], all_paths)
+        return all_paths
+
+    def dfs(self, root, path, all_paths):
+        if not root:
+            return
+        if not root.left and not root.right:
+            # Remember this syntax in Python for functional programming.
+            all_paths.append('->'.join([str(n.val) for n in path]))
+        self.dfs(root.left, path + [root.left], all_paths)
+        self.dfs(root.right, path + [root.right], all_paths)
+            
 
 # This an official answer in jiuzhang.com. It is kind of like post-order traversal.
 class Solution:
