@@ -25,4 +25,28 @@ class Solution:
                 node = node.right
             node.right = root.right
             root.right = root.left
-            root.left = None
+            root.left = None # This assignment is crucial, don't forget it.
+
+            
+# My own iterative solution. 
+class Solution:
+    """
+    @param root: a TreeNode, the root of the binary tree
+    @return: nothing
+    """
+    def flatten(self, root):
+        # write your code here
+        if not root:
+            return
+        stack = [root]
+        prev = None
+        while stack:
+            node = stack.pop()
+            if prev:
+                prev.right = node
+                prev.left = None # This assignment is crucial, don't forget it.
+            prev = node
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
