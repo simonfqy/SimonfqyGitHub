@@ -26,6 +26,30 @@ class Solution:
             node.right = root.right
             root.right = root.left
             root.left = None # This assignment is crucial, don't forget it.
+            
+            
+# A recursive solution provided by a student of jiuzhang.com which makes use of global variable.
+class Solution:    
+    last_node = None
+    """
+    @param root: a TreeNode, the root of the binary tree
+    @return: nothing
+    """
+    def flatten(self, root):
+        # write your code here
+        if not root:
+            return
+        # It is kind of a trick to use this order. First go to the right subtree, then to left.
+        # If you track how the value of self.last_node changes throughout the recursion, you'll
+        # realize that it will set the right child of the last descendant (using preorder traversal) 
+        # of the root's left subtree to be the right child of the root. It is not very easy to see
+        # from a glance.
+        self.flatten(root.right)
+        self.flatten(root.left)
+
+        root.right = self.last_node
+        root.left = None
+        self.last_node = root
 
             
 # My own iterative solution. 
@@ -117,6 +141,5 @@ class Solution:
             root.right = root.left
             root.left = None       
         # This is a compact statement which returns the first non-null entity. 
-        return right_last or left_last or root 
-    
+        return right_last or left_last or root   
   
