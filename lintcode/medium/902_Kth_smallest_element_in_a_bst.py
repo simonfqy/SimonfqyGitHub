@@ -137,6 +137,7 @@ class Solution:
     
 # A solution from jiuzhang.com. Similar to the binary tree iterator: 
 # https://github.com/simonfqy/SimonfqyGitHub/blob/0123e427d382c53293720f3c1c907ba71e66640f/lintcode/easy/67_binary_tree_inorder_traversal.py#L81
+# https://github.com/simonfqy/SimonfqyGitHub/blob/97254da6f5cf7340daef850f2f196e95529a677e/lintcode/hard/86_binary_search_tree_iterator.py#L146
 class Solution:
     """
     @param root: the given BST
