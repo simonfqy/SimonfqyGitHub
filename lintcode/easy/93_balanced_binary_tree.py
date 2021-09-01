@@ -103,3 +103,35 @@ class Solution:
         depth = max(left_depth, right_depth) + 1
         self.node_to_depth[root] = depth
         return depth
+    
+    
+# A solution from a student in Jiuzhang.com. Uses iterative post-order traversal and
+# makes use of the defaultdict object in Python. Here post-order is needed, because we need
+# to know the depth of left and right subtrees to calculate the depth of the whole tree.
+from collections import defaultdict
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if this Binary tree is Balanced, or false.
+    """
+    def isBalanced(self, root):
+        # write your code here
+        node_to_depth = defaultdict(int)
+        stack = []
+        while root or stack:
+            if root:
+                stack.append(root)
+                root = root.left or root.right
+            else:
+                root = stack.pop()
+                if abs(node_to_depth[root.left] - node_to_depth[root.right]) > 1:
+                    return False
+                # If a key (node) never existed in the defaultdict, its value is initialized using int() function,
+                # which is 0. This property makes defaultdict(int) useful for counting.
+                node_to_depth[root] = 1 + max(node_to_depth[root.left], node_to_depth[root.right])
+                if stack and stack[-1].left == root:
+                    # Switch branch; ensures post-order traversal.
+                    root = stack[-1].right
+                else:
+                    root = None
+        return True
