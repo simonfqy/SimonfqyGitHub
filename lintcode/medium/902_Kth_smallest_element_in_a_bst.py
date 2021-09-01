@@ -102,5 +102,34 @@ class Solution:
             return root.val
         # k > left_count + 1
         return self.get_kth_smallest(root.right, k - left_count - 1, subtree_element_count)
+    
 
+# My own recursive solution based on the solution provided in jiuzhang.com. Uses a global dict to store the subtree sizes.
+class Solution:
+    node_to_subtree_size = dict()
+    """
+    @param root: the given BST
+    @param k: the given k
+    @return: the kth smallest element in BST
+    """
+    def kthSmallest(self, root, k):
+        # write your code here
+        if not root:
+            return None
+        left_node_count = self.get_node_count(root.left)
+        if left_node_count >= k:
+            return self.kthSmallest(root.left, k)
+        if left_node_count == k - 1:
+            return root.val
+        return self.kthSmallest(root.right, k - left_node_count - 1)
 
+    def get_node_count(self, root):
+        if not root:
+            return 0
+        if root in self.node_to_subtree_size:
+            return self.node_to_subtree_size[root]
+        left_count = self.get_node_count(root.left)
+        right_count = self.get_node_count(root.right)
+        total_count = left_count + right_count + 1
+        self.node_to_subtree_size[root] = total_count
+        return total_count
