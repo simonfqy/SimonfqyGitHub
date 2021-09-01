@@ -142,3 +142,42 @@ class BSTIterator:
                 curt = self.node
                 self.node = self.node.right
                 return curt
+        
+# My implementation based on the solution from jiuzhang.com. It uses dummy node.
+class BSTIterator:
+    """
+    @param: root: The root of binary tree.
+    """
+    def __init__(self, root):
+        # do intialization if necessary
+        dummy = TreeNode(0)
+        dummy.right = root
+        self.stack = [dummy]
+
+    """
+    @return: True if there has next node, or false
+    """
+    def hasNext(self):
+        # write your code here
+        if not self.stack:
+            return False
+        if len(self.stack) == 1:
+            return self.stack[0].right is not None
+        return True        
+
+    """
+    @return: return next node
+    """
+    def _next(self):
+        # write your code here
+        while self.stack:
+            node = self.stack.pop()
+            if node.right:
+                node = node.right
+                while node:
+                    self.stack.append(node)
+                    node = node.left
+            if not self.stack:
+                break
+            return self.stack[-1]
+        return None
