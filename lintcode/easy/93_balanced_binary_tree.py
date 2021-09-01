@@ -29,6 +29,26 @@ class Solution:
         return (abs(left_depth - right_depth) <= 1, max(left_depth, right_depth) + 1)
     
     
+# More succinct than the above solution.
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if this Binary tree is Balanced, or false.
+    """
+    def isBalanced(self, root):
+        # write your code here
+        is_balanced, _ = self.get_balance_status_and_depth(root)
+        return is_balanced
+
+    def get_balance_status_and_depth(self, root):
+        if not root:
+            return True, 0
+        left_balanced, left_depth = self.get_balance_status_and_depth(root.left)
+        right_balanced, right_depth = self.get_balance_status_and_depth(root.right)
+        total_depth = max(right_depth, left_depth) + 1
+        return left_balanced and right_balanced and abs(left_depth - right_depth) <= 1, total_depth 
+    
+    
 # My own solution. Uses a helper function to obtain depth.
 class Solution:
     """
