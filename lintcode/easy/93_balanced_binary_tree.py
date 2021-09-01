@@ -53,3 +53,33 @@ class Solution:
         left_depth = self.get_depth(root.left)
         right_depth = self.get_depth(root.right)
         return max(left_depth, right_depth) + 1
+    
+# The only difference from the above solution is the use of dictionary to store the depth of each subtree rooted at a node.
+class Solution:
+    node_to_depth = dict()
+    """
+    @param root: The root of binary tree.
+    @return: True if this Binary tree is Balanced, or false.
+    """
+    def isBalanced(self, root):
+        # write your code here
+        if not root:
+            return True
+        left_balanced = self.isBalanced(root.left)
+        right_balanced = self.isBalanced(root.right)
+        if not (left_balanced and right_balanced):
+            return False
+        left_depth = self.get_depth(root.left)
+        right_depth = self.get_depth(root.right)
+        return abs(left_depth - right_depth) <= 1
+
+    def get_depth(self, root):
+        if not root:
+            return 0
+        if root in self.node_to_depth:
+            return self.node_to_depth[root]
+        left_depth = self.get_depth(root.left)
+        right_depth = self.get_depth(root.right)
+        depth = max(left_depth, right_depth) + 1
+        self.node_to_depth[root] = depth
+        return depth
