@@ -133,3 +133,29 @@ class Solution:
         total_count = left_count + right_count + 1
         self.node_to_subtree_size[root] = total_count
         return total_count
+    
+    
+# A solution from jiuzhang.com. Similar to the binary tree iterator: 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/0123e427d382c53293720f3c1c907ba71e66640f/lintcode/easy/67_binary_tree_inorder_traversal.py#L81
+class Solution:
+    """
+    @param root: the given BST
+    @param k: the given k
+    @return: the kth smallest element in BST
+    """
+    def kthSmallest(self, root, k):
+        # use binary tree iterator
+        dummy = TreeNode(0)
+        dummy.right = root
+        stack = [dummy]
+
+        for _ in range(k):
+            node = stack.pop()
+            if node.right:
+                right_node = node.right
+                while right_node:
+                    stack.append(right_node)
+                    right_node = right_node.left
+            if not stack:
+                return None
+        return stack[-1].val
