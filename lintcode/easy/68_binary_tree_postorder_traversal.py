@@ -33,3 +33,31 @@ class Solution:
             val_list.append(node.val)
         
         return val_list
+    
+    
+# An iterative implementation which only relies on 1 list (stack). It is very similar to the
+# iterative in-order traversal. This solution comes from a student in jiuzhang.com:
+# https://github.com/simonfqy/SimonfqyGitHub/blob/b23e54bd9f144a7dcb4a2af342f48a501361cf52/lintcode/easy/93_balanced_binary_tree.py#L112
+class Solution:
+    """
+    @param root: A Tree
+    @return: Postorder in ArrayList which contains node values.
+    """
+    def postorderTraversal(self, root):
+        # write your code here
+        if not root:
+            return []
+        stack = []
+        return_array = []
+        while root or stack:
+            if root:
+                stack.append(root)
+                root = root.left or root.right
+            else:
+                root = stack.pop()
+                return_array.append(root.val)
+                if stack and root == stack[-1].left:
+                    root = stack[-1].right
+                else:
+                    root = None
+        return return_array
