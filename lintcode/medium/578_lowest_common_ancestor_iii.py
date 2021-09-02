@@ -1,5 +1,7 @@
 """
 Link: https://www.lintcode.com/problem/578/
+This question is related to: 
+https://github.com/simonfqy/SimonfqyGitHub/blob/0da641a905821ebdf21fe495fb0520c23d651afb/lintcode/medium/88_lowest_common_ancestor_of_a_binary_tree.py#L1
 Definition of TreeNode:
 class TreeNode:
     def __init__(self, val):
