@@ -221,3 +221,68 @@ class Solution:
             return True
             
         return target - lower_stack[-1].val < upper_stack[-1].val - target
+    
+    
+# My own solution after slightly borrowing from jiuzhang.com. It is not a very recommended solution.
+# It is using two pointers, one forward pointer starting from beginning, one backward pointer starting from the end.
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @param k: the given k
+    @return: k values in the BST that are closest to the target
+    """
+    def closestKValues(self, root, target, k):
+        # write your code here
+        self.upper_stack, self.lower_stack = [], []
+        all_values = []
+        next_node, prev_node = self.get_first_node(root), self.get_last_node(root) 
+        while prev_node and prev_node.val >= target:
+            prev_node = self.get_previous_node()
+        while next_node and next_node.val < target:
+            next_node = self.get_next_node()
+        while len(all_values) < k:
+            if prev_node and (not next_node or abs(prev_node.val - target) <= abs(next_node.val - target)):             
+                all_values.append(prev_node.val)                
+                prev_node = self.get_previous_node()
+            else:
+                all_values.append(next_node.val)
+                next_node = self.get_next_node()
+        return all_values 
+
+    # If we simply initialize the upper and lower stacks following the get_stack() function in the solution above,
+    # it will not work correctly. That is because the traversal is implemented differently here.
+    def get_first_node(self, root):
+        while root:
+            self.upper_stack.append(root)
+            root = root.left
+        return self.upper_stack[-1]
+
+    def get_last_node(self, root):
+        while root:        
+            self.lower_stack.append(root)
+            root = root.right
+        return self.lower_stack[-1]     
+
+    # return the next value in in-order traversal
+    def get_next_node(self):
+        node = self.upper_stack.pop()
+        if node.right:
+            node = node.right
+            while node:
+                self.upper_stack.append(node)                
+                node = node.left
+        if not self.upper_stack:
+            return None
+        return self.upper_stack[-1]
+
+    def get_previous_node(self):
+        node = self.lower_stack.pop()
+        if node.left:
+            node = node.left
+            while node:
+                self.lower_stack.append(node)
+                node = node.right
+        if not self.lower_stack:
+            return None
+        return self.lower_stack[-1]
