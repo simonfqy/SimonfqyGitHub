@@ -223,7 +223,7 @@ class Solution:
         return target - lower_stack[-1].val < upper_stack[-1].val - target
     
     
-# My own solution after slightly borrowing from jiuzhang.com. It is not a very recommended solution.
+# My own solution after slightly borrowing from jiuzhang.com. It is not a very recommended solution, because the time complexity is O(n).
 # It is using two pointers, one forward pointer starting from beginning, one backward pointer starting from the end.
 class Solution:
     """
