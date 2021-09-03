@@ -75,26 +75,52 @@ def printInorder(node):
             
 # Iterative implementation provided by jiuzhang.com      
 def inorderTraversal(self, root):
-        # write your code here
-        inorder = []
-        if root is None:
-            return inorder
-        
-        dummy = TreeNode(0)
-        dummy.right = root
-        stack = [dummy]
-        
-        while stack:
-            node = stack.pop()
-            if node.right:
-                node = node.right
-                while node:
-                    stack.append(node)
-                    node = node.left
-            if stack:
-                inorder.append(stack[-1].val)
-        
+    # write your code here
+    inorder = []
+    if root is None:
         return inorder
+
+    dummy = TreeNode(0)
+    dummy.right = root
+    stack = [dummy]
+
+    while stack:
+        node = stack.pop()
+        if node.right:
+            node = node.right
+            while node:
+                stack.append(node)
+                node = node.left
+        if stack:
+            inorder.append(stack[-1].val)
+
+    return inorder
+    
+    
+# Another iterative implementation in jiuzhang.com. It is more explicit and easier to understand compared to the solution above.
+# It was used in 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/e8ae2c5a485cb63d456a03916f77c035d3cc58ed/lintcode/hard/86_binary_search_tree_iterator.py#L75
+# and
+# https://github.com/simonfqy/SimonfqyGitHub/blob/92b96e4cb25a9f1286aab35b03f127cae8a9529a/lintcode/hard/901_closest_binary_search_tree_value_ii.py#L149
+def inorderTraversal(self, root):        
+    inorder = []
+    stack = []
+    while root:
+        stack.append(root)            
+        root = root.left
+    while stack:
+        node = stack[-1]
+        if node.right:
+            n = node.right
+            while n:
+                stack.append(n)
+                n = n.left
+        else:
+            n = stack.pop()                
+            while stack and n == stack[-1].right:
+                n = stack.pop()
+        inorder.append(node.val)
+    return inorder
     
  
 # Iterative implementation of post-order traversal. It is a bit more complicated than in-order traversal. 
