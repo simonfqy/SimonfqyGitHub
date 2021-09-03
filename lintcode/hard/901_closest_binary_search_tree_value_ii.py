@@ -134,7 +134,10 @@ class Solution:
     
 # It uses the inorder traversal, left & right direction. In idea it is similar to my first solution,
 # but this one takes less time.
-# Refer to: https://github.com/simonfqy/SimonfqyGitHub/blob/9930808eb6869a94cb68b52d7c120bef623e41eb/algorithms/DFS_and_different_traversals.py#L77
+# Refer to: 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/e8ae2c5a485cb63d456a03916f77c035d3cc58ed/lintcode/hard/86_binary_search_tree_iterator.py#L75
+# Note that the solution in the following link does not work in our case:
+# https://github.com/simonfqy/SimonfqyGitHub/blob/9930808eb6869a94cb68b52d7c120bef623e41eb/algorithms/DFS_and_different_traversals.py#L77
 # 相当于在 bst 里get next node & get previous node
 # 本参考程序来自九章算法，由 @令狐冲 提供。版权所有，转发请注明出处。
 # - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
@@ -251,7 +254,11 @@ class Solution:
         return all_values 
 
     # If we simply initialize the upper and lower stacks following the get_stack() function in the solution above,
-    # it will not work correctly. That is because the traversal is implemented differently here.
+    # it will not work correctly. That is because the traversal is implemented differently here, using a dummy node as
+    # in https://github.com/simonfqy/SimonfqyGitHub/blob/9930808eb6869a94cb68b52d7c120bef623e41eb/algorithms/DFS_and_different_traversals.py#L77.
+    # The get_stack() function in the solution above only works for the traversal method in 
+    # https://github.com/simonfqy/SimonfqyGitHub/blob/e8ae2c5a485cb63d456a03916f77c035d3cc58ed/lintcode/hard/86_binary_search_tree_iterator.py#L75
+    
     def get_first_node(self, root):
         while root:
             self.upper_stack.append(root)
