@@ -187,7 +187,9 @@ class Solution:
                 root = root.right
                 
         return stack
-        
+    
+    # This traversal is the same as the implementation in:  
+    # https://github.com/simonfqy/SimonfqyGitHub/blob/e8ae2c5a485cb63d456a03916f77c035d3cc58ed/lintcode/hard/86_binary_search_tree_iterator.py#L75
     def move_upper(self, stack):
         # We want to modify stack here, such that its last element will always be the upper neighbor of the
         # last element of the stack before move_upper() is called each time.
