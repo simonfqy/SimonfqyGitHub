@@ -132,6 +132,71 @@ class Solution:
         return closest_k_values
     
     
+# This answer is obtained from jiuzhang.com, with only slight modification. It is very similar to the solution above. 
+# It first gets all the values using in-order traversal, then gets the index of the largest value smaller than or equal to
+# the target in the list using binary search, then it uses two pointers to find the desired K values.
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @param k: the given k
+    @return: k values in the BST that are closest to the target
+    """
+    def closestKValues(self, root, target, k):
+        # write your code here
+        all_values = self.get_value_list(root)
+        left = self.get_ind_of_closest_smaller_value(all_values, target)
+        right = left + 1
+        closest_k_values = []
+        for _ in range (k):
+            if self.is_left_closer(all_values, left, right, target):
+                closest_k_values.append(all_values[left])
+                left -= 1
+            else:
+                closest_k_values.append(all_values[right])
+                right += 1
+
+        return closest_k_values
+
+    def get_value_list(self, root):     
+        dummy = TreeNode(0)
+        dummy.right = root 
+        stack = [dummy]  
+        value_list = []
+        while stack:
+            node = stack.pop()
+            if node.right:
+                n = node.right
+                while n:
+                    stack.append(n)
+                    n = n.left
+            if stack:
+                value_list.append(stack[-1].val)
+        return value_list
+
+    # Use binary search to find the index of the index of the largest element smaller than or equal to the target 
+    def get_ind_of_closest_smaller_value(self, all_values, target):
+        left, right = 0, len(all_values) - 1
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if all_values[mid] <= target:
+                left = mid
+            else:
+                right = mid
+        if all_values[right] <= target:
+            return right
+        if all_values[left] <= target:
+            return left
+        return -1
+
+    def is_left_closer(self, value_list, left, right, target):
+        if right >= len(value_list):
+            return True
+        if left < 0:
+            return False
+        return abs(value_list[left] - target) <= abs(value_list[right] - target)
+    
+    
 # It uses the inorder traversal, left & right direction. In idea it is similar to my first solution,
 # but this one takes less time.
 # Refer to: 
