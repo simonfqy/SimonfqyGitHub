@@ -50,4 +50,37 @@ class Solution:
                 return True
         self.s_p_matching[i][j] = False
         return False
+    
       
+# Simplified implementation of the version above based on the solution from jiuzhang.com.
+class Solution:
+    
+    """
+    @param s: A string 
+    @param p: A string includes "?" and "*"
+    @return: is Match?
+    """
+    def isMatch(self, s, p):
+        # write your code here        
+        self.s_p_matching = [[None]*len(p) for _ in range(len(s))]
+        return self.is_match(s, p, 0, 0)
+
+    def is_match(self, s, p, i, j):        
+        if len(s) == i:
+            for k in range(j, len(p)):
+                if p[k] != "*":
+                    return False
+            return True
+        if len(p) == j:
+            return False
+        if self.s_p_matching[i][j] is not None:
+            return self.s_p_matching[i][j]
+        # Now p[j] is not null
+        matches = False
+        if p[j] == "*":
+            matches = self.is_match(s, p, i, j + 1) or self.is_match(s, p, i + 1, j)
+        else:
+            matches = (p[j] == s[i] or p[j] == "?") and self.is_match(s, p, i + 1, j + 1)         
+        self.s_p_matching[i][j] = matches
+        return matches
+        
