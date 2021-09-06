@@ -83,4 +83,36 @@ class Solution:
             matches = (p[j] == s[i] or p[j] == "?") and self.is_match(s, p, i + 1, j + 1)         
         self.s_p_matching[i][j] = matches
         return matches
+    
         
+# Solution from jiuzhang.com. Uses dynamic programming (iteratively) recording the matching of first
+# i and j characters of s and p respectively.
+# This logic is not very straightforward. It can be incorrect in a number of places if we configure wrongly.
+# One notable place is initializing dp with False values: we can't set it to None.
+class Solution:
+    
+    """
+    @param s: A string 
+    @param p: A string includes "?" and "*"
+    @return: is Match?
+    """
+    def isMatch(self, s, p):
+        # write your code here        
+        if not s and not p:
+            return False
+        m, n = len(s), len(p)
+        # Each element dp[i][j] records whether the s[:i] and p[:j] match, i.e., whether
+        # the first i characters in s and first j characters in p match.
+        # We have to initialize it to False. If to None, it will be incorrect.
+        dp = [[False] * (n + 1) for _ in range(m + 1)]        
+        dp[0][0] = True
+        for j in range(1, n + 1):
+            dp[0][j] = dp[0][j - 1] and p[j - 1] == "*"
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if p[j - 1] == "*":
+                    dp[i][j] = dp[i - 1][j] or dp[i][j - 1]
+                else:
+                    dp[i][j] = (s[i - 1] == p[j - 1] or p[j - 1] == "?") and dp[i - 1][j - 1] 
+
+        return dp[m][n]
