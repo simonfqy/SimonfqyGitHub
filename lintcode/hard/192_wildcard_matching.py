@@ -116,3 +116,33 @@ class Solution:
                     dp[i][j] = (s[i - 1] == p[j - 1] or p[j - 1] == "?") and dp[i - 1][j - 1] 
 
         return dp[m][n]
+    
+    
+# Also a dynamic programming solution from jiuzhang.com. Slightly optimizes the previous solution
+# by only having O(n) time complexity, where n is the length of p. It uses the property that each
+# i index of s only depends on i-1, so for s we only need 2.
+class Solution:
+    
+    """
+    @param s: A string 
+    @param p: A string includes "?" and "*"
+    @return: is Match?
+    """
+    def isMatch(self, s, p):
+        # write your code here        
+        if not s and not p:
+            return False
+        m, n = len(s), len(p)
+        dp = [[False] * (n + 1) for _ in range(2)]
+        dp[0][0] = True
+        for j in range(1, n + 1):
+            dp[0][j] = dp[0][j - 1] and p[j - 1] == "*"
+        for i in range(1, m + 1):
+            # We have to add this line to avoid errors. It is not present with the O(n*m) DP solution.
+            dp[i % 2][0] = False
+            for j in range(1, n + 1):
+                if p[j - 1] == "*":
+                    dp[i % 2][j] = dp[(i - 1) % 2][j] or dp[i % 2][j - 1]
+                else:
+                    dp[i % 2][j] = (p[j - 1] == "?" or p[j - 1] == s[i - 1]) and dp[(i - 1)%2][j - 1]
+        return dp[m % 2][n]
