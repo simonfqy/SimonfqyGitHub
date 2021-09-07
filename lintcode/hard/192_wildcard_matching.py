@@ -138,7 +138,8 @@ class Solution:
         for j in range(1, n + 1):
             dp[0][j] = dp[0][j - 1] and p[j - 1] == "*"
         for i in range(1, m + 1):
-            # We have to add this line to avoid errors. It is not present with the O(n*m) DP solution.
+            # We have to add this line to avoid errors. It is not present with the O(n*m) DP solution. This line can help us avoid
+            # the dp[0][0] = True set above, which doesn't make sense for dp[i % 2][0], where i is a positive even number. 
             dp[i % 2][0] = False
             for j in range(1, n + 1):
                 if p[j - 1] == "*":
