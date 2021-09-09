@@ -35,8 +35,52 @@ class Solution:
         self.memo[i][j] = matches
         return matches
     
+    
+# The solution from jiuzhang.com, I only slightly modified it. Also uses memorized DFS. The basic idea is similar to my solution above.
+class Solution:
+    """
+    @param s: A string 
+    @param p: A string includes "." and "*"
+    @return: A boolean
+    """
+    def isMatch(self, s, p):
+        # write your code here
+        self.memo = [[None]*len(p) for _ in range(len(s))]
+        return self.is_match(s, p, 0, 0)
+
+    def is_match(self, s, p, i, j):
+        if j >= len(p):
+            return i >= len(s)
+        if i >= len(s):            
+            return self.can_p_be_empty(p, j)
+        if self.memo[i][j] is not None:
+            return self.memo[i][j]
+        matches = False
+        if j <= len(p) - 2 and p[j + 1] == "*":
+            matches = self.is_match(s, p, i, j + 2) or (self.char_matches(s[i], p[j]) and self.is_match(s, p, i + 1, j))
+        else:
+            # p[j] cannot be "*", because that case will be handled by the if-body when j is j-1.
+            # The only cases here should be j == len(p) - 1, or p[j] not being "*" and neither is p[j + 1].
+            # In either case, we need to match s[i] with p[j]
+            matches = self.char_matches(s[i], p[j]) and self.is_match(s, p, i + 1, j + 1)
+
+        self.memo[i][j] = matches
+        return matches
+
+    def char_matches(self, s, p):
+        return p == "." or p == s
+    
+    # Due us always checking for p[j + 1] == "*", and the guarantee that consecutive "*" never appear, 
+    # p[j:] will always start with non "*" characters. Hence we can use this function. If it is using my own
+    # implementation, we cannot do it similarly.
+    def can_p_be_empty(self, p, j):
+        for ind in range(j, len(p), 2):
+            if ind >= len(p) - 1 or p[ind + 1] != "*":
+                return False
+        return True
+    
       
-# My own solution iterative DP.
+# My own solution, iterative DP.
 class Solution:
     """
     @param s: A string 
@@ -92,5 +136,4 @@ class Solution:
                     # p[j - 1] is "." or alphabet.
                     dp[i % 2][j] = dp[(i - 1) % 2][j - 1] and (p[j - 1] == "." or s[i - 1] == p[j - 1])                    
 
-        return dp[m % 2][n]
-    
+        return dp[m % 2][n]    
