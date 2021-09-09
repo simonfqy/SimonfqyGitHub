@@ -1,5 +1,6 @@
 '''
 Link: https://www.lintcode.com/problem/154/
+See https://github.com/simonfqy/SimonfqyGitHub/blob/master/lintcode/hard/192_wildcard_matching.py, that question is very similar to this one.
 '''
 
 # My own solution using memorized DFS, recursive.
@@ -45,6 +46,7 @@ class Solution:
     def isMatch(self, s, p):
         # write your code here
         m, n = len(s), len(p)
+        # dp[i][j] shows the matching status between s[:i] and p[:j], which is the first i characters of s and first j characters of p.
         dp = [[False]*(n + 1) for _ in range(m + 1)]
         dp[0][0] = True
         for j in range(1, n + 1):
