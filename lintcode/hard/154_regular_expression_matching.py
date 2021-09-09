@@ -19,6 +19,7 @@ class Solution:
         if j >= len(p):
             return i >= len(s)
         if i >= len(s):
+            # The "return" statement is improper and can cause bugs. The next solution addresses this problem.
             return j >= len(p) - 2 and p[-1] == "*"
         if self.memo[i][j] is not None:
             return self.memo[i][j]
