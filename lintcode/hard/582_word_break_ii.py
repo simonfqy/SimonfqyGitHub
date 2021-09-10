@@ -71,3 +71,38 @@ class Solution:
                         new_sentences.append(substring + " " + continue_sentence)
         self.all_valid_words[(i, j)] = new_sentences
         return new_sentences
+    
+    
+# This solution is translated from the Java solution in Jiuzhang.com. It uses memorized DFS.
+class Solution:
+    """
+    @param: s: A string
+    @param: wordDict: A set of words.
+    @return: All possible sentences.
+    """
+    def wordBreak(self, s, wordDict):        
+        # write your code here
+        self.sentences = []
+        # Have to initialize to True, otherwise the self.dfs() will exit during the first iteration.
+        self.starting_substring_is_sentence = [True] * len(s)
+        self.dfs(0, s, wordDict, "")
+        return self.sentences
+        
+    def dfs(self, start_ind, s, wordDict, sentence_so_far):
+        if start_ind == len(s):
+            self.sentences.append(sentence_so_far)
+            return True
+        if not self.starting_substring_is_sentence[start_ind]:
+            return False
+        if start_ind > 0:
+            sentence_so_far += " "
+        found_match_for_current_substring_start_ind = False
+        current_word = ""
+        for i in range(start_ind, len(s)):
+            current_word += s[i]
+            if current_word in wordDict:
+                # Starts the search of the next level based on the sentence constructed so far.
+                found_match_for_current_substring_start_ind |= self.dfs(i + 1, s, wordDict, sentence_so_far + current_word)
+
+        self.starting_substring_is_sentence[start_ind] = found_match_for_current_substring_start_ind
+        return found_match_for_current_substring_start_ind
