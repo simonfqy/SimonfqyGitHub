@@ -28,15 +28,12 @@ class Solution:
         if (i, j) in self.all_valid_words:
             return self.all_valid_words[(i, j)]
         new_sentences = []
-        found_matches = False
         for end in range(i, j + 1):
             if dp[i][end]:
                 continuing_sentences = self.get_all_valid_words(s, end + 1, j, dp)
                 if end == j:
-                    found_matches = True
                     new_sentences.append(s[i : end + 1])
                 elif len(continuing_sentences) > 0:
-                    found_matches = True
                     for continue_sentence in continuing_sentences:
                         new_sentences.append(s[i : end + 1] + " " + continue_sentence)
         self.all_valid_words[(i, j)] = new_sentences
