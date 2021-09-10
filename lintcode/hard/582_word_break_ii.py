@@ -145,7 +145,9 @@ class Solution:
         
         
 # Solution from jiuzhang.com using dynamic programming and DFS. I translated it to Python.
-# In concept it is pretty similar to the solution above.
+# In concept it is pretty similar to the solution above. The difference is that, this solution uses dynamic programming
+# to decide the cutting points, which is done in the wordBreak() function itself, while the solution above uses self.dfs()
+# function for this determination, making that function much heavier weight.
 class Solution:
     """
     @param: s: A string
@@ -170,7 +172,8 @@ class Solution:
                     self.valid_cutting_points_for_each_start_ind[i].append(j)
         self.dfs(0, s, "")
         return self.possible_sentences
-
+    
+    # The dfs() function is really light-weight in this solution.
     def dfs(self, start_ind, s, sentence_so_far):
         if start_ind == len(s):
             self.possible_sentences.append(sentence_so_far)
