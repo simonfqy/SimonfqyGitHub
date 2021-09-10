@@ -183,3 +183,55 @@ class Solution:
             sentence_so_far += " "
         for p in self.valid_cutting_points_for_each_start_ind[start_ind]:
             self.dfs(p, s, sentence_so_far + s[start_ind : p])
+            
+            
+# This solution should be correct, but doesn't work due to time limit exceeded. I was trying to
+# construct a classical DP algorithm here and let later DP cells be calculated based on prior DP cells.
+# It is more complicated than desirable.
+class Solution:
+    """
+    @param: s: A string
+    @param: wordDict: A set of words.
+    @return: All possible sentences.
+    """
+    def wordBreak(self, s, wordDict):        
+        # write your code here
+        n = len(s)       
+        # all_valid_sentences[(i, j)] is the list of all sentences that can be broken from s[i : j + 1] 
+        all_valid_sentences = dict()
+        self.already_accumulated = dict()
+        # I was trying to constrc
+        for end in range(n):
+            for start in range(end, -1, -1):
+                # start and end indices are inclusive.
+                if (start, end) not in all_valid_sentences:
+                    all_valid_sentences[(start, end)] = []
+                substring = s[start : end + 1]
+                if substring in wordDict:                    
+                    all_valid_sentences[(start, end)].append(substring)
+                all_valid_sentences[(start, end)] = self.get_accumulated_sentences(all_valid_sentences, start, end)               
+
+        return all_valid_sentences[(0, n - 1)] 
+
+    # Gets all the valid sentences (including single word) that can be constructed from s[start: end + 1]
+    def get_accumulated_sentences(self, all_valid_sentences, start, end):
+        accumulated_sentences = []
+        # Even if we have a set with the same content as accumulated_sentences, it still times out.
+        if (start, end) in self.already_accumulated:
+            return all_valid_sentences[(start, end)]
+        for mid in range(start, end + 1):
+            if not all_valid_sentences[(start, mid)]:
+                continue
+            intermediate_sentences = all_valid_sentences[(start, mid)]
+            if mid == end:
+                accumulated_sentences.extend(intermediate_sentences)        
+            else:
+                continuing_sentences = self.get_accumulated_sentences(all_valid_sentences, mid + 1, end)
+                for interm_sentence in intermediate_sentences:
+                    for cont_sentence in continuing_sentences:
+                        composed_sentence = interm_sentence + " " + cont_sentence
+                        if composed_sentence in accumulated_sentences:
+                            continue
+                        accumulated_sentences.append(composed_sentence)
+        self.already_accumulated[(start, end)] = True
+        return accumulated_sentences
