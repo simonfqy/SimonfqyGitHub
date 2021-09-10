@@ -83,7 +83,8 @@ class Solution:
     def wordBreak(self, s, wordDict):        
         # write your code here
         self.sentences = []
-        # Have to initialize to True, otherwise the self.dfs() will exit during the first iteration.
+        # The self.starting_substring_is_sentence[i] indicates whether the substring s[i:] can be divided into a valid sentence. 
+        # We have to initialize it to True, otherwise the self.dfs() will exit during the first iteration.
         self.starting_substring_is_sentence = [True] * len(s)
         self.dfs(0, s, wordDict, "")
         return self.sentences
