@@ -106,3 +106,39 @@ class Solution:
 
         self.starting_substring_is_sentence[start_ind] = found_match_for_current_substring_start_ind
         return found_match_for_current_substring_start_ind
+    
+    
+# Slightly modified from the previous solution, here the self.dfs() function no longer returns boolean.
+# It is less intuitive, but it still works correctly.
+class Solution:
+    """
+    @param: s: A string
+    @param: wordDict: A set of words.
+    @return: All possible sentences.
+    """
+    def wordBreak(self, s, wordDict):        
+        # write your code here
+        self.sentences = []
+        # Have to initialize to True, otherwise the self.dfs() will exit during the first iteration.
+        self.starting_substring_is_sentence = [True] * len(s)
+        self.dfs(0, s, wordDict, "")
+        return self.sentences
+        
+    def dfs(self, start_ind, s, wordDict, sentence_so_far):
+        if start_ind == len(s):
+            self.sentences.append(sentence_so_far)
+            return
+        if not self.starting_substring_is_sentence[start_ind]:
+            return
+        if start_ind > 0:
+            sentence_so_far += " "
+        current_word = ""
+        found_match_for_current_substring_start_ind = False
+        for i in range(start_ind, len(s)):
+            current_word += s[i]
+            if current_word in wordDict:
+                self.dfs(i + 1, s, wordDict, sentence_so_far + current_word)
+                if (i == len(s) - 1 or self.starting_substring_is_sentence[i + 1]):
+                    found_match_for_current_substring_start_ind = True 
+
+        self.starting_substring_is_sentence[start_ind] = found_match_for_current_substring_start_ind
