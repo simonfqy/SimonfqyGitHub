@@ -21,7 +21,7 @@ class Solution:
         self.all_valid_words = dict()
         return self.get_all_valid_words(s, 0, n - 1, dp)
 
-    # Return a list of valid words.
+    # Return a list of valid sentences that we can obtain from s[i : j + 1].
     def get_all_valid_words(self, s, i, j, dp):
         if (i, j) in self.all_valid_words:
             return self.all_valid_words[(i, j)]
@@ -55,7 +55,7 @@ class Solution:
         self.all_valid_words = dict()
         return self.get_all_valid_words(s, 0, n - 1, wordDict)
 
-    # Return a list of valid words.
+    # Return a list of valid sentences that we can obtain from s[i : j + 1].
     def get_all_valid_words(self, s, i, j, wordDict):
         if (i, j) in self.all_valid_words:
             return self.all_valid_words[(i, j)]
