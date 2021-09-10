@@ -142,3 +142,40 @@ class Solution:
                     found_match_for_current_substring_start_ind = True 
 
         self.starting_substring_is_sentence[start_ind] = found_match_for_current_substring_start_ind
+        
+        
+# Solution from jiuzhang.com using dynamic programming and DFS. I translated it to Python.
+# In concept it is pretty similar to the solution above.
+class Solution:
+    """
+    @param: s: A string
+    @param: wordDict: A set of words.
+    @return: All possible sentences.
+    """
+    def wordBreak(self, s, wordDict):        
+        # write your code here
+        self.possible_sentences = []
+        n = len(s)
+        self.valid_cutting_points_for_each_start_ind = [[] for _ in range(n)]
+        # Start from the end of the string to make sure that the 2d array valid_cutting_points_for_each_start_ind
+        # is properly constructed. It first checks whether the s[n - 1] is part of a word in the wordDict.
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n + 1):
+                substring = s[i : j]
+                if substring not in wordDict:
+                    continue
+                # j is the index of either the element after the end of the string, or the starting element of 
+                # the next word in a sentence that eventually leads to the end of the string.
+                if j == n or self.valid_cutting_points_for_each_start_ind[j]:
+                    self.valid_cutting_points_for_each_start_ind[i].append(j)
+        self.dfs(0, s, "")
+        return self.possible_sentences
+
+    def dfs(self, start_ind, s, sentence_so_far):
+        if start_ind == len(s):
+            self.possible_sentences.append(sentence_so_far)
+            return
+        if start_ind > 0:
+            sentence_so_far += " "
+        for p in self.valid_cutting_points_for_each_start_ind[start_ind]:
+            self.dfs(p, s, sentence_so_far + s[start_ind : p])
