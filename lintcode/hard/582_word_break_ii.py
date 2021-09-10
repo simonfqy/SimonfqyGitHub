@@ -51,8 +51,7 @@ class Solution:
     """
     def wordBreak(self, s, wordDict):
         # write your code here
-        n = len(s)
-        # Represents whether the s[i: j + 1] is a valid word in wordDict.        
+        n = len(s)     
         self.all_valid_words = dict()
         return self.get_all_valid_words(s, 0, n - 1, wordDict)
 
