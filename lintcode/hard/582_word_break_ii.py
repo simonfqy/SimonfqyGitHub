@@ -200,7 +200,7 @@ class Solution:
         # all_valid_sentences[(i, j)] is the list of all sentences that can be broken from s[i : j + 1] 
         all_valid_sentences = dict()
         self.already_accumulated = dict()
-        # I was trying to constrc
+        # I was trying to construct the DP table in one go.
         for end in range(n):
             for start in range(end, -1, -1):
                 # start and end indices are inclusive.
