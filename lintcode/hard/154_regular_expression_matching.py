@@ -70,9 +70,9 @@ class Solution:
     def char_matches(self, s, p):
         return p == "." or p == s
     
-    # Due us always checking for p[j + 1] == "*", and the guarantee that consecutive "*" never appear, 
+    # Due to us always checking for p[j + 1] == "*", and the guarantee that consecutive "*" never appear, 
     # p[j:] will always start with non "*" characters. Hence we can use this function. If it is using my own
-    # implementation, we cannot do it similarly.
+    # implementation (see above), we cannot do it similarly.
     def can_p_be_empty(self, p, j):
         for ind in range(j, len(p), 2):
             if ind >= len(p) - 1 or p[ind + 1] != "*":
