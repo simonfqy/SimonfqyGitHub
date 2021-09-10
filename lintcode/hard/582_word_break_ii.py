@@ -23,18 +23,19 @@ class Solution:
 
     # Return a list of valid words.
     def get_all_valid_words(self, s, i, j, dp):
-        if i > j:
-            return []
         if (i, j) in self.all_valid_words:
             return self.all_valid_words[(i, j)]
         new_sentences = []
         for end in range(i, j + 1):
-            if dp[i][end]:
-                continuing_sentences = self.get_all_valid_words(s, end + 1, j, dp)
+            if dp[i][end]:                
                 if end == j:
+                    # s[i : end + 1] should be the last matching section of s to the dictionary and it matches to the end.
                     new_sentences.append(s[i : end + 1])
-                elif len(continuing_sentences) > 0:
+                else:
+                    # end is still smaller than j, so push further and see whether there are truly matches.
+                    continuing_sentences = self.get_all_valid_words(s, end + 1, j, dp)
                     for continue_sentence in continuing_sentences:
+                        # If continuing_sentences is empty, new_sentences is unmodified.
                         new_sentences.append(s[i : end + 1] + " " + continue_sentence)
         self.all_valid_words[(i, j)] = new_sentences
         return new_sentences
