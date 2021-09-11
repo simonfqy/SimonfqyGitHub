@@ -16,7 +16,7 @@ class Solution:
             return [[]]
         return results
 
-    # Returns the list all the splitted strings in s[i : j + 1] 
+    # Returns the list of all the splitted strings in s[i : j + 1] 
     def split_string(self, start, end, s):
         results = []
         curr = ""
@@ -50,7 +50,7 @@ class Solution:
             return [[]]
         return results
 
-    # Returns the list all the splitted strings in s[i : j + 1] 
+    # Returns the list of all the splitted strings in s[i : j + 1] 
     def split_string(self, start, end, s):
         if (start, end) in self.memo:
             return self.memo[(start, end)]
