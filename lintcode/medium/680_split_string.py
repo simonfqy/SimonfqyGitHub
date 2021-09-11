@@ -70,3 +70,31 @@ class Solution:
                 results.append(curr_list + later_string)
         self.memo[(start, end)] = results
         return results
+    
+    
+# My own solution, uses DFS, this time without memoization. The results are written into a global
+# variable self.results while traversing, so we can't use memoization.
+class Solution:
+    """
+    @param: : a string to be split
+    @return: all possible split string array
+    """
+
+    def splitString(self, s):
+        # write your code here
+        self.results = []
+        self.split_string(0, len(s) - 1, s, [])        
+        if self.results == []:
+            return [[]]
+        return self.results
+
+    # Adds all the split strings of s[start : end + 1] into self.results.
+    def split_string(self, start, end, s, list_under_construction):
+        if start == len(s):
+            self.results.append(list_under_construction)        
+        curr = ""
+        for i in range(start, start + 2):
+            if i > end:
+                break
+            curr += s[i]            
+            self.split_string(i + 1, end, s, list_under_construction + [curr])
