@@ -96,3 +96,58 @@ class Solution:
                 break
             curr += s[i]            
             self.split_string(i + 1, end, s, list_under_construction + [curr])
+            
+            
+# My solution based on the description of a Jiuzhang.com's student. It uses DP without DFS and is calculated iteratively.
+# We only need to keep record of 2 arrays: 1 for the s[i + 1:], the other for s[i + 2:].
+# The split strings for s[i:] can be constructed depending on only these 2.
+class Solution:
+    """
+    @param: : a string to be split
+    @return: all possible split string array
+    """
+    def splitString(self, s):
+        # write your code here
+        n = len(s)
+        next_inds_split_strings = [[], []]
+        result = [[]]
+        for i in range(n - 1, -1, -1):
+            if not next_inds_split_strings[1]:
+                next_inds_split_strings[1].append([s[i]])
+                result = list(next_inds_split_strings[1])
+                continue
+            if not next_inds_split_strings[0]:
+                next_inds_split_strings[0].append([s[i : i + 2]])
+                next_inds_split_strings[0].append([s[i], s[i + 1]])
+                result = list(next_inds_split_strings[0])
+                continue
+            result = []
+            for succeeding_ind_split_str in next_inds_split_strings[0]:
+                result.append([s[i]] + succeeding_ind_split_str)
+            for second_succeeding_ind_split_str in next_inds_split_strings[1]:
+                result.append([s[i : i + 2]] + second_succeeding_ind_split_str)
+            next_inds_split_strings[0], next_inds_split_strings[1] = result, next_inds_split_strings[0]
+        
+        return result
+    
+# The original DP solution from jiuzhang.com student, which my solution above is based upon.
+class Solution:
+    """ Notice the similarities with fibonnaci
+        solving in iterative ways
+    """
+    def splitString(self, s):        
+        n = len(s)        
+        if n == 0: return [[]]        
+        if n == 1: return [[s[:]]]        
+        n_2, n_1 = [[]], [[s[n - 1]]]
+        for i in range(2, n + 1):
+            n_0 = []
+            for sub in n_2:
+                newSub = [s[n - i : n - i + 2]] + sub
+                n_0.append(newSub)
+            for sub in n_1:
+                newSub = [s[n-i]] + sub
+                n_0.append(newSub)                
+            n_2, n_1 = n_1, n_0
+            
+        return n_0
