@@ -83,9 +83,7 @@ class Solution:
     def splitString(self, s):
         # write your code here
         self.results = []
-        self.split_string(0, len(s) - 1, s, [])        
-        if self.results == []:
-            return [[]]
+        self.split_string(0, len(s) - 1, s, []) 
         return self.results
 
     # Adds all the split strings of s[start : end + 1] into self.results.
