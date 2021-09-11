@@ -131,6 +131,9 @@ class Solution:
         return result
     
 # The original DP solution from jiuzhang.com student, which my solution above is based upon.
+# This solution is much more desirable than my solution above, next time we should use something like it. Having
+# multiple statements in the beginning to handle edge cases is not a problem; compared to my solution above, it simplifies
+# the code logic.
 class Solution:
     """ Notice the similarities with fibonnaci
         solving in iterative ways
@@ -138,9 +141,12 @@ class Solution:
     def splitString(self, s):        
         n = len(s)        
         if n == 0: return [[]]        
-        if n == 1: return [[s[:]]]        
+        if n == 1: return [[s[:]]] 
+        # Yes, we can initialize n_2 with [[]], not [[s[n - 1]]]. This is a useful observation and can simplify the code.
         n_2, n_1 = [[]], [[s[n - 1]]]
         for i in range(2, n + 1):
+            # We don't need to initialize n_0 outside of the for loop; it is guaranteed to enter this loop
+            # and n_0 will always be initialized here.
             n_0 = []
             for sub in n_2:
                 newSub = [s[n - i : n - i + 2]] + sub
