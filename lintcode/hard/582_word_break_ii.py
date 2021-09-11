@@ -230,6 +230,8 @@ class Solution:
                 for interm_sentence in intermediate_sentences:
                     for cont_sentence in continuing_sentences:
                         composed_sentence = interm_sentence + " " + cont_sentence
+                        # If we don't filter here, there'd be duplicates. For example, first_part can be "lint", cont_sentence 
+                        # can be "co de"; first_part can also be "lint co", cont_sentence is "de". Both are valid and will result in duplicates.
                         if composed_sentence in accumulated_sentences:
                             continue
                         accumulated_sentences.append(composed_sentence)
