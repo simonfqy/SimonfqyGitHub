@@ -237,3 +237,62 @@ class Solution:
                         accumulated_sentences.append(composed_sentence)
         self.already_accumulated[(start, end)] = True
         return accumulated_sentences
+    
+    
+# This solution should be correct and it solves the time complexity issue in the previous solution, but doesn't work 
+# due to MEMORY limit exceeded. Since each DP cell holds a full list of sentences, it can have crazy high memory complexity.
+
+# Next time when designing solutions, keep in mind of the memory complexity and avoid coming up with such solutions. It is doomed to fail.
+class Solution:
+    """
+    @param: s: A string
+    @param: wordDict: A set of words.
+    @return: All possible sentences.
+    """
+    def wordBreak(self, s, wordDict):        
+        # write your code here
+        n = len(s)       
+        # all_valid_sentences[(i, j)] is the list of all sentences that can be broken from s[i : j + 1] 
+        all_valid_sentences = dict()
+        self.already_accumulated = dict()
+        for end in range(n):
+            for start in range(end, -1, -1):
+                # start and end indices are inclusive.
+                if (start, end) not in all_valid_sentences:
+                    all_valid_sentences[(start, end)] = []
+                substring = s[start : end + 1]
+                if substring in wordDict:                    
+                    all_valid_sentences[(start, end)].append(substring)
+
+        for end in range(n):
+            for start in range(end, -1, -1):
+                all_valid_sentences[(start, end)].extend(self.get_accumulated_sentences(all_valid_sentences, start, end))               
+
+        return all_valid_sentences[(0, n - 1)] 
+
+    # Gets all the valid sentences (excluding single word) that can be constructed from s[start : end + 1]
+    # It is done by aggregating the all_valid_sentences 2d array.
+    def get_accumulated_sentences(self, all_valid_sentences, start, end):
+        if start > end:
+            return []
+        accumulated_sentences = []
+        if (start, end) in self.already_accumulated:
+            return all_valid_sentences[(start, end)]
+        # Ensure that mid is always smaller than end.
+        for mid in range(start, end):
+            if not all_valid_sentences[(start, mid)]:
+                continue
+            first_part_sentences = all_valid_sentences[(start, mid)]
+            continuing_sentences = self.get_accumulated_sentences(all_valid_sentences, mid + 1, end)
+            for first_part in first_part_sentences:
+                # This filtering can prevent duplicate sentences. We only continue processing when the first_part is only
+                # a single word, not a sentence. In fact, we can skip processing before the recursive call, so that we only
+                # proceed to recursion when single words exist in the first_part_sentences. It solves the time complexity
+                # issue, but the next bottleneck is memory which we cannot solve.
+                if " " in first_part:
+                    continue
+                for cont_sentence in continuing_sentences:
+                    composed_sentence = first_part + " " + cont_sentence
+                    accumulated_sentences.append(composed_sentence)
+        self.already_accumulated[(start, end)] = True
+        return accumulated_sentences
