@@ -31,3 +31,27 @@ class Solution:
                 palindromes.append([first_substring] + subsequent_palindromes)
         self.memo[(start, end)] = palindromes
         return palindromes
+    
+    
+# My own solution, uses DFS without memoization. A global variable stores all the lists of palindromes.
+class Solution:
+    """
+    @param: s: A string
+    @return: A list of lists of string
+    """
+    def partition(self, s):
+        # write your code here
+        self.palindromes = []
+        self.get_palindromes(s, 0, len(s), [])
+        return self.palindromes
+    
+    def get_palindromes(self, s, start, end, path_so_far):
+        if start >= end:
+            self.palindromes.append(path_so_far)
+            return
+        for i in range(start, end):
+            first_substring = s[start : i + 1]
+            if first_substring != first_substring[::-1]:
+                continue
+            # first_substring is a palindrome.
+            self.get_palindromes(s, i + 1, end, path_so_far + [first_substring])   
