@@ -20,6 +20,7 @@ class Solution:
         if (start, end) in self.memo:
             return self.memo[(start, end)]
         palindromes = []
+        # If we want to make "end" parameter also inclusive, simply change the below to range(start, end + 1)
         for i in range(start, end):
             first_substring = s[start : i + 1]
             if first_substring != first_substring[::-1]:
