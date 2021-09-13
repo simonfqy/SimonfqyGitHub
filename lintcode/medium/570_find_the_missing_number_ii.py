@@ -41,3 +41,30 @@ class Solution:
                     continue
                 self.memo[(start, end)].append([curr_num] + combo)
         return self.memo[(start, end)]
+    
+# Also my own solution, uses DFS without memoization. Uses a global variable to store the paths. Takes longer time, but correct.
+class Solution:
+    """
+    @param n: An integer
+    @param str1: a string with number from 1-n in random order and miss one number
+    @return: An integer
+    """
+    def findMissing2(self, n, str1):
+        # write your code here
+        self.path = []
+        self.find_missing(n, str1, 0, len(str1) - 1, [])
+        for i in range(1, n + 1):
+            if i not in self.path[0]:
+                return i
+    
+    def find_missing(self, n, str1, start, end, path_so_far):
+        if start > end:
+            self.path.append(path_so_far)
+            return
+        for i in range(start, end + 1):
+            curr_num = int(str1[start : i + 1])
+            if curr_num < 1 or curr_num > n:
+                break
+            if curr_num in path_so_far:
+                continue
+            self.find_missing(n, str1, i + 1, end, path_so_far + [curr_num])
