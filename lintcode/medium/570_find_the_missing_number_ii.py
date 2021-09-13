@@ -68,3 +68,51 @@ class Solution:
             if curr_num in path_so_far:
                 continue
             self.find_missing(n, str1, i + 1, end, path_so_far + [curr_num])
+            
+# Uses dynamic programming. This is my own solution, but it is borrowed from the solution in 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/14d82e0b741162f52c343e967e067be62869f4c3/lintcode/medium/680_split_string.py#L137.
+# It uses 2 transient variables to store the list of integers parsed for the prior digit and the digit prior to that one. It is because
+# n < 100, so any numbers contained in the list must be no more than 2 digits.
+class Solution:
+    """
+    @param n: An integer
+    @param str1: a string with number from 1-n in random order and miss one number
+    @return: An integer
+    """
+    def findMissing2(self, n, str1):
+        # write your code here
+        length = len(str1)
+        if length == 0:
+            return 1
+        if length == 1:
+            for i in range(1, n + 1):
+                if i != int(str1):
+                    return i
+        if length == 2:
+            a, b = int(str1[0]), int(str1[1])
+            for i in range(1, n + 1):
+                if i != a and i != b:
+                    return i
+        n_0, n_1 = [[]], [[int(str1[0])]]
+        for i in range(1, length):
+            n_2 = []
+            one_digit = int(str1[i])
+            two_digit = int(str1[i - 1 : i + 1]) 
+            for num_list in n_1:
+                if one_digit < 1 or one_digit > n:
+                    break
+                if one_digit in num_list:
+                    continue
+                n_2.append(num_list + [one_digit])
+            for num_list in n_0:
+                # one_digit == two_digit can filter out the situation where str1[i] is 0.
+                if one_digit == two_digit or two_digit < 1 or two_digit > n:
+                    break
+                if two_digit in num_list:
+                    continue
+                n_2.append(num_list + [two_digit])
+            n_0, n_1 = n_1, n_2
+        for j in range(1, n+1):
+            if j in n_2[0]:
+                continue
+            return j
