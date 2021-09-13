@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/136/
 '''
 
-# My own solution, uses memoized DFS.
+# My own solution, uses memoized DFS. I also verified that a DFS without memoization can still pass.
 class Solution:
     """
     @param: s: A string
