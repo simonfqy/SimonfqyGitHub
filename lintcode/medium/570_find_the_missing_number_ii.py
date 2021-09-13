@@ -116,3 +116,44 @@ class Solution:
             if j in n_2[0]:
                 continue
             return j
+        
+        
+# The answer from jiuzhang.com. Directly includes the find missing logic inside the recursive function
+# as the base case.
+class Solution:
+    """
+    @param n: An integer
+    @param str1: a string with number from 1-n in random order and miss one number
+    @return: An integer
+    """
+    def findMissing2(self, n, str1):
+        # write your code here
+        obtained = [False] * (n + 1)
+        return self.find_missing(n, str1, 0, obtained)
+
+    def find_missing(self, n, str1, start_ind, obtained):
+        if start_ind >= len(str1):
+            results = []
+            for i in range(1, n + 1):
+                if not obtained[i]:
+                    results.append(i)
+            if len(results) == 1:
+                return results[0]
+            return -1
+        
+        if str1[start_ind] == '0':
+            return -1
+        
+        for length in range(1, 3):
+            # Here we don't need to check for start_ind + length <= len(str1), because when
+            # it doesn't satisfy this requirement, str1[start_ind : start_ind + length] will
+            # simply return the last few characters in str1 and not throw errors.
+            num = int(str1[start_ind : start_ind + length])
+            if num < 1 or num > n or obtained[num]:
+                continue
+            obtained[num] = True
+            res = self.find_missing(n, str1, start_ind + length, obtained)
+            if res != -1:
+                return res
+            obtained[num] = False
+        return -1
