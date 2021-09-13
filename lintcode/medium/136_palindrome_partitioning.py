@@ -57,7 +57,7 @@ class Solution:
             self.get_palindromes(s, i + 1, end, path_so_far + [first_substring])   
             
             
-# My own dynamic programming solution, iterative The time and memory costs are quite high, but passes.
+# My own dynamic programming solution, iterative. The time and memory costs are quite high, but passes.
 class Solution:
     """
     @param: s: A string
