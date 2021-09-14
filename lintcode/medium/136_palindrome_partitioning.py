@@ -54,40 +54,8 @@ class Solution:
             if first_substring != first_substring[::-1]:
                 continue
             # first_substring is a palindrome.
-            self.get_palindromes(s, i + 1, end, path_so_far + [first_substring])   
-            
-            
-# My own dynamic programming solution, iterative. The time and memory costs are quite high, but passes.
-class Solution:
-    """
-    @param: s: A string
-    @return: A list of lists of string
-    """
-    def partition(self, s):
-        # write your code here
-        if s == "":
-            return [[]]
-        dp = dict()
-        n = len(s)
-        for i in range(n):
-            dp[(i, i)] = [[s[i]]]
-        for i in range(n - 1, -1, -1):
-            for j in range(i + 1, n):
-                if (i, j) not in dp:
-                    dp[(i, j)] = []
-                i_to_j = s[i : j + 1]
-                # We have to consider the case where s[i : j + 1] itself is a whole palindromic string,
-                # which cannot be captured by k below.
-                if i_to_j == i_to_j[::-1]:
-                    dp[(i, j)].append([i_to_j])
-                for k in range(i, j):
-                    substr = s[k + 1 : j + 1]
-                    if substr != substr[::-1]:
-                        continue
-                    for prev_pal in dp[(i, k)]:
-                        dp[(i, j)].append(prev_pal + [substr])
-        return dp[(0, n - 1)]
-    
+            self.get_palindromes(s, i + 1, end, path_so_far + [first_substring])               
+              
     
 # This solution is from jiuzhang.com, it is similar to my solution above, but uses memoization effectively.
 class Solution:
@@ -127,3 +95,35 @@ class Solution:
                 continue
             curr_word = s[start : j + 1]
             self.add_partitions(s, j + 1, end, partitions_so_far + [curr_word])
+            
+            
+# My own dynamic programming solution, iterative. The time and memory costs are quite high, but passes.
+class Solution:
+    """
+    @param: s: A string
+    @return: A list of lists of string
+    """
+    def partition(self, s):
+        # write your code here
+        if s == "":
+            return [[]]
+        dp = dict()
+        n = len(s)
+        for i in range(n):
+            dp[(i, i)] = [[s[i]]]
+        for i in range(n - 1, -1, -1):
+            for j in range(i + 1, n):
+                if (i, j) not in dp:
+                    dp[(i, j)] = []
+                i_to_j = s[i : j + 1]
+                # We have to consider the case where s[i : j + 1] itself is a whole palindromic string,
+                # which cannot be captured by k below.
+                if i_to_j == i_to_j[::-1]:
+                    dp[(i, j)].append([i_to_j])
+                for k in range(i, j):
+                    substr = s[k + 1 : j + 1]
+                    if substr != substr[::-1]:
+                        continue
+                    for prev_pal in dp[(i, k)]:
+                        dp[(i, j)].append(prev_pal + [substr])
+        return dp[(0, n - 1)]
