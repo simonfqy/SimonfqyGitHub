@@ -87,3 +87,43 @@ class Solution:
                     for prev_pal in dp[(i, k)]:
                         dp[(i, j)].append(prev_pal + [substr])
         return dp[(0, n - 1)]
+    
+    
+# This solution is from jiuzhang.com, it is similar to my solution above, but uses memoization effectively.
+class Solution:
+    """
+    @param: s: A string
+    @return: A list of lists of string
+    """
+    def partition(self, s):
+        # write your code here
+        n = len(s)
+        self.results = []
+        self.is_palindrome = [[False] * n for _ in range(n)]
+        self.populate_palindrome_array(s, n)
+        self.add_partitions(s, 0, n - 1, [])
+        return self.results
+
+    def populate_palindrome_array(self, s, n):
+        for i in range(n):
+            self.is_palindrome[i][i] = True
+        for i in range(n - 1):
+            if s[i] == s[i + 1]:
+                self.is_palindrome[i][i + 1] = True
+
+        # This order is important. If we start i from 1, it will cause issues, because
+        # we won't let the interval (i, j) gradually expand. There will be missed values [k][m] between [i][j] if
+        # we increase i from 1.
+        for i in range(n - 3, -1, -1):
+            for j in range(i + 2, n):
+                self.is_palindrome[i][j] = self.is_palindrome[i + 1][j - 1] and s[i] == s[j]
+    
+    def add_partitions(self, s, start, end, partitions_so_far):
+        if start > end:
+            self.results.append(partitions_so_far)
+            return
+        for j in range(start, end + 1):
+            if not self.is_palindrome[start][j]:
+                continue
+            curr_word = s[start : j + 1]
+            self.add_partitions(s, j + 1, end, partitions_so_far + [curr_word])
