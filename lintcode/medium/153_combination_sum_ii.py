@@ -1,0 +1,30 @@
+'''
+Link: https://www.lintcode.com/problem/153/
+'''
+
+# My own solution. Use a global variable to store the combinations.
+class Solution:
+    """
+    @param num: Given the candidate numbers
+    @param target: Given the target number
+    @return: All the combinations that sum to target
+    """
+    def combinationSum2(self, num, target):
+        # write your code here
+        num = sorted(num)
+        n = len(num)
+        self.combinations = []
+        self.get_combinations(num, 0, n - 1, target, [])
+        return self.combinations
+
+    def get_combinations(self, num, start_ind, end_ind, target, combination_so_far):
+        if sum(combination_so_far) == target:
+            if combination_so_far not in self.combinations:
+                self.combinations.append(combination_so_far)
+            return
+        for i in range(start_ind, end_ind + 1):
+            this_num = num[i]
+            if this_num + sum(combination_so_far) > target:
+                # break instead of continue, because the num list is sorted and the next element will not be smaller.
+                break
+            self.get_combinations(num, i + 1, end_ind, target, combination_so_far + [this_num])
