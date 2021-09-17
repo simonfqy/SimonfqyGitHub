@@ -90,5 +90,5 @@ class Solution:
                 continue
             if num[i] > target:
                 break
-            # Target is reduced in the next recursion level.
+            # Target is updated in the next recursion level.
             self.get_combinations(num, i + 1, end_ind, target - num[i], combination_so_far + [num[i]], combinations)
