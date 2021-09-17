@@ -62,3 +62,33 @@ class Solution:
                     continue
                 combinations.append(complete_combo)
         return combinations
+    
+    
+# Solution from jiuzhang.com, I modified it slightly. Here we have a couple small optimizations
+# compared to my solutions above.
+class Solution:
+    """
+    @param num: Given the candidate numbers
+    @param target: Given the target number
+    @return: All the combinations that sum to target
+    """
+    def combinationSum2(self, num, target):
+        # write your code here
+        num = sorted(num)
+        n = len(num)
+        combinations = []
+        self.get_combinations(num, 0, n - 1, target, [], combinations)
+        return combinations
+
+    def get_combinations(self, num, start_ind, end_ind, target, combination_so_far, combinations):
+        if target == 0:
+            combinations.append(combination_so_far)
+            return
+        for i in range(start_ind, end_ind + 1):
+            # Avoid having duplicate combinations in the final result. Hence we don't need the check for combination in combination_list.
+            if i > start_ind and num[i] == num[i - 1]:
+                continue
+            if num[i] > target:
+                break
+            # Target is reduced in the next recursion level.
+            self.get_combinations(num, i + 1, end_ind, target - num[i], combination_so_far + [num[i]], combinations)
