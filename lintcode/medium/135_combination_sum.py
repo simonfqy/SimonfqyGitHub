@@ -24,6 +24,7 @@ class Solution:
             curr_num = candidates[i]
             if curr_num > target:
                 break
+            # Skip duplicate elements to avoid having duplicate combinations in the end.
             if i > start and curr_num == candidates[i - 1]:
                 continue
             self.helper(candidates, i, end, target - curr_num, combo_so_far + [curr_num], combos)
