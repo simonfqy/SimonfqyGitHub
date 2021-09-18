@@ -3,6 +3,9 @@ https://www.lintcode.com/problem/135/
 '''
 
 # My own solution, recursive DFS.
+# Time complexity: O(n^(target/min)), where n is the size of candidates, min is the smallest number among them. In each satisfying combination, each element
+# has n choices, while there are at most target/min elements in each combination, so we have O(n^(target/min))。
+# Space complexity: also O(n^(target/min)), because there are at most n^(target/min) distinct combinations in the list which stores the satisfying combinations.
 class Solution:
     """
     @param candidates: A list of integers
