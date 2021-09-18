@@ -98,6 +98,8 @@ class Solution:
             k_1 = []
             for prev_combo in k_0:
                 largest_val = prev_combo[-1]
+                if len(prev_combo) + n - largest_val < k:
+                    continue
                 for next_val in range(largest_val + 1, n + 1):
                     k_1.append(prev_combo + [next_val])                
             k_0 = list(k_1)
