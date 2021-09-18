@@ -72,3 +72,30 @@ class Solution:
                 combinations.append([i] + combo)
         self.memo[(start, k)] = combinations
         return combinations
+    
+    
+# Using DP.
+class Solution:
+    """
+    @param n: Given the range of numbers
+    @param k: Given the numbers of combinations
+    @return: All the combinations of k numbers out of 1..n
+    """
+    def combine(self, n, k):
+        # write your code here
+        if k == 0:
+            return [[]]
+        # k_0 represents the "previous k", k_1 represents the "current k".
+        k_0, k_1 = [], []
+        for i in range(1, n + 1):
+            k_0.append([i])
+        if k == 1:
+            return k_0
+        for _ in range(2, k + 1):
+            k_1 = []
+            for prev_combo in k_0:
+                largest_val = prev_combo[-1]
+                for next_val in range(largest_val + 1, n + 1):
+                    k_1.append(prev_combo + [next_val])                
+            k_0 = list(k_1)
+        return k_1
