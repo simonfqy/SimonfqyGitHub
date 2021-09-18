@@ -26,6 +26,27 @@ class Solution:
             if i > curr_ind and nums[i] == nums[i - 1]:
                 continue
             self.get_subset_list(nums, i + 1, prefix + [nums[i]], subset_list)
+      
+    
+# My own solution after 2 years. Similar to the one above, but more concise.
+class Solution:
+    """
+    @param nums: A set of numbers.
+    @return: A list of lists. All valid subsets.
+    """
+    def subsetsWithDup(self, nums):
+        # write your code here
+        self.results = [[]]
+        self.helper(sorted(nums), 0, [])
+        return self.results
+        
+    def helper(self, nums, start, subset_so_far):
+        for i in range(start, len(nums)):
+            if i > start and nums[i] == nums[i - 1]:
+                continue
+            subsets = subset_so_far + [nums[i]]
+            self.helper(nums, i + 1, subsets)
+            self.results.append(subsets)
             
          
 # An iterative solution.
