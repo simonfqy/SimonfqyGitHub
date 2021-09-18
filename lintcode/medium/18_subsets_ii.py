@@ -44,9 +44,9 @@ class Solution:
         for i in range(start, len(nums)):
             if i > start and nums[i] == nums[i - 1]:
                 continue
-            subsets = subset_so_far + [nums[i]]
-            self.helper(nums, i + 1, subsets)
-            self.results.append(subsets)
+            subset = subset_so_far + [nums[i]]
+            self.helper(nums, i + 1, subset)
+            self.results.append(subset)
             
          
 # An iterative solution.
