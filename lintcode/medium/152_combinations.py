@@ -21,6 +21,9 @@ class Solution:
             combinations.append(combo_so_far)
             return
         for i in range(start, n + 1):
+            # Slight optimization, abandon the branches whose combination won't reach size k.
+            if len(combo_so_far) + n + 1 - i < k:
+                continue
             self.get_combinations(i + 1, n, k, combo_so_far + [i], combinations)
             
             
