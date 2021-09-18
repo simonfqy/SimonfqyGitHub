@@ -94,3 +94,39 @@ class Solution:
 
         # Select the current start element
         self.helper(candidates, start, target - candidates[start], results, combo_so_far + [candidates[start]])
+        
+        
+# Solution from a student on jiuzhang.com. Uses BFS, not DFS.
+from collections import deque
+class Solution:
+    """
+    @param candidates: A list of integers
+    @param target: An integer
+    @return: A list of lists of integers
+    """
+    def combinationSum(self, candidates, target):
+        candidates.sort()
+        results = []
+        self.bfs(candidates, target, results)
+        return results
+        
+    def bfs(self, candidates, target, results):
+        q = deque([])
+        for i in range(len(candidates)):
+            # 去重
+            if i > 0 and candidates[i] == candidates[i - 1]:
+                continue
+            q.append([candidates[i]])
+            
+        while q:
+            tmp = q.popleft()
+            if sum(tmp) == target:
+                results.append(tmp)
+            for i in range(len(candidates)):
+                # 去重 && 同时去掉比小于当前遍历的最后一个（也是最大）值，只取大于等于的那些
+                if i > 0 and candidates[i] == candidates[i - 1] or candidates[i] < tmp[-1]:
+                    continue
+                if sum(tmp) + candidates[i] <= target:
+                    list_in_q = tmp[:]
+                    list_in_q.append(candidates[i])
+                    q.append(list_in_q)
