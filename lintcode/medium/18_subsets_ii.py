@@ -70,8 +70,8 @@ class Solution:
         for i in range(len(nums)):
             for s in range(len(subsets)):
                 # index_of_last_added_element[s] is the index of the last element of subsets[s]. For example, consider nums is [1, 3, 3'], subsets[s] is [1],
-                # then when i == 2, we don't want nums[2], which is 3', to be used to construct subsets. Because nums[1] was already used to construct [1, 3]
-                # which is already in the subsets list. This way we can avoid duplication.
+                # then when i == 2, we don't want nums[2], which is 3', to be used to construct subset [1, 3'] and added to the subsets list. Because nums[1] 
+                # was already used to construct [1, 3] which is already in the subsets list. This way we can avoid duplication.
                 if i > 0 and nums[i] == nums[i - 1] and index_of_last_added_element[s] != i - 1:
                     continue
                 subsets.append(subsets[s] + [nums[i]])
