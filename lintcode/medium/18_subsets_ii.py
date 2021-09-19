@@ -64,16 +64,17 @@ class Solution:
     """
     def subsetsWithDup(self, nums):
         nums.sort()
+        index_of_last_added_element = [-1]
         subsets = [[]]
-        indexes = [-1]  # 记录subsets中每个集合结尾元素的下标
         
         for i in range(len(nums)):
-            size = len(subsets)
-            for s in range(size):
-                if i > 0 and nums[i] == nums[i-1] and indexes[s] != i-1:
-                    continue  # 去重，如果有重复数字出现，只有前上一个数字选了才能选当前数字
-                subsets.append(list(subsets[s]))
-                subsets[-1].append(nums[i])
-                indexes.append(i)
+            for s in range(len(subsets)):
+                # index_of_last_added_element[s] is the index of the last element of subsets[s]. For example, consider nums is [1, 3, 3'], subsets[s] is [1],
+                # then when i == 2, we don't want nums[2], which is 3', to be used to construct subsets. Because nums[1] was already used to construct [1, 3]
+                # which is already in the subsets list. This way we can avoid duplication.
+                if i > 0 and nums[i] == nums[i - 1] and index_of_last_added_element[s] != i - 1:
+                    continue
+                subsets.append(subsets[s] + [nums[i]])
+                index_of_last_added_element.append(i)
         
         return subsets
