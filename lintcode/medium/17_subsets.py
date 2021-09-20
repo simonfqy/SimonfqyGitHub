@@ -134,6 +134,10 @@ class Solution:
     
 # Iterative BFS solution. Similar to 
 # https://github.com/simonfqy/SimonfqyGitHub/blob/238d3ab05e972ca9a0d5f853218a170c3a770477/lintcode/medium/18_subsets_ii.py#L59.
+# This solution is less generic than the BFS solution above, but more succinct. It only uses one array, namely all_subsets, and
+# do not need to use a separate deque. The functionality of deque is accomplished by traversing through all_subsets. It is taking
+# advantage of the property that, all the subsets (including leaf or non-leaf nodes in the tree) should be added to the final list
+# and we don't need to pop them. So all_subsets only appends and never pops.
 class Solution:
     """
     @param nums: A set of numbers
