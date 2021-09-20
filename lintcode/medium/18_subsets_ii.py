@@ -67,7 +67,8 @@ class Solution:
         subsets = [[]]
         
         for i in range(len(nums)):
-            for s in range(len(subsets)):
+            size = len(subsets)
+            for s in range(size):
                 # index_of_last_added_element[s] is the index of the last element of subsets[s]. For example, consider nums is [1, 3, 3'], subsets[s] is [1],
                 # then when i == 2, we don't want nums[2], which is 3', to be used to construct subset [1, 3'] and added to the subsets list. Because nums[1] 
                 # was already used to construct [1, 3] which is already in the subsets list. This way we can avoid duplication.
