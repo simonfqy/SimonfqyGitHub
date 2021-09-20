@@ -48,10 +48,7 @@ class Solution:
     @return: A list of lists
     """
     def subsets(self, nums):
-        # write your code here
-        
-        if nums is None or len(nums) <= 0:
-            return [[]]
+        # write your code here  
         nums.sort()
         subset_list = []
         self.get_subset_list(nums, 0, [], subset_list)
@@ -71,9 +68,7 @@ class Solution:
     @return: A list of lists
     """
     def subsets(self, nums):
-        # write your code here        
-        if nums is None or len(nums) <= 0:
-            return [[]]
+        # write your code here  
         nums.sort()
         subset_list = []
         self.get_subset_list(nums, 0, [], subset_list)
