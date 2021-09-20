@@ -77,3 +77,29 @@ class Solution:
                 index_of_last_added_element.append(i)
         
         return subsets
+    
+    
+# My own solution, similar to 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/a8b3ea4391edff26add90f19faf5613e0a74d8cb/lintcode/medium/17_subsets.py#L65.
+class Solution:
+    """
+    @param nums: A set of numbers.
+    @return: A list of lists. All valid subsets.
+    """
+    def subsetsWithDup(self, nums):
+        self.subsets = []
+        self.helper(sorted(nums), 0, [], -1)
+        return self.subsets
+        
+    def helper(self, nums, start, subset_so_far, last_element_ind):
+        if start >= len(nums):
+            self.subsets.append(subset_so_far)
+            return
+        # Don't include the current element
+        self.helper(nums, start + 1, subset_so_far, last_element_ind)
+        # Similar to https://github.com/simonfqy/SimonfqyGitHub/blob/1e7bd0f02fdd501d0fb4d3655202d7deef2924d3/lintcode/medium/18_subsets_ii.py#L74,
+        # filters out the duplicate entries.
+        if start > 0 and nums[start] == nums[start - 1] and last_element_ind != start - 1:
+            return
+        # Include the current element 
+        self.helper(nums, start + 1, subset_so_far + [nums[start]], start)
