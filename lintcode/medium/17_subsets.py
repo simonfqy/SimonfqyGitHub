@@ -136,3 +136,22 @@ class Solution:
                     subset.append(nums[j])
             result.append(subset)
         return result
+    
+    
+# Iterative BFS solution. Similar to 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/238d3ab05e972ca9a0d5f853218a170c3a770477/lintcode/medium/18_subsets_ii.py#L59.
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        # write your code here  
+        all_subsets = [[]]
+        nums.sort()
+        for i in range(len(nums)):
+            size = len(all_subsets)
+            for s in range(size):
+                subset = all_subsets[s]
+                all_subsets.append(subset + [nums[i]])
+        return all_subsets  
