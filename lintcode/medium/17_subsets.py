@@ -92,22 +92,17 @@ class Solution:
     @return: A list of lists
     """
     def subsets(self, nums):
-        # write your code here        
-        if nums is None or len(nums) <= 0:
-            return [[]]
-        nums.sort()
+        # write your code here  
         queue = deque([[]])
-        return self.get_subset_list(nums, queue)
+        return self.get_subset_list(sorted(nums), queue)
     
     def get_subset_list(self, nums, queue):
         subset_list = []
         while queue:
-            subset = queue.popleft()
-            if len(subset) > 0:
-                largest_num = subset[-1]
+            subset = queue.popleft()            
             subset_list.append(subset)
             for number in nums:
-                if len(subset) > 0 and number <= largest_num:
+                if subset and number <= subset[-1]:
                     continue
                 queue.append(subset + [number])
         return subset_list
