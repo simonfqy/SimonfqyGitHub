@@ -92,8 +92,7 @@ class Solution:
     @return: A list of lists
     """
     def subsets(self, nums):
-        # write your code here
-        
+        # write your code here        
         if nums is None or len(nums) <= 0:
             return [[]]
         nums.sort()
