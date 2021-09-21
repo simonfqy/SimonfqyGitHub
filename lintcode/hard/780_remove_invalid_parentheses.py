@@ -2,6 +2,8 @@
 Link: https://www.lintcode.com/problem/780/
 '''
 
+# My own solution. It is very slow, we need to use memoization to improve its performance. When we use prefixes in the recursive
+# function parameters, we CANNOT use memoization, otherwise we'll have errors!
 class Solution:
     """
     @param s: The input string
@@ -28,8 +30,7 @@ class Solution:
                 valid_strings.update(self.get_longest_valid_strings(s, start + 1, prefix + s[start], left_minus_right_count - 1))
         else:
             valid_strings.update(self.get_longest_valid_strings(s, start + 1, prefix + s[start], left_minus_right_count))
-        if len(valid_strings) == 0:
-            self.memo[start] = [""]
+        if not valid_strings:            
             return [""]
         max_length = max([len(string) for string in valid_strings])
         longest_valid_strings = [string for string in valid_strings if len(string) == max_length]
