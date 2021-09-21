@@ -107,6 +107,28 @@ class Solution:
                 queue.append(subset + [number])
         return subset_list
     
+    
+# This solution is translated from the Java solution in jiuzhang.com. It is similar to the BFS solution
+# above, but uses the property that all the internal nodes of the tree should be added to the list of subsets
+# too, hence we can have a list to perform both the role of the queue and contain all the subsets.
+class Solution:
+    """
+    @param nums: A set of numbers
+    @return: A list of lists
+    """
+    def subsets(self, nums):
+        all_subsets = [[]]
+        index = 0
+        nums.sort()
+        while index < len(all_subsets):
+            subset = all_subsets[index]
+            index += 1
+            for number in nums:
+                if subset and subset[-1] >= number:
+                    continue
+                all_subsets.append(subset + [number])
+
+        return all_subsets    
 
 # Solution from Jiuzhang.com. Makes use of bitwise operation. Does not apply to subsets II, in which duplicate
 # elements exist.
