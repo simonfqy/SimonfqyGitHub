@@ -18,6 +18,10 @@ class Solution:
         return subset_list
         
     # Recursion. Uses DFS all the way to the bottom.
+    # For this solution, we have to use prefix. If we don't use prefix but let the helper function directly return 
+    # the list of subsets from a list of nums[start:], we'll have duplicate entries. For example, consider nums = [1, 2, 8],
+    # the subset [8] will appear multiple times when we return subsets from sublists nums[i:], and we have to filter them out,
+    # which is not as good as preventing them in the first place.
     def get_subset_list(self, numbers, prefix):
         if len(numbers) <= 0:
             return None
@@ -41,7 +45,7 @@ class Solution:
             subset_list.extend(self.get_subset_list(numbers[i+1:], prefix_and_this_value_list))
         return subset_list
 
-# Same idea, but better, more succinct solution.
+# Same idea, but better, more succinct solution. Uses traversal rather than divide-and-conquer.
 class Solution:
     """
     @param nums: A set of numbers
