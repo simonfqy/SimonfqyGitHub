@@ -104,3 +104,62 @@ class Solution:
             return
         # Include the current element 
         self.helper(nums, start + 1, subset_so_far + [nums[start]], start)
+        
+# My own solution, using the standard BFS (with a queue).
+from collections import deque
+class Solution:
+    """
+    @param nums: A set of numbers.
+    @return: A list of lists. All valid subsets.
+    """
+    def subsetsWithDup(self, nums):
+        queue = deque([([], -1)])
+        nums.sort()
+        subset_list = []        
+        while queue:
+            subset, last_added_element_ind = queue.popleft()
+            subset_list.append(subset)
+            for i in range(len(nums)):       
+                # Skip those elements which we already traversed.
+                if i <= last_added_element_ind:
+                    continue                
+                # Get rid of duplicate results.
+                if i > 0 and nums[i] == nums[i - 1] and last_added_element_ind != i - 1:
+                    continue
+                queue.append((subset + [nums[i]], i))
+        return subset_list 
+    
+  
+# Also my own solution, a more complicated and less desirable version of the solution above.
+# Lesson learned: if we already have a last_added_element_ind variable to record the index, we don't need to compare values.
+from collections import deque
+class Solution:
+    """
+    @param nums: A set of numbers.
+    @return: A list of lists. All valid subsets.
+    """
+    def subsetsWithDup(self, nums):
+        queue = deque([([], -1)])
+        nums.sort()
+        subset_list = []        
+        while queue:
+            subset, last_added_element_ind = queue.popleft()
+            subset_list.append(subset)
+            for i in range(len(nums)):       
+                # Here we compare values. It does the work, but not optimal (see the solution above).
+                if subset and nums[i] < subset[-1]:
+                    continue
+                # If the last element of the subset equals the current value, we want to skip
+                # the current number if we'll definitely get duplicate results. If last_added_element_ind is i - 1,
+                # we might not get duplicate results (because we're adding an additional element with the same
+                # value to the subset). If it is not i - 1, we'll definitely get duplicate results.
+                # See https://github.com/simonfqy/SimonfqyGitHub/blob/238d3ab05e972ca9a0d5f853218a170c3a770477/lintcode/medium/18_subsets_ii.py#L75
+                if subset and nums[i] == subset[-1] and last_added_element_ind != i - 1:
+                    continue
+                # In the last if condition, we allow the case with nums[i] == subset[-1] and last_added_element_ind == i - 1.
+                # However, this may still lead to duplicates. 
+                # Get rid of duplicate results.
+                if i > 0 and nums[i] == nums[i - 1] and last_added_element_ind != i - 1:
+                    continue
+                queue.append((subset + [nums[i]], i))
+        return subset_list 
