@@ -222,6 +222,8 @@ class Solution:
                 if left > 0:
                     left -= 1
                 else:
+                    # If we have more right parentheses than left ones at a certain point, the right counter will be increased, and can't be offset if we
+                    # get left parentheses later.
                     right += 1
         return left, right    
     
