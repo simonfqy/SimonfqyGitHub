@@ -140,6 +140,41 @@ class Solution:
             max_length = len(string)
         return [string for string in valid_strings if len(string) == max_length]            
             
+        
+# Using BFS with 1 queue only. It is a slight variant of the one above. 
+from collections import deque
+class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
+    def removeInvalidParentheses(self, s):
+        max_length = 0 
+        queue = deque([("", 0, -1)])
+        valid_strings = set()
+        
+        while queue:
+            prefix, left_minus_right_count, char_ind = queue.popleft()
+            if char_ind == len(s) - 1:
+                if left_minus_right_count == 0 and len(prefix) >= max_length:
+                    valid_strings.add(prefix)
+                    max_length = len(prefix)
+                continue
+            curr_ind = char_ind + 1
+            if s[curr_ind] == "(":
+                # If s[curr_ind + 1:] all being ")" will not make the left_minus_right_count equal to 0, prune.
+                if len(s) - curr_ind - 1 >= left_minus_right_count + 1:
+                    queue.append((prefix + s[curr_ind], left_minus_right_count + 1, curr_ind))
+                queue.append((prefix, left_minus_right_count, curr_ind))
+            elif s[curr_ind] == ")":
+                if left_minus_right_count > 0:
+                    queue.append((prefix + s[curr_ind], left_minus_right_count - 1, curr_ind))
+                queue.append((prefix, left_minus_right_count, curr_ind))
+            else:
+                queue.append((prefix + s[curr_ind], left_minus_right_count, curr_ind))
+
+        return [string for string in valid_strings if len(string) == max_length]
+    
     
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
 class Solution:
