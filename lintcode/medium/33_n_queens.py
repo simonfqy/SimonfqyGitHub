@@ -31,9 +31,7 @@ class Solution:
         if len(positions) == n:
             self.solutions.append(positions)
             return
-        for i in range(n):  
-            if i < start_row:
-                continue          
+        for i in range(start_row, n):  
             for j in range(n):
                 if (i, j) in inadmissible_coordinates:
                     continue
