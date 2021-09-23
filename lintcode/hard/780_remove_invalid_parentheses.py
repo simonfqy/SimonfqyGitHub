@@ -176,6 +176,56 @@ class Solution:
         return [string for string in valid_strings if len(string) == max_length]
     
     
+# Answer from jiuzhang.com provided by tutor. Uses some tricks and is highly specialized for this individual question, not very generic.
+# The execution time is < 50% of the solution above, should be near optimal.
+class Solution:
+    def removeInvalidParentheses(self, s):
+        res = []
+        left, right = self._LeftRightCount(s)
+        self._dfs(s, left, right, 0, res)
+        return res       
+            
+    def _dfs(self, s, left, right, start, res):
+        # Prune the branch; optimize the performance.
+        if left < 0 or right < 0:
+            return
+
+        if left==0 and right==0:
+            if self._isvalid(s):
+                res.append(s)
+            return
+        
+        for i in range(start, len(s)):
+            # If the current s is not a valid string, and s[i] == s[i - 1], we can simply skip the
+            # current i. That's because removing s[i] won't result in a valid string. If s[i] is not "(" or ")",
+            # we shouldn't remove it. If it is "(" or ")", sooner or later we'll remove the characters in the "(" or ")" 
+            # streak leading to s[i] in the two "if" statements below.
+            if i > start and s[i] == s[i-1]:
+                continue
+            if s[i] == '(':
+                # Try removing s[i] and see whether the new string is valid. The recursive function call
+                # will also reset the starting index to i.
+                self._dfs(s[:i]+s[i+1:], left-1, right, i, res)
+            if s[i] == ')':
+                self._dfs(s[:i]+s[i+1:], left, right-1, i, res)
+    
+    def _isvalid(self, s):
+        left, right = self._LeftRightCount(s)
+        return left==0 and right==0
+    
+    def _LeftRightCount(self, s):
+        left = right = 0
+        for ch in s:
+            if ch == '(':
+                left += 1
+            if ch == ')':
+                if left > 0:
+                    left -= 1
+                else:
+                    right += 1
+        return left, right    
+    
+    
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
 class Solution:
     """
