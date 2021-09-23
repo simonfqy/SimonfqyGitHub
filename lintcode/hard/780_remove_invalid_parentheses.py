@@ -39,6 +39,40 @@ class Solution:
         return longest_valid_strings
     
     
+# Also my own solution. Similar to the one above, but using global variables and the helper function doesn't return values, so it is
+# traversal instead of divide-and-conquer. Time to execute is around 40% of the first solution, but still rather slow compared to other people's solutions.
+class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
+    def removeInvalidParentheses(self, s):
+        self.valid_strings = set()
+        self.max_length = 0
+        self.helper(s, 0, "", 0)
+        return [string for string in self.valid_strings if len(string) == self.max_length]
+
+
+    def helper(self, s, pos, prefix, left_minus_right_count):
+        if pos >= len(s):
+            if left_minus_right_count == 0:
+                if len(prefix) >= self.max_length:
+                    self.valid_strings.add(prefix)
+                    self.max_length = len(prefix)
+                return
+            self.valid_strings.add("")
+            return
+        if s[pos] == "(":
+            self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count + 1)
+            self.helper(s, pos + 1, prefix, left_minus_right_count)
+        elif s[pos] == ")":
+            if left_minus_right_count > 0:
+                self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count - 1)
+            self.helper(s, pos + 1, prefix, left_minus_right_count)
+        else:
+            self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count)  
+            
+    
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
 class Solution:
     """
