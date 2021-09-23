@@ -231,7 +231,7 @@ class Solution:
         return left, right
     
     
-# The solution from a student of jiuzhang.com, I converted it to my own way.
+# The solution from a student of jiuzhang.com, I converted it to my own way. It is using BFS.
 from collections import deque
 class Solution:
     """
