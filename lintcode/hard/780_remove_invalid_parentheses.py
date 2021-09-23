@@ -179,53 +179,56 @@ class Solution:
 # Answer from jiuzhang.com provided by tutor. Uses some tricks and is highly specialized for this individual question, not very generic.
 # The execution time is < 50% of the solution above, should be near optimal.
 class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
     def removeInvalidParentheses(self, s):
-        res = []
-        left, right = self._LeftRightCount(s)
-        self._dfs(s, left, right, 0, res)
-        return res       
-            
-    def _dfs(self, s, left, right, start, res):
-        # Prune the branch; optimize the performance.
+        left, right = self.get_left_right_count(s)
+        results = []
+        self.dfs(s, 0, left, right, results)
+        return results
+        
+    def dfs(self, string, start, left, right, results):
         if left < 0 or right < 0:
             return
-
-        if left==0 and right==0:
-            if self._isvalid(s):
-                res.append(s)
+        
+        # The tricky part is, if we uncomment the line below and remove the call to 
+        # self.get_left_right_count() inside the if block, it will return wrong results.
+        # left, right = self.get_left_right_count(string)
+        if left == 0 and right == 0:
+            left, right = self.get_left_right_count(string)
+            if left == 0 and right == 0:
+                results.append(string)
             return
         
-        for i in range(start, len(s)):
-            # If the current s is not a valid string, and s[i] == s[i - 1], we can simply skip the
-            # current i. That's because removing s[i] won't result in a valid string. If s[i] is not "(" or ")",
+        for i in range(start, len(string)):
+            # If the current string is not a valid string, and string[i] == string[i - 1], we can simply skip the
+            # current i. That's because removing string[i] won't result in a valid string. If string[i] is not "(" or ")",
             # we shouldn't remove it. If it is "(" or ")", sooner or later we'll remove the characters in the "(" or ")" 
-            # streak leading to s[i] starting from the beginning of the streak, in the two "if" statements below.
-            if i > start and s[i] == s[i-1]:
+            # streak leading to string[i] starting from the beginning of the streak, in the two "if" statements below.
+            if i > start and string[i] == string[i - 1]:
                 continue
-            if s[i] == '(':
-                # Try removing s[i] and see whether the new string is valid. The recursive function call
+            if string[i] == "(":
+                # Try removing string[i] and see whether the new string is valid. The recursive function call
                 # will also reset the starting index to i.
-                self._dfs(s[:i]+s[i+1:], left-1, right, i, res)
-            if s[i] == ')':
-                self._dfs(s[:i]+s[i+1:], left, right-1, i, res)
-    
-    def _isvalid(self, s):
-        left, right = self._LeftRightCount(s)
-        return left==0 and right==0
-    
-    def _LeftRightCount(self, s):
-        left = right = 0
-        for ch in s:
-            if ch == '(':
+                self.dfs(string[:i] + string[i + 1:], i, left - 1, right, results)
+            elif string[i] == ")":
+                self.dfs(string[:i] + string[i + 1:], i, left, right - 1, results)        
+
+    def get_left_right_count(self, string):
+        left, right = 0, 0
+        for ch in string:
+            if ch == "(":
                 left += 1
-            if ch == ')':
+            elif ch == ")":
                 if left > 0:
                     left -= 1
                 else:
                     # If we have more right parentheses than left ones at a certain point, the right counter will be increased, and can't be offset if we
                     # get left parentheses later.
                     right += 1
-        return left, right    
+        return left, right
     
     
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
