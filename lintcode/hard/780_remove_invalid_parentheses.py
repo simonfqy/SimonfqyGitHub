@@ -102,7 +102,43 @@ class Solution:
                 self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count - 1)
             self.helper(s, pos + 1, prefix, left_minus_right_count)
         else:
-            self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count)             
+            self.helper(s, pos + 1, prefix + s[pos], left_minus_right_count)  
+            
+            
+# Using BFS with 2 queues. Time to execute is about the same as the one above.
+from collections import deque
+class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
+    def removeInvalidParentheses(self, s):
+        max_length = 0 
+        queue, queue_2 = deque([("", 0)]), deque([])
+        valid_strings = set()
+
+        for i in range(len(s)):
+            while queue:
+                prefix, left_minus_right_count = queue.popleft()
+                if s[i] == "(":
+                    # If s[i+1:] all being ")" will not make the left_minus_right_count equal to 0, prune.
+                    if len(s) - i - 1 >= left_minus_right_count + 1:
+                        queue_2.append((prefix + s[i], left_minus_right_count + 1))
+                    queue_2.append((prefix, left_minus_right_count))
+                elif s[i] == ")":
+                    if left_minus_right_count > 0:
+                        queue_2.append((prefix + s[i], left_minus_right_count - 1))
+                    queue_2.append((prefix, left_minus_right_count))
+                else:
+                    queue_2.append((prefix + s[i], left_minus_right_count))
+            queue, queue_2 = queue_2, queue
+        while queue:
+            string, left_minus_right_count = queue.popleft()
+            if left_minus_right_count != 0 or len(string) < max_length:
+                continue            
+            valid_strings.add(string)
+            max_length = len(string)
+        return [string for string in valid_strings if len(string) == max_length]            
             
     
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
