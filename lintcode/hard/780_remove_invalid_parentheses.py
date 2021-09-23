@@ -231,6 +231,54 @@ class Solution:
         return left, right
     
     
+# The solution from a student of jiuzhang.com, I converted it to my own way.
+from collections import deque
+class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
+    def removeInvalidParentheses(self, s):
+        results, visited = [], set([s])        
+        queue = deque([s])
+        should_stop = False
+        while queue:            
+            queue_size = len(queue)
+            for _ in range(queue_size):
+                string = queue.popleft()
+                if self.check_valid(string):
+                    should_stop = True
+                    results.append(string)
+                # If should_stop is True, it means some valid strings with the current length has already been found.
+                # There's no point in trying out shorter strings. Hence we break here.
+                if should_stop:
+                    break
+                for i in range(len(string)):
+                    # We don't need to remove string[i] if it is some other characters. Note that using "or" or "and" should be careful.
+                    # When I erroneously used "or", it produced a nasty bug.
+                    if string[i] != "(" and string[i] != ")":
+                        continue
+                    new_str = string[:i] + string[i + 1:]
+                    if new_str in visited:
+                        continue
+                    queue.append(new_str)
+                    visited.add(new_str)
+        if not results:
+            return [""]
+        return results
+        
+    def check_valid(self, s):
+        count = 0
+        for ch in s:
+            if ch == "(":
+                count += 1
+            elif ch == ")":
+                if count == 0:
+                    return False
+                count -= 1
+        return count == 0  
+    
+    
 # This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
 class Solution:
     """
