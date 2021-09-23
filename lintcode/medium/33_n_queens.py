@@ -2,7 +2,7 @@
 https://www.lintcode.com/problem/33/
 '''
 
-# My own solution. Should be correct, but time complexity is too high and cannot pass.
+# My own solution. DFS without memoization. Should be correct, but time complexity is too high and cannot pass.
 class Solution:
     """
     @param: n: The number of queens
