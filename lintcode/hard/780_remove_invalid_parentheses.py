@@ -37,3 +37,32 @@ class Solution:
         
         # self.memo[start] = longest_valid_strings
         return longest_valid_strings
+    
+    
+# This solution doesn't work. Putting here to serve as a reminder, recording negative findings too.
+class Solution:
+    """
+    @param s: The input string
+    @return: Return all possible results
+    """
+    def removeInvalidParentheses(self, s):
+        return self.helper(s, 0, "", 0)
+
+    def helper(self, s, start, prefix, left_minus_right_count):
+        if start >= len(s):
+            if left_minus_right_count == 0:
+                return [prefix]
+            return [""]
+        valid_strings = set()
+        for i in range(start, len(s)):
+            if s[i] == "(":
+                valid_strings.update(self.helper(s, i + 1, prefix + s[i], left_minus_right_count + 1))
+            elif s[i] == ")":
+                if left_minus_right_count == 0:                    
+                    continue
+                valid_strings.update(self.helper(s, i + 1, prefix + s[i], left_minus_right_count - 1))
+            else:
+                valid_strings.update(self.helper(s, i + 1, prefix + s[i], left_minus_right_count))
+                
+        max_len = max([len(string) for string in valid_strings])
+        return [string for string in valid_strings if len(string) == max_len]
