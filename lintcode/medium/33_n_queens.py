@@ -12,7 +12,7 @@ class Solution:
         # A list of list of coordinates. Each solution is a list of coordinates of all the queens.
         self.solutions = []
         self.queen_pos_inadmissible_entries = dict()
-        self.helper(n, [], -1, set())
+        self.helper(n, [], 0, set())
         output_strings = []
         for positions in self.solutions:
             this_solution = []
@@ -26,7 +26,6 @@ class Solution:
                 this_solution.append(this_row)            
             output_strings.append(list(this_solution))
         return output_strings
-
 
     def helper(self, n, positions, start_row, inadmissible_coordinates):
         if len(positions) == n:
