@@ -24,7 +24,7 @@ class Solution:
                     else:
                         this_row += "."
                 this_solution.append(this_row)            
-            output_strings.append(list(this_solution))
+            output_strings.append(this_solution)
         return output_strings
 
     def helper(self, n, positions, start_row, inadmissible_coordinates):
@@ -79,7 +79,7 @@ class Solution:
                     else:
                         this_row += "."
                 this_solution.append(this_row)            
-            output_strings.append(list(this_solution))
+            output_strings.append(this_solution)
         return output_strings
 
     # This function is the only place where we made the change.
