@@ -199,7 +199,7 @@ class Solution:
             # If the current s is not a valid string, and s[i] == s[i - 1], we can simply skip the
             # current i. That's because removing s[i] won't result in a valid string. If s[i] is not "(" or ")",
             # we shouldn't remove it. If it is "(" or ")", sooner or later we'll remove the characters in the "(" or ")" 
-            # streak leading to s[i] in the two "if" statements below.
+            # streak leading to s[i] starting from the beginning of the streak, in the two "if" statements below.
             if i > start and s[i] == s[i-1]:
                 continue
             if s[i] == '(':
