@@ -275,3 +275,47 @@ class Solution:
                 forbidden_positions.add((row + i, col - i))
         self.queen_pos_to_forbidden_positions[(row, col)] = forbidden_positions
         return forbidden_positions
+    
+    
+# DFS solution provided in jiuzhang.com. Takes advantage of the fact that we don't need to record the row index of each coordinate for queens,
+# and that we can use r - c == row - column or r + c == row + column to decide whether (row, column) is on the same diagonal line as (r, c).
+# With this solution we don't need to maintain sets of forbidden positions and we only need to store column indices, so it is lighter and more elegant.
+# The time complexity is not as good as maintaining forbidden position set, but still okay.
+class Solution:
+    """
+    @param: n: The number of queens
+    @return: All distinct solutions
+    """
+    def solveNQueens(self, n):
+        results = []
+        self.helper(n, [], results)
+        return results
+
+    def helper(self, n, col_list, results):
+        if len(col_list) == n:
+            results.append(self.draw_chess(n, col_list))
+            return
+        curr_row = len(col_list)
+        for j in range(n):
+            if not self.is_valid(curr_row, j, col_list):
+                continue
+            self.helper(n, col_list + [j], results)
+
+    def is_valid(self, row, column, col_list):
+        for r, c in enumerate(col_list):
+            if c == column:
+                return False
+            # Decides whether (row, column) is on the same diagonal line as (r, c)
+            if r - c == row - column or r + c == row + column:
+                return False
+        return True
+
+    def draw_chess(self, n, col_list):
+        this_solution = []
+        for col in col_list:
+            this_row = ""
+            for j in range(n):
+                char = "Q" if col == j else "."
+                this_row += char
+            this_solution.append(this_row)
+        return this_solution
