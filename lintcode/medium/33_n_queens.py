@@ -147,6 +147,29 @@ class Solution:
                 queue.append(queen_positions + [(curr_row, j)])
         return self.solutions
     
+    # NOTE: this is a slight improvement of the main function. Now we don't need to obtain the last_row from the queue itself,
+    # we can maintain a global variable to track the last_row. 
+    def solveNQueens2(self, n):
+        # Stores the list of list of coordinates.
+        queue = deque([[]])
+        self.queen_pos_to_forbidden_positions = dict()
+        self.solutions = []
+        last_row = -1
+        while queue:
+            size = len(queue)
+            for _ in range(size):
+                queen_positions = queue.popleft()
+                if len(queen_positions) == n:
+                    self.construct_solutions(queen_positions, n)
+                    continue                
+                curr_row = last_row + 1
+                for j in range(n):
+                    if not self.decide_whether_permissible_given_earlier_queens(n, curr_row, j, queen_positions):
+                        continue
+                    queue.append(queen_positions + [(curr_row, j)])
+            last_row += 1
+        return self.solutions
+    
     def construct_solutions(self, queen_positions, n):
         solution = []
         for queen_pos in queen_positions:
