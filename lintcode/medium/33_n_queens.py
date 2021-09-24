@@ -118,7 +118,7 @@ class Solution:
         self.queen_pos_inadmissible_entries[(row, col)] = coordinates
         return coordinates  
     
-# BFS with memoization. Faster than the approach above, but not as fast as DFS.   
+# BFS with memoization. Faster than the approach above, but not as fast as DFS. Though it uses vastly more memory than the solution above, it still passes.  
 from collections import deque
 class Solution:
     """
