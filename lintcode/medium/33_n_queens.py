@@ -116,7 +116,22 @@ class Solution:
             if row + j < n and j <= col:
                 coordinates.add((row + j, col - j))       
         self.queen_pos_inadmissible_entries[(row, col)] = coordinates
-        return coordinates  
+        return coordinates
+    
+    # This is another way to implement the function above. It uses the fact that we're traversing the chess board in a sequential
+    # order, so we only need to care about the case where row is greater than the row index of the provided queen. It can improve the performance.
+    def get_forbidden_positions_based_on_queen_pos(self, n, row, col):
+        if (row, col) in self.queen_pos_to_forbidden_positions:
+            return self.queen_pos_to_forbidden_positions[(row, col)]
+        forbidden_positions = set()
+        for i in range(n):
+            forbidden_positions.add((i, col))
+            if row + i < n and col + i < n:
+                forbidden_positions.add((row + i, col + i))
+            if row + i < n and col - i >= 0:
+                forbidden_positions.add((row + i, col - i))
+        self.queen_pos_to_forbidden_positions[(row, col)] = forbidden_positions
+        return forbidden_positions
     
     
 # BFS. It is among the slowest of all passing solutions (within last 2% of them).    
