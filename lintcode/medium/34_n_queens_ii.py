@@ -24,6 +24,20 @@ class Solution:
             updated_forbidden_pos = set(forbidden_positions)
             updated_forbidden_pos.update(self.get_forbidden_positions_based_on_queen_pos(n, current_row, j))
             self.helper(n, current_row + 1, queen_positions + [(current_row, j)], updated_forbidden_pos)
+            
+    # An alternative way. Instead of using traversal and increment a global counter, here we divide-and-conquer and let each
+    # recursion return a result.
+    def helper2(self, n, current_row, queen_positions, forbidden_positions):
+        if len(queen_positions) == n:
+            return 1
+        solution_count = 0
+        for j in range(n):
+            if (current_row, j) in forbidden_positions:
+                continue
+            updated_forbidden_pos = set(forbidden_positions)
+            updated_forbidden_pos.update(self.get_forbidden_positions_based_on_queen_pos(n, current_row, j))
+            solution_count += self.helper(n, current_row + 1, queen_positions + [(current_row, j)], updated_forbidden_pos)
+        return solution_count
 
     def get_forbidden_positions_based_on_queen_pos(self, n, row, col):
         if (row, col) in self.queen_pos_to_forbidden_positions:
