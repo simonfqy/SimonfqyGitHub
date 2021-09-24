@@ -118,7 +118,71 @@ class Solution:
         self.queen_pos_inadmissible_entries[(row, col)] = coordinates
         return coordinates  
     
-# BFS with memoization. Faster than the approach above, but not as fast as DFS. Though it uses vastly more memory than the solution above, it still passes.  
+    
+# BFS. It is among the slowest of all passing solutions (within last 2% of them).    
+from collections import deque
+class Solution:
+    """
+    @param: n: The number of queens
+    @return: All distinct solutions
+    """
+    def solveNQueens(self, n):
+        # Stores the list of list of coordinates.
+        queue = deque([[]])
+        self.queen_pos_to_forbidden_positions = dict()
+        self.solutions = []
+        while queue:
+            queen_positions = queue.popleft()
+            if len(queen_positions) == n:
+                self.construct_solutions(queen_positions, n)
+                continue
+            if queen_positions:
+                last_row = queen_positions[-1][0]
+            else:
+                last_row = -1
+            curr_row = last_row + 1
+            for j in range(n):
+                if not self.decide_whether_permissible_given_earlier_queens(n, curr_row, j, queen_positions):
+                    continue
+                queue.append(queen_positions + [(curr_row, j)])
+        return self.solutions
+    
+    def construct_solutions(self, queen_positions, n):
+        solution = []
+        for queen_pos in queen_positions:
+            this_row = ""
+            for j in range(n):
+                if queen_pos[1] == j:
+                    this_row += "Q"
+                else:
+                    this_row += "."
+            solution.append(this_row)
+           
+        self.solutions.append(solution)
+
+    def decide_whether_permissible_given_earlier_queens(self, n, row, col, queen_positions):
+        for queen_pos in queen_positions:
+            forbidden_positions = self.get_forbidden_positions_given_queen_pos(n, queen_pos[0], queen_pos[1])
+            if (row, col) in forbidden_positions:
+                return False
+        return True
+    
+    def get_forbidden_positions_given_queen_pos(self, n, row, col):
+        if (row, col) in self.queen_pos_to_forbidden_positions:
+            return self.queen_pos_to_forbidden_positions[(row, col)]
+        forbidden_positions = set()
+        for i in range(n):
+            forbidden_positions.add((i, col))
+            if row + i < n and col + i < n:
+                forbidden_positions.add((row + i, col + i))
+            if row + i < n and col - i >= 0:
+                forbidden_positions.add((row + i, col - i))
+        self.queen_pos_to_forbidden_positions[(row, col)] = forbidden_positions
+        return forbidden_positions
+    
+    
+# BFS with memoization. Faster than the approach above, but not as fast as DFS. Though it uses vastly more memory than the solution above 
+# (due to storing the set of forbidden positions associated to each (complete or incomplete) config of queen positions in the queue), it still passes.  
 from collections import deque
 class Solution:
     """
