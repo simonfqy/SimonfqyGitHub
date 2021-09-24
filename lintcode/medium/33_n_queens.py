@@ -116,4 +116,60 @@ class Solution:
             if row + j < n and j <= col:
                 coordinates.add((row + j, col - j))       
         self.queen_pos_inadmissible_entries[(row, col)] = coordinates
-        return coordinates    
+        return coordinates  
+    
+# BFS with memoization. Faster than the approach above, but not as fast as DFS.   
+from collections import deque
+class Solution:
+    """
+    @param: n: The number of queens
+    @return: All distinct solutions
+    """
+    def solveNQueens(self, n):
+        # Stores the list of list of coordinates.
+        queue = deque([([], set([]))])
+        self.queen_pos_to_forbidden_positions = dict()
+        self.solutions = []
+        while queue:
+            queen_positions, forbidden_positions = queue.popleft()
+            if len(queen_positions) == n:
+                self.construct_solutions(queen_positions, n)
+                continue
+            if queen_positions:
+                last_row = queen_positions[-1][0]
+            else:
+                last_row = -1
+            curr_row = last_row + 1
+            for j in range(n):
+                if (curr_row, j) in forbidden_positions:
+                    continue
+                updated_forbidden_positions = set(forbidden_positions)
+                updated_forbidden_positions.update(self.get_forbidden_positions_given_queen_pos(n, curr_row, j))
+                queue.append((queen_positions + [(curr_row, j)], updated_forbidden_positions))
+        return self.solutions
+    
+    def construct_solutions(self, queen_positions, n):
+        solution = []
+        for queen_pos in queen_positions:
+            this_row = ""
+            for j in range(n):
+                if queen_pos[1] == j:
+                    this_row += "Q"
+                else:
+                    this_row += "."
+            solution.append(this_row)
+           
+        self.solutions.append(solution)
+    
+    def get_forbidden_positions_given_queen_pos(self, n, row, col):
+        if (row, col) in self.queen_pos_to_forbidden_positions:
+            return self.queen_pos_to_forbidden_positions[(row, col)]
+        forbidden_positions = set()
+        for i in range(n):
+            forbidden_positions.add((i, col))
+            if row + i < n and col + i < n:
+                forbidden_positions.add((row + i, col + i))
+            if row + i < n and col - i >= 0:
+                forbidden_positions.add((row + i, col - i))
+        self.queen_pos_to_forbidden_positions[(row, col)] = forbidden_positions
+        return forbidden_positions
