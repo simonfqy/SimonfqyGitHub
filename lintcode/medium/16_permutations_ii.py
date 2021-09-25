@@ -195,3 +195,86 @@ class Solution:
             nums[start], nums[end] = nums[end], nums[start]
             start += 1
             end -= 1
+            
+            
+# Using DFS. Conceptually similar to the solutions I provided above, but we're also including a list of indices to de-duplicate.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of unique permutations
+    """
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        results = []
+        self.helper(sorted(nums), [], [], results)
+        return results
+
+    def helper(self, nums, perm, perm_indices, results):
+        if len(perm) == len(nums):
+            results.append(perm)
+            return
+        visited = set()
+        for i in range(len(nums)):
+            if i in perm_indices:
+                continue
+            # This is not a very elegant way of deduplication. A better way is to decide using the following condition:
+            # i > 0 and nums[i] == nums[i - 1] and i - 1 not in perm_indices.
+            if tuple(perm + [nums[i]]) in visited:
+                continue
+            visited.add(tuple(perm + [nums[i]]))
+            self.helper(nums, perm + [nums[i]], perm_indices + [i], results)
+            
+# DFS using perm_indices to deduplicate. Similar to the one above but more elegant.
+from typing import (
+    List,
+)
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of unique permutations
+    """
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        results = []
+        self.helper(sorted(nums), [], [], results)
+        return results
+
+    def helper(self, nums, perm, perm_indices, results):
+        if len(perm) == len(nums):
+            results.append(perm)
+            return
+        for i in range(len(nums)):
+            if i in perm_indices:
+                continue
+            if i > 0 and nums[i] == nums[i - 1] and i - 1 not in perm_indices:
+                continue
+            self.helper(nums, perm + [nums[i]], perm_indices + [i], results)            
+            
+            
+# BFS. Also uses a set to store the visited combinations. Note the place where it is used and the way we traverse the queue. 
+# Likewise, we actually don't need to use the visited set to deduplicate. Simply using i > 0 and nums[i] == nums[i - 1] and i - 1 not in perm_indices
+# condition will work.
+from collections import deque
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of unique permutations
+    """
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        results = []
+        queue = deque([([], [])])        
+        while queue:
+            size = len(queue)
+            visited = set()
+            for _ in range(size):
+                perm, perm_indices = queue.popleft()
+                if len(perm) == len(nums):
+                    results.append(perm)
+                    break
+                for i in range(len(nums)):
+                    if i in perm_indices:
+                        continue
+                    if tuple(perm + [nums[i]]) in visited:                    
+                        continue
+                    visited.add(tuple(perm + [nums[i]]))
+                    queue.append((perm + [nums[i]], perm_indices + [i])) 
+        return results
