@@ -35,7 +35,7 @@ class Solution:
             right -= 1
             
             
-# My own solution, using DFS.
+# My own solution, using recursion.
 class Solution:
     """
     @param nums: A list of integers
