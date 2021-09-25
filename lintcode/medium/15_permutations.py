@@ -140,3 +140,40 @@ class Solution:
                     tmp.append(r[:j] + [n] + r[j:])
             results = tmp
         return results
+    
+# This solution is from jiuzhang.com. It uses stacks for an iterative solution.    
+class Solution:
+    """
+    @param: nums: A list of integers.
+    @return: A list of permutations.
+    """
+    def permute(self, nums):
+        permutation = []
+        permutations = []
+        visited = set()
+
+        stack = [(0, 0)]
+        while stack:
+            node, count = stack.pop()
+
+            if count == 0:
+                if len(visited) == len(nums):
+                    permutations.append(list(permutation))
+                    continue
+                    
+                for i in range(len(nums)):
+                    if nums[i] in visited:
+                        continue
+                    stack.append((i, 2))
+                    stack.append((i + 1, 0))
+                    stack.append((i, 1))
+
+            if count == 1:
+                permutation.append(nums[node])
+                visited.add(nums[node])
+
+            if count == 2:
+                permutation.pop()
+                visited.remove(nums[node])
+
+        return permutations
