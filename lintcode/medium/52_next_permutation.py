@@ -62,4 +62,39 @@ class Solution:
     def get_larger(self, nums, start, number):
         for n in sorted(nums[start:]):
             if n > number:
-                return n            
+                return n     
+            
+# Essentially this is the same solution as the previous one. But here we start from the beginning of the array, not the end.
+# This solution is less succinct than the one above, we also need to handle the special case in the beginning.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers
+    """
+    def nextPermutation(self, nums):
+        # we need to handle the case where nums is already the largest possible permutation.
+        reverse_nums = sorted(nums)
+        reverse_nums.reverse()
+        if reverse_nums == nums:
+            return sorted(reverse_nums)
+        return self.get_next_perm(nums)
+
+    def get_next_perm(self, numbers):
+        if len(numbers) <= 1:
+            return numbers
+        suffix = numbers[1:]
+        max_suffix_permutation = sorted(suffix)
+        max_suffix_permutation.reverse()
+        if max_suffix_permutation != suffix:
+            return [numbers[0]] + self.get_next_perm(numbers[1:]) 
+        # max suffix permutation equals to suffix. We need to change the numbers[0].
+        larger_num = self.get_larger_num(numbers)
+        numbers.remove(larger_num)
+        return [larger_num] + sorted(numbers)
+    
+    def get_larger_num(self, numbers):
+        first_num = numbers[0]
+        for number in sorted(numbers):
+            if number > first_num:
+                return number
+        return first_num
