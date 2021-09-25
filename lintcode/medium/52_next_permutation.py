@@ -33,3 +33,32 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
+            
+            
+# My own solution, using DFS.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers
+    """
+    def nextPermutation(self, nums):
+        return self.get_next_perm(nums, len(nums) - 1, False)
+
+    def get_next_perm(self, nums, start_ind, local_maximum_found):        
+        if local_maximum_found:
+            next_larger = self.get_larger(nums, start_ind + 1, nums[start_ind])
+            prefix_numbers = nums[:start_ind] + [next_larger]
+            suffix_numbers = nums[start_ind:]
+            suffix_numbers.remove(next_larger)
+            return prefix_numbers + sorted(suffix_numbers)
+        if start_ind == 0:
+            return sorted(nums)
+        next_ind = start_ind - 1
+        # Don't forget the "return" keyword should be added at the beginning of this statement.
+        # Otherwise the function won't return anything.
+        return self.get_next_perm(nums, next_ind, nums[start_ind] > nums[next_ind])
+
+    def get_larger(self, nums, start, number):
+        for n in sorted(nums[start:]):
+            if n > number:
+                return n            
