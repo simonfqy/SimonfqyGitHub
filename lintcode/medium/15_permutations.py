@@ -120,3 +120,23 @@ class Solution:
                 if number in set(subset):
                     continue
                 stack.append(subset + [number])
+                
+                
+# This solution is from a student on jiuzhang.com.     
+# 每次看nums中的一个元素，对之前结果集的每一个permutation，在所有可能的插入点（N个）插入当前元素。
+# 比如nums是[1, 2, 3]，最初结果集是[[]]。看到1，结果集变为[[1]]，因为空list只有一个位置可以插入。 看到2，扩展为[[1, 2], [2, 1]，
+# 因为[1]有两个位置可以插入。 看到3, 扩展为[[3, 1, 2], [1, 3, 2], [1, 2, 3], [3, 2, 1], [2, 3, 1], [2, 1, 3]]，因为上面的两种排列各有3个插入点。
+class Solution:
+    """
+    @param: nums: A list of integers.
+    @return: A list of permutations.
+    """
+    def permute(self, nums):
+        results = [[]]
+        for i, n in enumerate(nums):
+            tmp = []
+            for r in results:
+                for j in range(0, i + 1):
+                    tmp.append(r[:j] + [n] + r[j:])
+            results = tmp
+        return results
