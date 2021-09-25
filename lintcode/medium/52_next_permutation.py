@@ -52,6 +52,7 @@ class Solution:
             suffix_numbers.remove(next_larger)
             return prefix_numbers + sorted(suffix_numbers)
         if start_ind == 0:
+            # The list is already the maximum permutation that can be achieved. Start all over again and return the smallest permutation as the next.
             return sorted(nums)
         next_ind = start_ind - 1
         # Don't forget the "return" keyword should be added at the beginning of this statement.
