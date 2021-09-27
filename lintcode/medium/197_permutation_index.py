@@ -48,3 +48,21 @@ class Solution:
             permutation *= len(A) - i - 1
             result += permutation * count_smaller
         return result + 1
+    
+    
+# My own solution. Uses recursion. Time complexity is O(n^2logn).
+import math
+class Solution:
+    """
+    @param A: An array of integers
+    @return: A long integer
+    """
+    def permutationIndex(self, A):
+        if len(A) == 0:
+            return 1
+        first_num_order = 0
+        for i, num in enumerate(sorted(A)):
+            if A[0] == num:
+                first_num_order = i
+                break
+        return first_num_order * math.factorial(len(A) - 1) + self.permutationIndex(A[1:])
