@@ -24,8 +24,7 @@ class Solution:
                 nums[i], nums[ind_start_reversal - 1] = nums[ind_start_reversal - 1], nums[i]
                 break
         self.reverse_list(nums, ind_start_reversal, len(nums) - 1)
-        return nums
-        
+        return nums        
         
     def reverse_list(self, nums, start, end):
         left, right = start, end
@@ -33,6 +32,40 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
+       
+    
+# Essentially the same solution as the one above. I wrote it after reading the solution above.
+# The advantage compared to solutions below is that, this solution has O(n) time complexity, while the ones below
+# involve sorting operations, hence O(nlogn) time complexity.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers
+    """
+    def nextPermutation(self, nums):
+        ind_to_start_reverse = 0
+        for i in range(len(nums) - 1, 0, -1):
+            if nums[i] <= nums[i - 1]:
+                continue
+            ind_to_start_reverse = i
+            break
+        if ind_to_start_reverse == 0:
+            self.reverse_partial_list(nums, 0, len(nums) - 1)
+        else:
+            smaller_number = nums[ind_to_start_reverse - 1]
+            for i in range(len(nums) - 1, ind_to_start_reverse - 1, -1):
+                if nums[i] <= smaller_number:
+                    continue
+                nums[i], nums[ind_to_start_reverse - 1] = nums[ind_to_start_reverse - 1], nums[i]
+                break
+            self.reverse_partial_list(nums, ind_to_start_reverse, len(nums) - 1)
+        return nums
+
+    def reverse_partial_list(self, nums, start, end):
+        while start < end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start += 1
+            end -= 1
             
             
 # My own solution, using recursion.
