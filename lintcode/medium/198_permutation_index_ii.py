@@ -3,7 +3,7 @@ https://www.lintcode.com/problem/198/
 '''
 
 # My own solution. Iterative, starting from the end. Took quite some effort to debug it.
-# Time complexity should be O(n^3). Space complexity is O(n).
+# Time complexity should be O(n^2), if the set identity operation takes O(1). If it takes O(logn), it should be O(n^2 * logn). Space complexity is O(n).
 from collections import defaultdict
 import math
 class Solution:
@@ -62,3 +62,38 @@ class Solution:
             order += smaller_count * order_multiplier
             num_to_occurrence[A[i]] -= 1
         return int(order)
+    
+# My own solution, slightly improved upon my first solution (but much more complicated) in that we don't need to compute
+# factorial each time; instead, we calculate the factorial incrementally.
+from collections import defaultdict
+import math
+class Solution:
+    """
+    @param A: An array of integers
+    @return: A long integer
+    """
+    def permutationIndexII(self, A):
+        order = 1
+        num_to_occurrence = defaultdict(int)
+        perm_count = 1
+        num_to_factorial_of_occurrence = dict()
+        num_to_occurrence[A[-1]] += 1
+        num_to_factorial_of_occurrence[A[-1]] = 1
+        for i in range(len(A) - 2, -1, -1):
+            encountered_num = set()
+            perm_count *= len(A) - 1 - i
+            num_to_occurrence[A[i]] += 1
+            if A[i] not in num_to_factorial_of_occurrence:
+                num_to_factorial_of_occurrence[A[i]] = 1
+            # Calculate the factorial incrementally
+            num_to_factorial_of_occurrence[A[i]] *= num_to_occurrence[A[i]]
+            smaller_count = 0
+            divisor = 1
+            for j in range(i + 1, len(A)):
+                if A[j] < A[i]:
+                    smaller_count += 1
+                if A[j] not in encountered_num:
+                    divisor *= num_to_factorial_of_occurrence[A[j]]
+                    encountered_num.add(A[j])
+            order += smaller_count * perm_count / divisor
+        return int(order)    
