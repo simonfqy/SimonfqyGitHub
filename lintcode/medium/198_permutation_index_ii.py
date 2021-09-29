@@ -3,6 +3,7 @@ https://www.lintcode.com/problem/198/
 '''
 
 # My own solution. Iterative, starting from the end. Took quite some effort to debug it.
+# Time complexity should be O(n^3). Space complexity is O(n).
 from collections import defaultdict
 import math
 class Solution:
@@ -20,7 +21,9 @@ class Solution:
             permutation_count *= len(A) - 1 - i
             divisor = 1
             encountered_num = set()
-            # At first I placed this increment statement at the end of the outer loop and caused bugs.
+            # At first I placed this increment statement at the end of the outer loop and caused bugs. That's because I didn't 
+            # consider the case where A[i] is not unique in A[i:]. When analyzing the problems, we should come up with more 
+            # comprehensive cases to understand it better.
             d[A[i]] += 1
             for j in range(i + 1, len(A)):
                 if A[j] < A[i]:
