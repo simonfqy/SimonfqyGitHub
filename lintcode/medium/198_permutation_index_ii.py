@@ -29,6 +29,7 @@ class Solution:
                 if A[j] < A[i]:
                     smaller_count += 1
                 if A[j] not in encountered_num:
+                    # A[j] can be equal to A[i]. This calculation gives the correct result whether A[j] equals A[i] or not.
                     divisor *= math.factorial(d[A[j]])
                     encountered_num.add(A[j])
             order += smaller_count * permutation_count / divisor            
