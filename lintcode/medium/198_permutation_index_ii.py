@@ -3,7 +3,8 @@ https://www.lintcode.com/problem/198/
 '''
 
 # My own solution. Iterative, starting from the end. Took quite some effort to debug it.
-# Time complexity should be O(n^2), if the set identity operation takes O(1). If it takes O(logn), it should be O(n^2 * logn). Space complexity is O(n).
+# Time complexity should be O(n^2), if the hash set identity operation takes O(1). If it takes O(logn), it should be O(n^2 * logn). Space complexity is O(n).
+# Normally the hash set identity operation takes O(1).
 from collections import defaultdict
 import math
 class Solution:
@@ -97,4 +98,38 @@ class Solution:
                     divisor *= num_to_factorial_of_occurrence[A[j]]
                     encountered_num.add(A[j])
             order += smaller_count * perm_count / divisor
-        return int(order)    
+        return int(order) 
+    
+# Solution from jiuzhang.com. It is more optimized than my own solution. Fewer lines of code and better efficiency.   
+class Solution:
+    """
+    @param A: An array of integers
+    @return: A long integer
+    """
+    def permutationIndexII(self, A):
+        order = 1
+        num_to_occurrence = dict()
+        divisor = 1
+        perm_count = 1
+        # Start from len(A) - 1, so we don't need to take care of A[-1] explicitly.
+        for i in range(len(A) - 1, -1, -1):
+            if A[i] not in num_to_occurrence:
+                num_to_occurrence[A[i]] = 0
+            num_to_occurrence[A[i]] += 1
+            if num_to_occurrence[A[i]] > 1:
+                # Uses the fact that we only need 1 divisor variable for all i's.
+                # The divisor can be calculated incrementally rather than multiplying
+                # by factorial explicitly. This decreases the amount of work in the j for loop.
+                divisor *= num_to_occurrence[A[i]]
+            smaller_count = 0
+            for j in range(i + 1, len(A)):
+                if A[j] < A[i]:
+                    smaller_count += 1
+            
+            order += perm_count * smaller_count // divisor
+            # If we put it earlier in the for loop body, the calculation would be incorrect. 
+            # If we use perm_count *= len(A) - 1 - i and put it earlier in the for loop body,
+            # the value will become zero. So this way is appropriate.
+            perm_count *= len(A) - i
+
+        return order
