@@ -32,3 +32,39 @@ class Solution:
                         return str(digit) + smallest_digit + ":" + smallest_digit * 2
         
         return smallest_digit * 2 + ":" + smallest_digit * 2
+    
+    
+# My own solution. Enumerates all the minutes succeeding the input time and return the one whose digits are all present in 
+# the supplied time. It is ugly, but the problem size is small, so it is still efficient.
+class Solution:
+    """
+    @param time: the given time
+    @return: the next closest time
+    """
+    def nextClosestTime(self, time):
+        digits = time[:2] + time[3:]
+        digit_set = set([digit for digit in digits])
+        prev_time = time
+        while True:
+            minute = int(prev_time[3:])
+            if minute < 59:
+                minute += 1
+                next_min = prev_time[:3] + self.format_number(minute)
+            else:
+                hour = int(prev_time[:2])
+                if hour < 23:
+                    hour += 1
+                    next_min = self.format_number(hour) + ":00"
+                else:
+                    next_min = "00:00"
+            next_moment_number_only = next_min[:2] + next_min[3:]
+            all_digits_exist = all([char in digit_set for char in next_moment_number_only])
+            if all_digits_exist:
+                return next_min                
+            prev_time = next_min
+
+    def format_number(self, number):
+        num_str = str(number)
+        if len(num_str) < 2:
+            num_str = "0" + num_str
+        return num_str
