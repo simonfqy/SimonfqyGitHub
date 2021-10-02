@@ -68,3 +68,25 @@ class Solution:
         if len(num_str) < 2:
             num_str = "0" + num_str
         return num_str
+    
+    
+# Answer from a student in jiuzhang.com. Though this solution is highly specific to this problem
+# and cannot be generalized to other problems, it is very elegant and succinct.
+class Solution:
+    """
+    @param time: the given time
+    @return: the next closest time
+    """
+    def nextClosestTime(self, time):
+        hour, minute = time.split(":")
+        curr_min = int(hour) * 60 + int(minute)
+        # Using 1441 rather than 1440 for the edge case of the exact same minute (of the next day)
+        # being the next closes time. An example is 11:11.
+        for i in range(curr_min + 1, curr_min + 1441):
+            min_in_day = i % 1440
+            h, m = min_in_day // 60, min_in_day % 60
+            curr_time_str = "%02d:%02d" % (h, m)
+            # The characters comprising of curr_time_str is a subset of those comprising time, so
+            # curr_time_str is constructed by reusing the same digits. 
+            if set(curr_time_str) <= set(time):
+                return curr_time_str
