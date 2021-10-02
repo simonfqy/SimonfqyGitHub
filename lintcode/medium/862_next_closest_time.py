@@ -90,3 +90,34 @@ class Solution:
             # curr_time_str is constructed by reusing the same digits. 
             if set(curr_time_str) <= set(time):
                 return curr_time_str
+            
+            
+# Also an answer from a student in jiuzhang.com. A relatively elegant solution. 
+class Solution:
+    """
+    @param time: the given time
+    @return: the next closest time
+    """
+    def nextClosestTime(self, time):
+        converted_time = time[:2] + time[3:]
+        sorted_digits = sorted({int(char) for char in converted_time})
+        smallest_digit = str(sorted_digits[0])
+        for i in range(len(converted_time) - 1, -1, -1):
+            # If the bigger number doesn't work, then an even bigger number won't yield a valid time either;
+            # we need to simply go to i - 1.
+            bigger_num = self.get_smallest_bigger_num(sorted_digits, int(converted_time[i]))
+            if bigger_num == -1:
+                continue
+            new_time = converted_time[:i] + str(bigger_num) + smallest_digit * (len(converted_time) - 1 - i)
+            if self.is_valid_time(new_time):
+                return new_time[:2] + ":" + new_time[2:]
+        return smallest_digit * 2 + ":" + smallest_digit * 2
+
+    def is_valid_time(self, time):
+        return int(time[:2]) <= 23 and int(time[2:]) <= 59
+
+    def get_smallest_bigger_num(self, sorted_digits, num):
+        ind = sorted_digits.index(num)
+        if ind == len(sorted_digits) - 1:
+            return -1
+        return sorted_digits[ind + 1]
