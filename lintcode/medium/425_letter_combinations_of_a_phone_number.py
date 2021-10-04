@@ -25,6 +25,7 @@ class Solution:
     def helper(self, digits, combo_so_far, results):
         if digits == "":
             if combo_so_far != "":
+                # This is to handle the special case where the input digits is "" and we want to return [] rather than [""].
                 results.append(combo_so_far)
             return
         for char in self.digit_to_letter[digits[0]]:
