@@ -22,4 +22,31 @@ class Solution:
             if i > 0 and letters[i] == letters[i - 1]:
                 continue
             self.helper(letters[:i] + letters[i + 1:], combo_so_far + letters[i], permutations)
+            
+            
+# My own solution, using BFS, iterative. It should be correct, but hits space limited exceeded error.
+from collections import deque
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        letters = [char for char in str]
+        letters.sort()
+        queue = deque([("", set())])
+        curr_len = 0
+        while queue:
+            if curr_len == len(letters):
+                return [tup[0] for tup in list(queue)]
+            size = len(queue)
+            for _ in range(size):
+                combo, char_ind_set = queue.popleft()
+                for i in range(len(letters)):
+                    if i in char_ind_set:
+                        continue
+                    if i > 0 and letters[i] == letters[i - 1] and i - 1 not in char_ind_set:
+                        continue
+                    queue.append((combo + letters[i], char_ind_set | {i})) 
+            curr_len += 1
 
