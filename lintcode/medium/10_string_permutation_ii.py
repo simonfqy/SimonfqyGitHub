@@ -52,6 +52,7 @@ class Solution:
             
             
 # Using iterative DFS, implemented with a stack. Time to execute is longer than the recursive version.
+# Unlike the BFS version, this one won't encounter space complexity issues.
 class Solution:
     """
     @param str: A string
