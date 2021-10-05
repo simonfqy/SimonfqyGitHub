@@ -75,3 +75,28 @@ class Solution:
                     continue
                 stack.append((combo + letters[i], selected_ind_set | {i}))
         return permutations
+    
+    
+# A slight modification of the above version. Instead of keeping a set of indices of selected characters in each
+# element of the stack, we now keep a string of remaining letters to choose from. This solution is visibly faster
+# than the one above, but still slightly slower than the recursive DFS version.
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        letters = [char for char in str]
+        letters.sort()
+        stack = [("", letters)]
+        permutations = []
+        while stack:
+            combo, remaining_letters = stack.pop()
+            if len(combo) == len(letters):
+                permutations.append(combo)
+                continue
+            for i in range(len(remaining_letters)):
+                if i > 0 and remaining_letters[i - 1] == remaining_letters[i]:
+                    continue
+                stack.append((combo + remaining_letters[i], remaining_letters[:i] + remaining_letters[i + 1:]))
+        return permutations
