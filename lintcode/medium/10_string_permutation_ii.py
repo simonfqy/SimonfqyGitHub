@@ -49,4 +49,28 @@ class Solution:
                         continue
                     queue.append((combo + letters[i], char_ind_set | {i})) 
             curr_len += 1
-
+            
+            
+# Using iterative DFS, implemented with a stack. Time to execute is longer than the recursive version.
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        letters = [char for char in str]
+        letters.sort()
+        stack = [("", set())]
+        permutations = []
+        while stack:
+            combo, selected_ind_set = stack.pop()
+            if len(combo) == len(letters):
+                permutations.append(combo)
+                continue
+            for i in range(len(letters)):
+                if i in selected_ind_set:
+                    continue
+                if i > 0 and letters[i - 1] == letters[i] and i - 1 not in selected_ind_set:
+                    continue
+                stack.append((combo + letters[i], selected_ind_set | {i}))
+        return permutations
