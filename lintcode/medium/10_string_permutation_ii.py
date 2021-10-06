@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/10/
 '''
 
-# My own solution, recursive, using DFS.
+# My own solution, recursive, using DFS. Time complexity is O(n*n!), space complexity is O(n*n!).
 class Solution:
     """
     @param str: A string
@@ -25,6 +25,7 @@ class Solution:
             
             
 # My own solution, using BFS, iterative. It should be correct, but hits space limited exceeded error.
+# Time complexity is O(n*n!), space complexity is O(n*n!).
 from collections import deque
 class Solution:
     """
