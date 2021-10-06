@@ -101,3 +101,41 @@ class Solution:
                     continue
                 stack.append((combo + remaining_letters[i], remaining_letters[:i] + remaining_letters[i + 1:]))
         return permutations
+    
+    
+# My own solution after knowing jiuzhang.com also contains the similar solution making use of next_permutation.   
+class Solution:
+    """
+    @param str: A string
+    @return: all permutations
+    """
+    def stringPermutation2(self, str):
+        letters = sorted(list(str))
+        permutations = [''.join(letters)]
+        while True:
+            next_perm = self.get_next_perm(letters)
+            if next_perm is None:
+                break
+            permutations.append(''.join(letters))
+        return permutations
+
+    def get_next_perm(self, letters):
+        ind_to_start_swapping = -1
+        for i in range(len(letters) - 1, 0, -1):
+            if letters[i] > letters[i - 1]:
+                ind_to_start_swapping = i - 1
+                break
+        # When the list of letters is completely reverse-ordered, we've found all possible permutations and can end.
+        if ind_to_start_swapping == -1:
+            return None
+        for j in range(len(letters) - 1, ind_to_start_swapping, -1):
+            if letters[j] > letters[ind_to_start_swapping]:
+                letters[j], letters[ind_to_start_swapping] = letters[ind_to_start_swapping], letters[j]
+                self.reverse_list(letters, ind_to_start_swapping + 1, len(letters) - 1)
+                return letters
+
+    def reverse_list(self, letters, start, end):
+        while start < end:
+            letters[start], letters[end] = letters[end], letters[start]
+            start += 1
+            end -= 1
