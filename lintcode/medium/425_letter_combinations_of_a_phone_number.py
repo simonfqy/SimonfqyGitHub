@@ -95,3 +95,31 @@ class Solution:
                 for char in self.digit_to_letter[digits[curr_ind]]:
                     queue.append(combo + char)
             curr_ind += 1
+            
+            
+# The answer from a student on jiuzhang.com. It is iterative and uses 2 lists: temp and results, to store the temporary results
+# when going through the digits.
+class Solution:
+    """
+    @param digits: A digital string
+    @return: all posible letter combinations
+    """
+    def letterCombinations(self, digits):
+        results = []
+        self.digit_to_letter = dict()
+        self.digit_to_letter['2'] = ['a', 'b', 'c']
+        self.digit_to_letter['3'] = ['d', 'e', 'f']
+        self.digit_to_letter['4'] = ['g', 'h', 'i']
+        self.digit_to_letter['5'] = ['j', 'k', 'l']
+        self.digit_to_letter['6'] = ['m', 'n', 'o']
+        self.digit_to_letter['7'] = ['p', 'q', 'r', 's']
+        self.digit_to_letter['8'] = ['t', 'u', 'v']
+        self.digit_to_letter['9'] = ['w', 'x', 'y', 'z']
+        temp = [""]
+        for digit in digits:
+            results = []
+            for letter in self.digit_to_letter[digit]:
+                for prefix in temp:
+                    results.append(prefix + letter)
+            temp = results
+        return results
