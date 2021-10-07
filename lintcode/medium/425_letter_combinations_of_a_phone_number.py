@@ -98,7 +98,8 @@ class Solution:
             
             
 # The answer from a student on jiuzhang.com. It is iterative and uses 2 lists: temp and results, to store the temporary results
-# when going through the digits.
+# when going through the digits. Essentially it's just the BFS similar to the one above, but without using the queue. The role of
+# the queue is performed by the two lists: results and temp.
 class Solution:
     """
     @param digits: A digital string
