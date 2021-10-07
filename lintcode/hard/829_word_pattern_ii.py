@@ -27,7 +27,8 @@ class Solution:
             return self.helper(pattern[1:], str[len(candidate_matching_string):], pattern_char_to_string)
         first_letter_in_pattern = pattern[0]
         # NOTE: we should always use a copy like done here for variables to be passed to the next DFS level. Otherwise we 
-        # might incur undesired side effects.
+        # might incur undesired side effects. Basically, the input parameter pattern_char_to_string won't be overwritten.
+        # This creation of new_pattern_dict can be moved inside the for loop, which makes more sense. Putting here is also correct.
         new_pattern_dict = dict(pattern_char_to_string)
         for i in range(len(str) - len(pattern) + 1):            
             candidate_string_matching_letter = str[:i + 1]
