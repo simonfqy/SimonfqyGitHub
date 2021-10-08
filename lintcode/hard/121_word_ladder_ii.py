@@ -109,6 +109,68 @@ class Solution:
         self.word_dist[(from_word, to_word)] = distance
         return distance
 
+    
+# My own solution, using BFS and follows the solution above, but changing the way to store distance info. Turns out this
+# solution hits the memory limit exceeded issue even easier than the one above.
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dictionary):
+        if start == end:
+            return [[start]]
+        self.word_to_distance_one_neighbors = dict()
+        self.words_whose_distance_analyzed = set()
+        dictionary.update({start, end})
+        temp = [[start]]
+        shortest_sequence_found = False
+        results = []
+        while not shortest_sequence_found:
+            buff = []
+            for i in range(len(temp)):
+                last_word = temp[i][-1]           
+                self.populate_distance_dicts(last_word, dictionary)
+                for neighbor in self.word_to_distance_one_neighbors[last_word]:
+                    if neighbor in temp[i]:
+                        continue
+                    if neighbor == end:
+                        shortest_sequence_found = True
+                        results.append(temp[i] + [neighbor])
+                        continue
+                    if shortest_sequence_found:
+                        continue
+                    buff.append(temp[i] + [neighbor])
+            temp = buff
+        return results
+
+    def populate_distance_dicts(self, from_word, dictionary):
+        if from_word in self.words_whose_distance_analyzed:
+            return
+        if from_word not in self.word_to_distance_one_neighbors:
+            self.word_to_distance_one_neighbors[from_word] = set()
+        alphabets = "abcdefghijklmnopqrstuvwxyz"
+        results = []
+        for i, char in enumerate(from_word):
+            for new_char in alphabets:
+                if new_char == char:
+                    continue
+                new_word = from_word[:i] + new_char + from_word[i + 1:]
+                if new_word not in dictionary:
+                    continue
+                if new_word in self.word_to_distance_one_neighbors[from_word]:
+                    continue
+                results.append(new_word)
+                self.word_to_distance_one_neighbors[from_word].add(new_word)
+                if new_word not in self.word_to_distance_one_neighbors:
+                    self.word_to_distance_one_neighbors[new_word] = set()
+                self.word_to_distance_one_neighbors[new_word].add(from_word)
+        self.words_whose_distance_analyzed.add(from_word)
+        return results    
+    
+    
 # My own solution, it uses bidirectional DFS to start from both start and end. Should be correct, but still hits time limit exceeded exception 
 # (though there is significant improvement compared to solution 1 which uses unidirectional DFS). 
 class Solution:
