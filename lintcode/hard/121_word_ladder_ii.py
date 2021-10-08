@@ -108,3 +108,85 @@ class Solution:
                 distance += 1                
         self.word_dist[(from_word, to_word)] = distance
         return distance
+
+# My own solution. Should be correct, but still hits time limit exceeded exception. Uses bidirectional DFS to start from both
+# start and end.
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dictionary):
+        self.distance_one = dict()
+        self.word_to_dist_to_start = dict()
+        self.word_to_dist_to_start[start] = 0
+        self.word_to_dist_to_end = dict()
+        self.word_to_dist_to_end[end] = 0
+        return self.helper(start, end, dictionary, set(), set(), len(dictionary | {start} | {end}))
+
+    # Returns the shortest lists of words leading from start to end.
+    def helper(self, start, end, dictionary, words_before_start, words_after_end, max_possible_length):
+        if max_possible_length <= 0:
+            return [None]
+        if start == end:
+            return [[start]]
+        if max_possible_length <= 1:
+            return [None]
+        if self.is_distance_one(start, end):
+            return [[start, end]]
+        if max_possible_length <= 2:
+            return [None]
+        next_start_words = []
+        next_end_words = []
+        for word in dictionary:
+            if word in words_before_start or word in words_after_end:
+                continue
+            if word == start or word == end:
+                continue
+            if self.is_distance_one(start, word):
+                if word in self.word_to_dist_to_start and self.word_to_dist_to_start[word] < len(words_before_start) + 1:
+                    continue
+                next_start_words.append(word)
+                self.word_to_dist_to_start[word] = len(words_before_start) + 1
+            if self.is_distance_one(word, end):
+                if word in self.word_to_dist_to_end and self.word_to_dist_to_end[word] < len(words_after_end) + 1:
+                    continue
+                next_end_words.append(word)
+                self.word_to_dist_to_end[word] = len(words_after_end) + 1
+        
+        new_words_before_start = words_before_start | {start}
+        new_words_after_end = words_after_end | {end}        
+        possible_length = max_possible_length - 2
+        shortest_candidates = []
+        for new_start in next_start_words:
+            for new_end in next_end_words:
+                shorter_candidates = self.helper(new_start, new_end, dictionary, new_words_before_start, new_words_after_end, possible_length)
+                for candidate in shorter_candidates:
+                    if candidate is None:
+                        continue
+                    if len(candidate) < possible_length:
+                        possible_length = len(candidate)
+                        shortest_candidates = []
+                    shortest_candidates.append(candidate)
+        results = []
+        for cand in shortest_candidates:
+            results.append([start] + cand + [end])
+        return results                                       
+
+
+    def is_distance_one(self, from_word, to_word):
+        if (from_word, to_word) in self.distance_one:
+            return self.distance_one[(from_word, to_word)]
+        if (to_word, from_word) in self.distance_one:
+            return self.distance_one[(to_word, from_word)]
+        distance = 0
+        for i in range(len(from_word)):
+            if from_word[i] != to_word[i]:
+                distance += 1
+                if distance > 1:
+                    break
+        self.distance_one[(from_word, to_word)] = distance == 1
+        return distance == 1
+           
