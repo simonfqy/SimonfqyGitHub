@@ -16,10 +16,12 @@ class Solution:
         self.min_length = len(dictionary | {start} | {end})
         self.lists = []
         self.pair_distance = dict()
-        self.helper(start, end, [start], dictionary)
+        word_to_earliest_ind = dict()
+        word_to_earliest_ind[start] = 0
+        self.helper(start, end, [start], dictionary, word_to_earliest_ind)
         return self.lists
 
-    def helper(self, curr_word, end, path_so_far, dictionary):
+    def helper(self, curr_word, end, path_so_far, dictionary, word_to_earliest_ind):
         if len(path_so_far) + self.letter_distance(curr_word, end) > self.min_length:
             return
         if curr_word == end:
@@ -30,13 +32,19 @@ class Solution:
             self.lists.append(path_so_far)            
             return
         if self.letter_distance(curr_word, end) == 1:
-            self.helper(end, end, path_so_far + [end], dictionary)
+            if end in word_to_earliest_ind and word_to_earliest_ind[end] < len(path_so_far):
+                return
+            word_to_earliest_ind[end] = len(path_so_far)
+            self.helper(end, end, path_so_far + [end], dictionary, word_to_earliest_ind)
             return
         for word in dictionary:
-            if word in set(path_so_far):
+            if word in path_so_far:
+                continue
+            if word in word_to_earliest_ind and word_to_earliest_ind[word] < len(path_so_far):
                 continue
             if self.letter_distance(curr_word, word) == 1:
-                self.helper(word, end, path_so_far + [word], dictionary)
+                word_to_earliest_ind[word] = len(path_so_far)
+                self.helper(word, end, path_so_far + [word], dictionary, word_to_earliest_ind)
     
     def letter_distance(self, from_word, to_word):
         if (from_word, to_word) in self.pair_distance:
