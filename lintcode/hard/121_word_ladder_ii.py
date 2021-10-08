@@ -109,8 +109,8 @@ class Solution:
         self.word_dist[(from_word, to_word)] = distance
         return distance
 
-# My own solution. Should be correct, but still hits time limit exceeded exception. Uses bidirectional DFS to start from both
-# start and end.
+# My own solution. Should be correct, but still hits time limit exceeded exception (though there is significant improvement compared to 
+# solution 1 which uses unidirectional DFS). Uses bidirectional DFS to start from both start and end.
 class Solution:
     """
     @param: start: a string
@@ -173,8 +173,7 @@ class Solution:
         results = []
         for cand in shortest_candidates:
             results.append([start] + cand + [end])
-        return results                                       
-
+        return results                                      
 
     def is_distance_one(self, from_word, to_word):
         if (from_word, to_word) in self.distance_one:
