@@ -110,8 +110,8 @@ class Solution:
         return distance
 
     
-# My own solution, using BFS and follows the solution above, but changing the way to store distance info. Turns out this
-# solution hits the memory limit exceeded issue even easier than the one above.
+# My own solution, using BFS and follows the solution above, but changing the way to store distance info. It actually works, though
+# rather slow, it doesn't hit the time limit exceeded exception anymore.
 class Solution:
     """
     @param: start: a string
@@ -128,21 +128,28 @@ class Solution:
         temp = [[start]]
         shortest_sequence_found = False
         results = []
+        visited_words = set()
         while not shortest_sequence_found:
             buff = []
+            newly_visited = set()
             for i in range(len(temp)):
                 last_word = temp[i][-1]           
                 self.populate_distance_dicts(last_word, dictionary)
                 for neighbor in self.word_to_distance_one_neighbors[last_word]:
-                    if neighbor in temp[i]:
+                    if neighbor in temp[i] or neighbor in visited_words:
                         continue
+                    # A slight modification from the solution above: once a neighbor is the desired end, we won't be
+                    # adding other neighbors to the list. This can save some time, because the number of elements at the
+                    # bottom of the search tree is large.
                     if neighbor == end:
                         shortest_sequence_found = True
                         results.append(temp[i] + [neighbor])
                         continue
                     if shortest_sequence_found:
                         continue
+                    newly_visited.add(neighbor)
                     buff.append(temp[i] + [neighbor])
+            visited_words.update(newly_visited)
             temp = buff
         return results
 
