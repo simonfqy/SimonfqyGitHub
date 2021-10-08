@@ -109,8 +109,8 @@ class Solution:
         self.word_dist[(from_word, to_word)] = distance
         return distance
 
-# My own solution. Should be correct, but still hits time limit exceeded exception (though there is significant improvement compared to 
-# solution 1 which uses unidirectional DFS). Uses bidirectional DFS to start from both start and end.
+# My own solution, it uses bidirectional DFS to start from both start and end. Should be correct, but still hits time limit exceeded exception 
+# (though there is significant improvement compared to solution 1 which uses unidirectional DFS). 
 class Solution:
     """
     @param: start: a string
