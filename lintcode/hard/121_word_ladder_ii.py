@@ -189,3 +189,98 @@ class Solution:
         self.distance_one[(from_word, to_word)] = distance == 1
         return distance == 1
            
+# A modification of the version above, also using bidirectional DFS. But this time, we no longer calculate the 1-1 string distance between
+# pairs of words in dictionary, we generate the distance = 1 neighbors for each word. This way we reduce the distance calculation time complexity
+# from O(k*n^2) (where k is the length of words, n is the number of words) to O(kn), since the set element identity determination is O(1).
+# It has some improvements over the solution above, but still hits time limit exceeded exception.
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dictionary):
+        self.words_to_distance_one_neighbor = dict()
+        self.words_whose_distance_analyzed = set()
+        dictionary = set(dictionary)
+        self.word_to_dist_to_start = dict()
+        self.word_to_dist_to_start[start] = 0
+        self.word_to_dist_to_end = dict()
+        self.word_to_dist_to_end[end] = 0
+        return self.helper(start, end, dictionary, set(), set(), len(dictionary | {start} | {end}))
+
+    # Returns the shortest lists of words leading from start to end.
+    def helper(self, start, end, dictionary, words_before_start, words_after_end, max_possible_length):
+        if max_possible_length <= 0:
+            return []
+        if start == end:
+            return [[start]]
+        if max_possible_length <= 1:
+            return []
+        if self.is_distance_one(start, end, dictionary):
+            return [[start, end]]
+        if max_possible_length <= 2:
+            return []
+        next_start_words = []
+        next_end_words = []
+        for word in dictionary:
+            if word in words_before_start or word in words_after_end:
+                continue
+            if word == start or word == end:
+                continue
+            if self.is_distance_one(start, word, dictionary):
+                if word in self.word_to_dist_to_start and self.word_to_dist_to_start[word] < len(words_before_start) + 1:
+                    continue
+                next_start_words.append(word)
+                self.word_to_dist_to_start[word] = len(words_before_start) + 1
+            if self.is_distance_one(word, end, dictionary):
+                if word in self.word_to_dist_to_end and self.word_to_dist_to_end[word] < len(words_after_end) + 1:
+                    continue
+                next_end_words.append(word)
+                self.word_to_dist_to_end[word] = len(words_after_end) + 1
+        
+        new_words_before_start = words_before_start | {start}
+        new_words_after_end = words_after_end | {end}        
+        possible_length = max_possible_length - 2
+        shortest_candidates = []
+        for new_start in next_start_words:
+            for new_end in next_end_words:
+                shorter_candidates = self.helper(new_start, new_end, dictionary, new_words_before_start, new_words_after_end, possible_length)
+                for candidate in shorter_candidates:
+                    if candidate is None:
+                        continue
+                    if len(candidate) < possible_length:
+                        possible_length = len(candidate)
+                        shortest_candidates = []
+                    shortest_candidates.append(candidate)
+        results = []
+        for cand in shortest_candidates:
+            results.append([start] + cand + [end])
+        return results                                      
+
+    def is_distance_one(self, from_word, to_word, dictionary):
+        if from_word in self.words_to_distance_one_neighbor and to_word in self.words_to_distance_one_neighbor[from_word]:
+            return True
+        if from_word in self.words_whose_distance_analyzed:
+            return False
+        if from_word not in self.words_to_distance_one_neighbor:
+            self.words_to_distance_one_neighbor[from_word] = set()
+        if to_word not in self.words_to_distance_one_neighbor:
+            self.words_to_distance_one_neighbor[to_word] = set()
+        alphabets = "abcdefghijklmnopqrstuvwxyz"
+        for i, char in enumerate(from_word):
+            for new_char in alphabets:
+                if new_char == char:
+                    continue
+                new_word = from_word[:i] + new_char + from_word[i + 1:]
+                if new_word not in dictionary:
+                    continue
+                if new_word in self.words_to_distance_one_neighbor[from_word]:
+                    continue
+                self.words_to_distance_one_neighbor[from_word].add(new_word)
+                if new_word not in self.words_to_distance_one_neighbor:
+                    self.words_to_distance_one_neighbor[new_word] = set()
+                self.words_to_distance_one_neighbor[new_word].add(from_word)                    
+        self.words_whose_distance_analyzed.add(from_word)        
+        return to_word in self.words_to_distance_one_neighbor[from_word]        
