@@ -111,7 +111,9 @@ class Solution:
 
     
 # My own solution, using BFS and follows the solution above, but changing the way to store distance info. It actually works, though
-# rather slow, it doesn't hit the time limit exceeded exception anymore.
+# rather slow, it doesn't hit the time limit exceeded exception anymore. We no longer calculate the 1-1 string distance between
+# pairs of words in dictionary; instead, we generate the distance = 1 neighbors for each word. This way we reduce the distance calculation 
+# time complexity from O(k*n^2) (where k is the length of words, n is the number of words) to O(kn), since the set element identity determination is O(1).
 class Solution:
     """
     @param: start: a string
