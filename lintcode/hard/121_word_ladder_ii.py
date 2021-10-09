@@ -130,7 +130,7 @@ class Solution:
         temp = [[start]]
         shortest_sequence_found = False
         results = []
-        visited_words = set()
+        visited_words = set([start])
         while not shortest_sequence_found:
             buff = []
             newly_visited = set()
@@ -138,7 +138,7 @@ class Solution:
                 last_word = temp[i][-1]           
                 self.populate_distance_dicts(last_word, dictionary)
                 for neighbor in self.word_to_distance_one_neighbors[last_word]:
-                    if neighbor in temp[i] or neighbor in visited_words:
+                    if neighbor in visited_words:
                         continue
                     # A slight modification from the solution above: once a neighbor is the desired end, we won't be
                     # adding other neighbors to the list. This can save some time, because the number of elements at the
