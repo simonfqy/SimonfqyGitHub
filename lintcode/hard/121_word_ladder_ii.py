@@ -364,7 +364,7 @@ class Solution:
     
     
 # My own bidirectional BFS solution without using queue. It is a very nasty solution, the repetition makes it bug-prone. But it is
-# also the fastest solution I've written so far. 
+# also the fastest solution I've written so far. Beats about 62% of all solutions.
 class Solution:
     """
     @param: start: a string
@@ -387,23 +387,29 @@ class Solution:
             buff_start, buff_end = [], []
             newly_visited_start, newly_visited_end = set(), set()
             frontward_search_word_to_ind = dict()
-            first_words_in_end_sequences = [sequence[0] for sequence in temp_end]
-            
+            first_words_in_end_sequences_to_seq_ind = dict()
+            for i, sequence in enumerate(temp_end):
+                first_word = sequence[0]
+                if first_word not in first_words_in_end_sequences_to_seq_ind:
+                    first_words_in_end_sequences_to_seq_ind[first_word] = set()
+                first_words_in_end_sequences_to_seq_ind[first_word].add(i)
+
             # This for loop processes the search from start to end.
             for i in range(len(temp_start)):
                 start_sequence = temp_start[i]
-                curr_word = start_sequence[-1]
-                # Catches matches here.
-                for j, end_sequence_starting_word in enumerate(first_words_in_end_sequences):
-                    if curr_word != end_sequence_starting_word:
-                        continue
-                    shortest_sequence_found = True
-                    results.append(start_sequence + temp_end[j][1:])
-                if shortest_sequence_found:
-                    continue                
+                curr_word = start_sequence[-1]                                
                 self.populate_distance_dict(curr_word, dictionary)
                 for neighbor in self.words_to_distance_one_neighbors[curr_word]:
                     if neighbor in visited_from_front:
+                        continue                    
+                    # Catches matches here. It is an optimization compared to doing the matching before this for loop.
+                    # This way, once matching neighbors are found, we won't consider those neighbors which are not matching.
+                    # This optimization yields a very slight performance gain.
+                    if neighbor in first_words_in_end_sequences_to_seq_ind:
+                        shortest_sequence_found = True
+                        for end_sequence_ind in first_words_in_end_sequences_to_seq_ind[neighbor]:
+                            results.append(start_sequence + temp_end[end_sequence_ind])
+                    if shortest_sequence_found:
                         continue
                     buff_start.append(start_sequence + [neighbor])
                     newly_visited_start.add(neighbor)
@@ -418,17 +424,18 @@ class Solution:
             # This for loop processes the search from end to start.
             for j in range(len(temp_end)):
                 end_sequence = temp_end[j]
-                curr_end_word = end_sequence[0]
-                # Catches potential matches.
-                if curr_end_word in frontward_search_word_to_ind:
-                    shortest_sequence_found = True
-                    for temp_start_ind in frontward_search_word_to_ind[curr_end_word]:
-                        results.append(temp_start[temp_start_ind] + end_sequence[1:])
-                if shortest_sequence_found:
-                    continue
+                curr_end_word = end_sequence[0]                
                 self.populate_distance_dict(curr_end_word, dictionary)
                 for neighbor in self.words_to_distance_one_neighbors[curr_end_word]:
                     if neighbor in visited_from_rear:
+                        continue
+                    # Catches potential matches. Same thing, we've got an optimization here, in which we're doing the matching
+                    # before the current for loop.
+                    if neighbor in frontward_search_word_to_ind:
+                        shortest_sequence_found = True
+                        for temp_start_ind in frontward_search_word_to_ind[neighbor]:
+                            results.append(temp_start[temp_start_ind] + end_sequence)
+                    if shortest_sequence_found:
                         continue
                     buff_end.append([neighbor] + end_sequence)
                     newly_visited_end.add(neighbor)
