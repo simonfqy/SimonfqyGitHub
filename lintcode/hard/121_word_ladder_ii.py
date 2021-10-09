@@ -2,6 +2,11 @@
 Link: https://www.lintcode.com/problem/121/
 '''
 
+# Overall learning from all the solutions: We should seriously analyze the time complexity when designing the solution. Calculating
+# the pairwise string distance is a natural thinking, but its performance is inferior to enumerating the neighbors of each string.
+# The former is O(n^2), while the latter is O(n). The latter also saves more space because the space complexity to store the neighbors of 
+# all words is also O(n), while the space complexity to store pairwise distance is O(n^2). 
+
 # My own solution, DFS. Should be correct but causes time limit exceeded exception. The time complexity should be O(n!), where
 # n is the number of words in the dictionary.
 class Solution:
@@ -263,7 +268,8 @@ class Solution:
 # A modification of the version above, also using bidirectional DFS. But this time, we no longer calculate the 1-1 string distance between
 # pairs of words in dictionary, we generate the distance = 1 neighbors for each word. This way we reduce the distance calculation time complexity
 # from O(k*n^2) (where k is the length of words, n is the number of words) to O(kn), since the set element identity determination is O(1).
-# It has some improvements over the solution above, but still hits time limit exceeded exception.
+# It has some improvements over the solution above, but still hits time limit exceeded exception, unless we hard code the possible length to a small
+# number, say 20. But this is kind of cheating.
 class Solution:
     """
     @param: start: a string
@@ -272,14 +278,16 @@ class Solution:
     @return: a list of lists of string
     """
     def findLadders(self, start, end, dictionary):
-        self.words_to_distance_one_neighbor = dict()
-        self.words_whose_distance_analyzed = set()
-        dictionary = set(dictionary)
+        self.words_whose_distances_were_analyzed = set()
+        self.words_to_distance_one_neighbors = dict()
+        dictionary.update({start, end})
         self.word_to_dist_to_start = dict()
         self.word_to_dist_to_start[start] = 0
         self.word_to_dist_to_end = dict()
         self.word_to_dist_to_end[end] = 0
-        return self.helper(start, end, dictionary, set(), set(), len(dictionary | {start} | {end}))
+        return self.helper(start, end, dictionary, set(), set(), len(dictionary))
+        # If we hardcode the max length to 20, we can pass all lintcode test cases. But of course, this doesn't mean it is right.
+        # return self.helper(start, end, dictionary, set(), set(), 20)
 
     # Returns the shortest lists of words leading from start to end.
     def helper(self, start, end, dictionary, words_before_start, words_after_end, max_possible_length):
@@ -289,27 +297,30 @@ class Solution:
             return [[start]]
         if max_possible_length <= 1:
             return []
-        if self.is_distance_one(start, end, dictionary):
+        self.populate_distance_dict(start, dictionary)
+        if end in self.words_to_distance_one_neighbors[start]:
             return [[start, end]]
         if max_possible_length <= 2:
             return []
         next_start_words = []
-        next_end_words = []
-        for word in dictionary:
-            if word in words_before_start or word in words_after_end:
+        next_end_words = []        
+
+        self.populate_distance_dict(start, dictionary)
+        self.populate_distance_dict(end, dictionary)
+        for word in self.words_to_distance_one_neighbors[start]:
+            if word in words_before_start:
                 continue
-            if word == start or word == end:
+            if word in self.word_to_dist_to_start and self.word_to_dist_to_start[word] < len(words_before_start) + 1:
                 continue
-            if self.is_distance_one(start, word, dictionary):
-                if word in self.word_to_dist_to_start and self.word_to_dist_to_start[word] < len(words_before_start) + 1:
-                    continue
-                next_start_words.append(word)
-                self.word_to_dist_to_start[word] = len(words_before_start) + 1
-            if self.is_distance_one(word, end, dictionary):
-                if word in self.word_to_dist_to_end and self.word_to_dist_to_end[word] < len(words_after_end) + 1:
-                    continue
-                next_end_words.append(word)
-                self.word_to_dist_to_end[word] = len(words_after_end) + 1
+            next_start_words.append(word)
+            self.word_to_dist_to_start[word] = len(words_before_start) + 1
+        for word in self.words_to_distance_one_neighbors[end]:
+            if word in words_after_end:
+                continue
+            if word in self.word_to_dist_to_end and self.word_to_dist_to_end[word] < len(words_after_end) + 1:
+                continue
+            next_end_words.append(word)
+            self.word_to_dist_to_end[word] = len(words_after_end) + 1
         
         new_words_before_start = words_before_start | {start}
         new_words_after_end = words_after_end | {end}        
@@ -330,15 +341,11 @@ class Solution:
             results.append([start] + cand + [end])
         return results                                      
 
-    def is_distance_one(self, from_word, to_word, dictionary):
-        if from_word in self.words_to_distance_one_neighbor and to_word in self.words_to_distance_one_neighbor[from_word]:
-            return True
-        if from_word in self.words_whose_distance_analyzed:
-            return False
-        if from_word not in self.words_to_distance_one_neighbor:
-            self.words_to_distance_one_neighbor[from_word] = set()
-        if to_word not in self.words_to_distance_one_neighbor:
-            self.words_to_distance_one_neighbor[to_word] = set()
+    def populate_distance_dict(self, from_word, dictionary):
+        if from_word in self.words_whose_distances_were_analyzed:
+            return
+        if from_word not in self.words_to_distance_one_neighbors:
+            self.words_to_distance_one_neighbors[from_word] = set()
         alphabets = "abcdefghijklmnopqrstuvwxyz"
         for i, char in enumerate(from_word):
             for new_char in alphabets:
@@ -347,14 +354,13 @@ class Solution:
                 new_word = from_word[:i] + new_char + from_word[i + 1:]
                 if new_word not in dictionary:
                     continue
-                if new_word in self.words_to_distance_one_neighbor[from_word]:
+                if new_word in self.words_to_distance_one_neighbors[from_word]:
                     continue
-                self.words_to_distance_one_neighbor[from_word].add(new_word)
-                if new_word not in self.words_to_distance_one_neighbor:
-                    self.words_to_distance_one_neighbor[new_word] = set()
-                self.words_to_distance_one_neighbor[new_word].add(from_word)                    
-        self.words_whose_distance_analyzed.add(from_word)        
-        return to_word in self.words_to_distance_one_neighbor[from_word]      
+                self.words_to_distance_one_neighbors[from_word].add(new_word)
+                if new_word not in self.words_to_distance_one_neighbors:
+                    self.words_to_distance_one_neighbors[new_word] = set()                
+                self.words_to_distance_one_neighbors[new_word].add(from_word)
+        self.words_whose_distances_were_analyzed.add(from_word)     
     
     
 # My own bidirectional BFS solution without using queue. It is a very nasty solution, the repetition makes it bug-prone. But it is
