@@ -354,4 +354,100 @@ class Solution:
                     self.words_to_distance_one_neighbor[new_word] = set()
                 self.words_to_distance_one_neighbor[new_word].add(from_word)                    
         self.words_whose_distance_analyzed.add(from_word)        
-        return to_word in self.words_to_distance_one_neighbor[from_word]        
+        return to_word in self.words_to_distance_one_neighbor[from_word]      
+    
+    
+# My own bidirectional BFS solution without using queue. It is a very nasty solution, the repetition makes it bug-prone. But it is
+# also the fastest solution I've written so far. 
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dictionary):
+        if start == end:
+            return [[start]]
+        self.words_whose_distances_were_analyzed = set()
+        self.words_to_distance_one_neighbors = dict()
+        shortest_sequence_found = False
+        results = []
+        dictionary.update({start, end})
+        temp_start, temp_end = [[start]], [[end]]
+        visited_from_front, visited_from_rear = set([start]), set([end])
+        
+        while not shortest_sequence_found:
+            buff_start, buff_end = [], []
+            newly_visited_start, newly_visited_end = set(), set()
+            frontward_search_word_to_ind = dict()
+            first_words_in_end_sequences = [sequence[0] for sequence in temp_end]
+            
+            # This for loop processes the search from start to end.
+            for i in range(len(temp_start)):
+                start_sequence = temp_start[i]
+                curr_word = start_sequence[-1]
+                # Catches matches here.
+                for j, end_sequence_starting_word in enumerate(first_words_in_end_sequences):
+                    if curr_word != end_sequence_starting_word:
+                        continue
+                    shortest_sequence_found = True
+                    results.append(start_sequence + temp_end[j][1:])
+                if shortest_sequence_found:
+                    continue                
+                self.populate_distance_dict(curr_word, dictionary)
+                for neighbor in self.words_to_distance_one_neighbors[curr_word]:
+                    if neighbor in visited_from_front:
+                        continue
+                    buff_start.append(start_sequence + [neighbor])
+                    newly_visited_start.add(neighbor)
+                    if neighbor not in frontward_search_word_to_ind:
+                        frontward_search_word_to_ind[neighbor] = set()
+                    frontward_search_word_to_ind[neighbor].add(len(buff_start) - 1)                    
+            
+            temp_start = buff_start
+            if shortest_sequence_found:
+                break
+                
+            # This for loop processes the search from end to start.
+            for j in range(len(temp_end)):
+                end_sequence = temp_end[j]
+                curr_end_word = end_sequence[0]
+                # Catches potential matches.
+                if curr_end_word in frontward_search_word_to_ind:
+                    shortest_sequence_found = True
+                    for temp_start_ind in frontward_search_word_to_ind[curr_end_word]:
+                        results.append(temp_start[temp_start_ind] + end_sequence[1:])
+                if shortest_sequence_found:
+                    continue
+                self.populate_distance_dict(curr_end_word, dictionary)
+                for neighbor in self.words_to_distance_one_neighbors[curr_end_word]:
+                    if neighbor in visited_from_rear:
+                        continue
+                    buff_end.append([neighbor] + end_sequence)
+                    newly_visited_end.add(neighbor)
+            temp_end = buff_end
+            visited_from_front.update(newly_visited_start)
+            visited_from_rear.update(newly_visited_end)
+        return results
+    
+    def populate_distance_dict(self, from_word, dictionary):
+        if from_word in self.words_whose_distances_were_analyzed:
+            return
+        if from_word not in self.words_to_distance_one_neighbors:
+            self.words_to_distance_one_neighbors[from_word] = set()
+        alphabets = "abcdefghijklmnopqrstuvwxyz"
+        for i, char in enumerate(from_word):
+            for new_char in alphabets:
+                if new_char == char:
+                    continue
+                new_word = from_word[:i] + new_char + from_word[i + 1:]
+                if new_word not in dictionary:
+                    continue
+                if new_word in self.words_to_distance_one_neighbors[from_word]:
+                    continue
+                self.words_to_distance_one_neighbors[from_word].add(new_word)
+                if new_word not in self.words_to_distance_one_neighbors:
+                    self.words_to_distance_one_neighbors[new_word] = set()                
+                self.words_to_distance_one_neighbors[new_word].add(from_word)
+        self.words_whose_distances_were_analyzed.add(from_word)
