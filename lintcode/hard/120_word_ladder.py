@@ -2,7 +2,10 @@
 Link: https://www.lintcode.com/problem/word-ladder/description
 '''
 
-# This solution is almost copied from Jiuzhang.com
+# This solution is almost copied from Jiuzhang.com. Let m be the length of each word, n be the total number
+# of words in the dictionary, the total time complexity is O(nm^2). That is because we need to generate new words
+# for O(nm) times, and generating each new word involves substring operation which has a time complexity of O(m),
+# so the total time complexity is O(nm^2).
 from collections import deque
 class Solution:
     """
@@ -13,8 +16,6 @@ class Solution:
     """
     
     def ladderLength(self, start, end, dict):
-        # write your code here
-        
         # This dict.add(end) is crucial. Otherwise all inputs will get 0 returned.
         dict.add(end)
         length = 0
@@ -38,8 +39,7 @@ class Solution:
                     # it will cause runtime exceeded anomaly. It is because in that case, the visited set is not
                     # populated fast enough, many words are unnecessarily visited more than once. So populate the 
                     # visited set early can avoid this problem. Always remember.
-                    visited.add(word)
-                    
+                    visited.add(word)                    
         return 0
         
         
