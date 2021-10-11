@@ -466,7 +466,9 @@ class Solution:
         self.words_whose_distances_were_analyzed.add(from_word)
 
         
-# The solution from jiuzhang.com, I optimized it slightly by ending the BFS whenever the starting word is reached.        
+# The solution from jiuzhang.com, I optimized it slightly by ending the BFS whenever the starting word is reached. Doing BFS
+# first to get the distance of each word in the dict to the end word, and start DFS from the start to the end. The distance info obtained
+# from BFS will help greatly in pruning some branches in DFS, accelerating the speed.
 from collections import deque
 class Solution:
     """
@@ -525,6 +527,7 @@ class Solution:
             return
         
         for word in self.get_next_words(curt, dict):
+            # This pruning is crucial in reducing the running time.
             if word not in distance or distance[word] != distance[curt] - 1:
                 continue
             path.append(word)
