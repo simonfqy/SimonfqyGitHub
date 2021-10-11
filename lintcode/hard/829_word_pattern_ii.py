@@ -40,3 +40,42 @@ class Solution:
             if self.helper(pattern[1:], str[len(candidate_string_matching_letter):], new_pattern_dict):
                 return True
         return False
+    
+    
+# Solution from jiuzhang.com. It is essentially the same as the my solution above. The time complexity is O(lengthStr^lengthPattern),
+# the space complexity is O(lengthPattern).
+class Solution:
+    """
+    @param pattern: a string,denote pattern string
+    @param str: a string, denote matching string
+    @return: a boolean
+    """
+    def wordPatternMatch(self, pattern, string):
+        return self.is_match(pattern, string, {}, set())
+
+    def is_match(self, pattern, string, mapping, used):
+        if not pattern:
+            return not string
+            
+        char = pattern[0]
+        if char in mapping:
+            word = mapping[char]
+            if not string.startswith(word):
+                return False
+            return self.is_match(pattern[1:], string[len(word):], mapping, used)
+            
+        for i in range(len(string)):
+            word = string[:i + 1]
+            if word in used:
+                continue
+            
+            used.add(word)
+            mapping[char] = word
+            
+            if self.is_match(pattern[1:], string[i + 1:], mapping, used):
+                return True
+            
+            del mapping[char]
+            used.remove(word)
+            
+        return False
