@@ -464,3 +464,69 @@ class Solution:
                     self.words_to_distance_one_neighbors[new_word] = set()                
                 self.words_to_distance_one_neighbors[new_word].add(from_word)
         self.words_whose_distances_were_analyzed.add(from_word)
+
+        
+# The solution from jiuzhang.com, I optimized it slightly by ending the BFS whenever the starting word is reached.        
+from collections import deque
+class Solution:
+    """
+    @param: start: a string
+    @param: end: a string
+    @param: dict: a set of string
+    @return: a list of lists of string
+    """
+    def findLadders(self, start, end, dictionary):
+        dictionary.add(start)
+        dictionary.add(end)
+        self.word_to_neighbors = dict()
+        distance = {}
+        
+        self.bfs(end, start, distance, dictionary)
+        
+        results = []
+        self.dfs(start, end, distance, dictionary, [start], results)
+        
+        return results
+
+    def bfs(self, start, end, distance, dict):
+        distance[start] = 0
+        queue = deque([start])
+        end_search = False
+        # The original solution doesn't care about whether the end is found. It terminates when the queue is empty.
+        # This is a slight modification which ends the search earlier.
+        while queue and not end_search:
+            size = len(queue)
+            for _ in range(size):
+                word = queue.popleft()
+                for next_word in self.get_next_words(word, dict):
+                    if next_word not in distance:
+                        if next_word == end:
+                            end_search = True
+                        if end_search and next_word != end:
+                            continue
+                        distance[next_word] = distance[word] + 1
+                        queue.append(next_word)
+    
+    def get_next_words(self, word, dict):
+        if word in self.word_to_neighbors:
+            return self.word_to_neighbors[word]
+        words = []
+        for i in range(len(word)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                next_word = word[:i] + c + word[i + 1:]
+                if next_word != word and next_word in dict:
+                    words.append(next_word)
+        self.word_to_neighbors[word] = words
+        return words
+                        
+    def dfs(self, curt, target, distance, dict, path, results):
+        if curt == target:
+            results.append(list(path))
+            return
+        
+        for word in self.get_next_words(curt, dict):
+            if word not in distance or distance[word] != distance[curt] - 1:
+                continue
+            path.append(word)
+            self.dfs(word, target, distance, dict, path, results)
+            path.pop()        
