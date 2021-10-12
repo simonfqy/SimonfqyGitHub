@@ -89,3 +89,42 @@ class RandomizedSet:
     """
     def getRandom(self):
         return random.choice(list(self.values))
+    
+    
+# The solution from jiuzhang.com. It is a valid solution. 
+import random
+class RandomizedSet(object):
+
+    def __init__(self):
+        # do initialize if necessary  
+        self.nums, self.val_to_ind = [], dict()
+        
+    # @param {int} val Inserts a value to the set
+    # Returns {bool} true if the set did not already contain the specified element or false
+    def insert(self, val):
+        if val in self.val_to_ind:
+            return False
+        self.val_to_ind[val] = len(self.nums)
+        self.nums.append(val)
+        return True
+        
+    # The most important operation. When I was working on the problem, I didn't come up with this idea
+    # to migrate the last element to the position of the removed element. It ensures O(1) time complexity.
+    def remove(self, val):
+        if val not in self.val_to_ind:
+            return False
+        val_ind = self.val_to_ind[val]
+        last_element = self.nums[-1]
+        
+        # move the last element to val_ind
+        self.nums[val_ind] = last_element
+        self.val_to_ind[last_element] = val_ind
+
+        # remove the last element
+        del self.val_to_ind[val]
+        self.nums.pop()
+        return True
+    
+    # return {int} a random number from the set
+    def getRandom(self):
+        return self.nums[random.randint(0, len(self.nums) - 1)]
