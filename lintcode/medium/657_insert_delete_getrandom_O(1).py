@@ -2,7 +2,8 @@
 https://www.lintcode.com/problem/657/
 '''
 
-# My own solution.
+# My own solution. I feel this may not be a valid solution, because we convert a set to list in getRandom() which is likely an O(n)
+# operation, where n is the size of the list/set.
 import random
 class RandomizedSet:
     
