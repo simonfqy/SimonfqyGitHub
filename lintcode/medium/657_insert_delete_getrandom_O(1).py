@@ -53,3 +53,37 @@ class RandomizedSet:
         active_indices_list = list(self.active_indices)
         ind_of_choice = active_indices_list[random.randint(0, len(active_indices_list) - 1)]
         return self.ind_to_value[ind_of_choice]
+    
+    
+# Also my own solution, but it makes use of random.choice() function directly and I'm not quite sure whether this is really permitted.    
+import random
+class RandomizedSet:
+    
+    def __init__(self):
+        self.values = set()
+
+    """
+    @param: val: a value to the set
+    @return: true if the set did not already contain the specified element or false
+    """
+    def insert(self, val):
+        if val in self.values:
+            return False
+        self.values.add(val)
+        return True        
+
+    """
+    @param: val: a value from the set
+    @return: true if the set contained the specified element or false
+    """
+    def remove(self, val):
+        if val not in self.values:
+            return False
+        self.values.remove(val)
+        return True        
+
+    """
+    @return: Get a random element from the set
+    """
+    def getRandom(self):
+        return random.choice(list(self.values))
