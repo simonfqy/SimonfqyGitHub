@@ -56,7 +56,8 @@ class RandomizedSet:
         return self.ind_to_value[ind_of_choice]
     
     
-# Also my own solution, but it makes use of random.choice() function directly and I'm not quite sure whether this is really permitted.    
+# Also my own solution, but it makes use of random.choice() function directly and I'm not quite sure whether this is really permitted. 
+# In fact, this solution is not correct, because converting set to list is not an O(1) operation.
 import random
 class RandomizedSet:
     
