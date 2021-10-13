@@ -30,8 +30,8 @@ class RandomizedCollection(object):
         self.values.append(val)
         return return_bool
         
-
-    def remove(self, val):
+    # This function is actually incorrect. It fails the leetcode test cases (though it passes the lintcode one).
+    def remove_incorrect(self, val):
         """
         Removes a value from the collection. Returns true if the collection contained the specified element.
         :type val: int
@@ -52,6 +52,34 @@ class RandomizedCollection(object):
             del self.val_to_index_set[val]
         self.values.pop()
         return True        
+    
+    # This function is the correct implementation for remove() function. It passes all leetcode tests. The important thing to note
+    # is that, we have to separately consider the cases where the self.values[-1] equals the value to be removed and where it doesn't.
+    # This complexity is due to the permission of duplication.
+    def remove(self, val):
+        """
+        Removes a value from the collection. Returns true if the collection contained the specified element.
+        :type val: int
+        :rtype: bool
+        """
+        if val not in self.val_to_index_set:
+            return False
+        index_set = self.val_to_index_set[val]
+        last_val = self.values[-1]        
+        if last_val != val:
+            # copy the last value to a random index of the val to be removed.
+            pos_to_replicate_last_val = next(iter(index_set))
+            self.values[pos_to_replicate_last_val] = last_val
+            self.val_to_index_set[last_val].remove(len(self.values) - 1)
+            self.val_to_index_set[last_val].add(pos_to_replicate_last_val)
+            self.val_to_index_set[val].remove(pos_to_replicate_last_val)
+        else:
+            self.val_to_index_set[val].remove(len(self.values) - 1)
+            
+        if len(self.val_to_index_set[val]) == 0:
+            del self.val_to_index_set[val]
+        self.values.pop()
+        return True
 
     def getRandom(self):
         """
