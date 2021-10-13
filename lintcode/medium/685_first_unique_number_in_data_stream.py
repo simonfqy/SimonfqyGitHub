@@ -4,6 +4,7 @@ https://www.lintcode.com/problem/685/
 
 # My own solution. The efficiency is not great, but much better than my initial version which maintains a list of candidate unique
 # numbers. Whenever we do a remove() operation the time complexity is O(n). Now with dictionary, the del time complexity is O(1).
+# This solution only traverses through the nums stream once.
 class Solution:
     """
     @param nums: a continuous stream of numbers
