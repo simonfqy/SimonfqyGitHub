@@ -175,3 +175,28 @@ class RandomizedCollection:
         :rtype: int
         """
         return random.choice(self.values_and_indices)[0]
+    
+    
+# Another answer from jiuzhang.com.
+import random
+class RandomizedCollection(object):
+    def __init__(self):
+        self.vals, self.indexs = [], collections.defaultdict(set)
+        
+    def insert(self, val):
+        self.vals.append(val)
+        self.indexs[val].add(len(self.vals)-1)
+        return len(self.indexs[val]) == 1
+    
+    def remove(self, val):
+        if not self.indexs[val]:
+            return False
+        x = self.indexs[val].pop()
+        self.vals[x] = None
+        return True
+
+    def getRandom(self):
+        x = None
+        while x is None:
+            x = random.choice(self.vals)
+        return x
