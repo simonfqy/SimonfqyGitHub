@@ -80,6 +80,33 @@ class RandomizedCollection(object):
             del self.val_to_index_set[val]
         self.values.pop()
         return True
+    
+    # This is also a correct implementation without needing to consider separate cases using if statements. The code logic is a bit fragile, because
+    # the order of lines of code matters, it is not easy to get the order right in the first trial.
+    # The gist of the story is that, explicitly using if statement to separate the concerns is more desirable and easier.
+    def remove_2(self, val):
+        """
+        Removes a value from the collection. Returns true if the collection contained the specified element.
+        :type val: int
+        :rtype: bool
+        """
+        if val not in self.val_to_index_set:
+            return False
+        index_set = self.val_to_index_set[val]
+        last_val = self.values[-1]
+        # copy the last value to a random index of the val to be removed.
+        pos_to_replicate_last_val = next(iter(index_set))
+        self.values[pos_to_replicate_last_val] = last_val
+        
+        # The order of the 3 lines below truly matters. It is a bit fragile.
+        self.val_to_index_set[val].remove(pos_to_replicate_last_val)        
+        self.val_to_index_set[last_val].add(pos_to_replicate_last_val)
+        self.val_to_index_set[last_val].remove(len(self.values) - 1)
+        
+        if len(self.val_to_index_set[val]) == 0:
+            del self.val_to_index_set[val]
+        self.values.pop()
+        return True
 
     def getRandom(self):
         """
