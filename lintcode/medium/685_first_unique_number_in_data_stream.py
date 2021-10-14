@@ -87,3 +87,58 @@ class Solution:
                 item = unique_nums.popitem(False)
                 return item[0]
         return -1
+    
+    
+# A solution from a student on jiuzhang.com. Implemented using Python dictionary (hashmap) and linked list.
+# Only traverses the list once. The elements in the linked list are candidate unique numbers. The first in the linked list
+# is the first unique number.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.prev = None
+        self.next = None
+
+class Solution:
+    """
+    @param nums: a continuous stream of numbers
+    @param number: a number
+    @return: returns the first unique number
+    """
+    def firstUniqueNumber(self, nums, number):
+        self.initialize()
+        val_to_node = dict()
+        terminating_number_found = False
+        for val in nums:
+            if val not in val_to_node:
+                new_node = Node(val)
+                val_to_node[val] = new_node
+                self.add_to_end(new_node)
+            elif val_to_node[val]:
+                node = val_to_node[val]
+                val_to_node[val] = None
+                self.remove(node)
+            if val == number:
+                terminating_number_found = True
+                break
+        if not terminating_number_found:
+            return -1
+        return self.head.next.val          
+        
+    def initialize(self):
+        self.head = Node(-1)
+        self.tail = Node(-1)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def add_to_end(self, new_node):
+        prev = self.tail.prev
+        prev.next = new_node
+        new_node.prev = prev
+        new_node.next = self.tail
+        self.tail.prev = new_node
+
+    def remove(self, node):
+        prev = node.prev
+        next_node = node.next
+        prev.next = next_node
+        next_node.prev = prev
