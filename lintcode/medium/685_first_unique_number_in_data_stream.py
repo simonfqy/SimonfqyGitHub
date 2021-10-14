@@ -58,4 +58,32 @@ class Solution:
             return -1
         for num in nums:
             if counter[num] == 1:
-                return num        
+                return num    
+            
+            
+# Solution from a student on jiuzhang.com. Takes advantage of OrderedDict() class which can preserve the order of
+# elements when they were added.
+from collections import OrderedDict
+class Solution:
+    """
+    @param nums: a continuous stream of numbers
+    @param number: a number
+    @return: returns the first unique number
+    """
+    def firstUniqueNumber(self, nums, number):
+        unique_nums = OrderedDict()
+        duplicate_nums = set()
+        for num in nums:
+            if num in duplicate_nums:
+                continue
+            if num in unique_nums:
+                duplicate_nums.add(num)
+                del unique_nums[num]
+                continue
+            unique_nums[num] = None
+            if num == number:
+                # The boolean argument indicates whether we should pop the last item. It defaults to True. If set
+                # to False, it would pop the first item.
+                item = unique_nums.popitem(False)
+                return item[0]
+        return -1
