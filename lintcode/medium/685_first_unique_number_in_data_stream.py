@@ -34,3 +34,28 @@ class Solution:
         if not terminating_number_found:
             return -1
         return ind_to_candidate_unique_numbers[min(ind_to_candidate_unique_numbers.keys())]
+        
+        
+# Based on an answer from jiuzhang.com. Traverses the array twice.
+class Solution:
+    """
+    @param nums: a continuous stream of numbers
+    @param number: a number
+    @return: returns the first unique number
+    """
+    def firstUniqueNumber(self, nums, number):
+        terminating_number_found = False
+        counter = dict()
+        for num in nums:
+            if num in counter and counter[num] > 1:
+                continue
+            # Notice that we can use dict.get(key, default_val) to supply a default value if the key doesn't exist yet.
+            counter[num] = counter.get(num, 0) + 1
+            if num == number:
+                terminating_number_found = True
+                break
+        if not terminating_number_found:
+            return -1
+        for num in nums:
+            if counter[num] == 1:
+                return num        
