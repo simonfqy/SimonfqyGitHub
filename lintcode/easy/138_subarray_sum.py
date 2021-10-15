@@ -36,3 +36,26 @@ class Solution:
                 subarray_sum += nums[end]
                 if subarray_sum == 0:
                     return [start, end]
+                
+                
+# My own solution. It should work, but causes time limit exceeded exception.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySum(self, nums):
+        n = len(nums)
+        self.ind_to_sum = dict()
+        for length in range(1, n + 1):
+            for start in range(n):            
+                end = start + length - 1
+                if end >= n:
+                    break
+                if start == end:
+                    self.ind_to_sum[(start, end)] = nums[start]
+                else:
+                    self.ind_to_sum[(start, end)] = self.ind_to_sum[(start, end - 1)] + nums[end]
+                    del self.ind_to_sum[(start, end - 1)]
+                if self.ind_to_sum[(start, end)] == 0:
+                    return [start, end]
