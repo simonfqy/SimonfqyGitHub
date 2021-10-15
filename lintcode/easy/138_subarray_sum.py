@@ -38,6 +38,27 @@ class Solution:
                     return [start, end]
                 
                 
+# My own solution which uses prefix sum. Slightly better performing than the one above, but still quite long.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySum(self, nums):
+        prefix_sum = []
+        curr_sum = 0
+        for i, num in enumerate(nums):
+            curr_sum += num
+            if curr_sum == 0:
+                return [0, i]
+            prefix_sum.append(curr_sum)
+        for start in range(1, len(nums)):
+            for end in range(start, len(nums)):
+                subarray_sum = prefix_sum[end] - prefix_sum[start - 1]
+                if subarray_sum == 0:
+                    return [start, end]                
+                
+                
 # My own solution. It should work, but causes time limit exceeded exception.
 class Solution:
     """
