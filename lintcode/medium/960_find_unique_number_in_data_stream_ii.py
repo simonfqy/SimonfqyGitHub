@@ -51,3 +51,33 @@ class DataStream:
     """
     def firstUnique(self):
         return self.head.next.val
+    
+    
+# My own answer, using OrderedDict.
+from collections import OrderedDict
+class DataStream:
+
+    def __init__(self):
+        self.candidate_unique_nums = OrderedDict()
+        self.repeated_nums = set()
+          
+    """
+    @param num: next number in stream
+    @return: nothing
+    """
+    def add(self, num):
+        if num in self.repeated_nums:
+            return
+        if num in self.candidate_unique_nums:
+            del self.candidate_unique_nums[num]
+            self.repeated_nums.add(num)
+            return
+        self.candidate_unique_nums[num] = None    
+
+    """
+    @return: the first unique number in stream
+    """
+    def firstUnique(self):
+        for num, _ in self.candidate_unique_nums.items():
+            return num
+        
