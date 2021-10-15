@@ -38,7 +38,7 @@ class Solution:
                     return [start, end]
                 
                 
-# My own solution which uses prefix sum. Slightly better performing than the one above, but still quite long.
+# My own solution which uses prefix sum. Around the same performance as the one above.
 class Solution:
     """
     @param nums: A list of integers
