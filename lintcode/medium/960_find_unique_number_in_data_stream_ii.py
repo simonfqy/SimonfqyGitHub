@@ -53,6 +53,58 @@ class DataStream:
         return self.head.next.val
     
     
+# Answer from jiuzhang.com. I implemented myself after reading it. It is similar to my solution above, the
+# differences are that we only have 1 dummy node which is in the head, rather than 1 in the head and 1 at tail.
+# We also have a self.tail pointer to point to the current last node in the linked list. We no longer have self.prev
+# pointer in nodes, now we have a self.num_to_prev dictionary to return us the pointer to previous nodes.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+class DataStream:
+
+    def __init__(self):
+        self.repeated_nums = set()
+        self.num_to_prev = dict()
+        self.dummy = Node(-1)
+        self.tail = self.dummy
+          
+    """
+    @param num: next number in stream
+    @return: nothing
+    """
+    def add(self, num):
+        if num in self.repeated_nums:
+            return
+        if num in self.num_to_prev:
+            self.repeated_nums.add(num)
+            self.remove(num)
+            return
+        self.add_node(num)
+
+    def remove(self, num):
+        prev = self.num_to_prev[num]
+        del self.num_to_prev[num]
+        prev.next = prev.next.next
+        if prev.next == None:
+            self.tail = prev
+        else:
+            self.num_to_prev[prev.next.val] = prev
+    
+    def add_node(self, num):
+        node = Node(num)
+        self.tail.next = node
+        self.num_to_prev[num] = self.tail
+        self.tail = node                    
+
+    """
+    @return: the first unique number in stream
+    """
+    def firstUnique(self):
+        return self.dummy.next.val
+    
+    
 # My own answer, using OrderedDict.
 from collections import OrderedDict
 class DataStream:
