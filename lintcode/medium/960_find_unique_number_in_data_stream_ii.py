@@ -133,3 +133,36 @@ class DataStream:
         for num, _ in self.candidate_unique_nums.items():
             return num
         
+        
+# This is a O(logN) time complexity solution provided by a student on jiuzhang.com. It uses heap, and
+# the self.id field is used for ordering in the heap, because heap uses the first element of the tuple for ordering.
+import heapq
+class DataStream:
+
+    def __init__(self):
+        # do intialization if necessary
+        self.heap = []
+        self.num_dict = {}
+        self.id = 0
+    """
+    @param num: next number in stream
+    @return: nothing
+    """
+    def add(self, num):
+        # write your code here
+        self.id += 1
+        self.num_dict[num] = self.num_dict.get(num, 0) + 1
+        if self.num_dict[num] == 1:
+            heapq.heappush(self.heap, (self.id, num))
+        
+    """
+    @return: the first unique number in stream
+    """
+    def firstUnique(self):
+        # write your code here
+        while self.heap:
+            if self.num_dict[self.heap[0][1]] == 1:
+                return self.heap[0][1]
+            else:
+                heapq.heappop(self.heap)
+        return -1
