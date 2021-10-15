@@ -58,7 +58,7 @@ class Solution:
             # Start the subarray index from 0 to i. j is the starting index.
             for j in range(i, -1, -1):
                 if not can_start_subarray_from_ind[j]:
-                    break
+                    continue
                 if j == 0:
                     prev_sum = 0
                 else:
