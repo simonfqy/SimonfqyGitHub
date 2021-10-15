@@ -68,7 +68,7 @@ class Solution:
                     # From now on, we cannot start from j or any earlier elements. Otherwise the subarray sum will be too large.
                     for k in range(j, -1, -1):
                         can_start_subarray_from_ind[k] = False
-                    continue
+                    break
                 if past_subarray_sum < start:
                     continue
                 count += 1     
