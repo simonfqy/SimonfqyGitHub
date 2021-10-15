@@ -69,7 +69,7 @@ class Solution:
                     for k in range(j, -1, -1):
                         can_start_subarray_from_ind[k] = False
                     continue
-                count += 1     
+                count += past_subarray_sum >= start     
         return count              
 
                   
