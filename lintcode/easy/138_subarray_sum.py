@@ -21,3 +21,18 @@ class Solution:
             if curr_sum in prefix_sum_to_ind:
                 return [prefix_sum_to_ind[curr_sum] + 1, i]
             prefix_sum_to_ind[curr_sum] = i
+            
+            
+# My own solution. It works, but the time to execute is really long.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySum(self, nums):
+        for start in range(len(nums)):
+            subarray_sum = 0
+            for end in range(start, len(nums)):
+                subarray_sum += nums[end]
+                if subarray_sum == 0:
+                    return [start, end]
