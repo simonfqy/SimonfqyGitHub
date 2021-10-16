@@ -75,3 +75,38 @@ class Solution:
         return count              
 
                   
+# This is an official solution from lintcode.com with O(n) time complexity. I actually came up with a very
+# similar solution before referring to it, but my own solution was too complicated and had some nasty details
+# which I cannot fix correctly. My own solution was still constrained by the thinking of maintaining a list
+# of prefix sum. We should think out of the box.
+class Solution:
+    """
+    @param A: An integer array
+    @param start: An integer
+    @param end: An integer
+    @return: the number of possible answer
+    """
+    def subarraySumII(self, A, start, end):
+        n = len(A)
+        count = 0
+        smaller_end, smaller_sum = 0, 0
+        bigger_end, bigger_sum = 0, 0
+        for start_ind in range(n):
+            smaller_end = max(smaller_end, start_ind)
+            bigger_end = max(bigger_end, start_ind)
+            while smaller_end < n and smaller_sum + A[smaller_end] < start:
+                smaller_sum += A[smaller_end]
+                # Note that, after this increment, A[smaller_end] is not counted towards the smaller_sum.
+                smaller_end += 1
+            while bigger_end < n and bigger_sum + A[bigger_end] <= end:
+                bigger_sum += A[bigger_end]
+                bigger_end += 1
+            if bigger_end > smaller_end:
+                count += bigger_end - smaller_end
+            if smaller_end > start_ind:
+                smaller_sum -= A[start_ind]
+            if bigger_end > start_ind:
+                bigger_sum -= A[start_ind]
+        
+        return count                
+                  
