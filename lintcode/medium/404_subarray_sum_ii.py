@@ -124,9 +124,12 @@ class Solution:
         n = len(A)
         count = 0
         presum = [0]
+        # Notice that this prefix sum list is longer than A by 1.
         for i in range(n):
             presum.append(A[i] + presum[i])
+        # Notice that it starts from 1 and ends at n.
         for right in range(1, n + 1):
+            # Take care of special cases.
             if A[right - 1] > end or presum[right] < start:
                 continue
             left_start = self.find_start_ind(presum, right, end)
