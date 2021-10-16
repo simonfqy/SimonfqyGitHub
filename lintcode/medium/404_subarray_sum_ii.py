@@ -75,10 +75,9 @@ class Solution:
         return count              
 
                   
-# This is an official solution from lintcode.com with O(n) time complexity. I actually came up with a very
-# similar solution before referring to it, but my own solution was too complicated and had some nasty details
-# which I cannot fix correctly. My own solution was still constrained by the thinking of maintaining a list
-# of prefix sum. We should think out of the box.
+# This is an official solution from lintcode.com with O(n) time complexity, using two pointers. I actually came up with a very
+# similar solution before referring to it, but my own solution was too complicated and had some nasty details which I cannot 
+# fix correctly. My own solution was still constrained by the thinking of maintaining a list of prefix sum. We should think out of the box.
 class Solution:
     """
     @param A: An integer array
