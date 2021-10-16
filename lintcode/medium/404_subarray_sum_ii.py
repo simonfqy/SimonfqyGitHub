@@ -108,4 +108,53 @@ class Solution:
                 bigger_sum -= A[start_ind]
         
         return count                
+    
                   
+# Another official solution from lintcode.com. Uses binary search and has time complexity O(nlogn),
+# not as good as the two pointer approach. Besides, it has lots of small details to take care of, which
+# makes it error-prone.
+class Solution:
+    """
+    @param A: An integer array
+    @param start: An integer
+    @param end: An integer
+    @return: the number of possible answer
+    """
+    def subarraySumII(self, A, start, end):
+        n = len(A)
+        count = 0
+        presum = [0]
+        for i in range(n):
+            presum.append(A[i] + presum[i])
+        for right in range(1, n + 1):
+            if A[right - 1] > end or presum[right] < start:
+                continue
+            left_start = self.find_start_ind(presum, right, end)
+            left_end = self.find_end_ind(presum, right, start)
+            count += left_end - left_start + 1
+        return count
+
+    def find_start_ind(self, presum, right, end):
+        start_ind, end_ind = 0, right - 1
+        while start_ind + 1 < end_ind:
+            mid_ind = (start_ind + end_ind) // 2
+            if presum[right] - presum[mid_ind] <= end:
+                end_ind = mid_ind
+            else:
+                start_ind = mid_ind
+        if presum[right] - presum[start_ind] <= end:
+            return start_ind
+        return end_ind
+    
+    def find_end_ind(self, presum, right, start):
+        start_ind, end_ind = 0, right - 1
+        while start_ind + 1 < end_ind:
+            mid_ind = (start_ind + end_ind) // 2
+            if presum[right] - presum[mid_ind] > start:
+                start_ind = mid_ind
+            else:
+                end_ind = mid_ind
+        if presum[right] - presum[end_ind] >= start:
+            return end_ind
+        return start_ind      
+            
