@@ -83,6 +83,41 @@ class Solution:
         return best_indices
     
     
+# My own solution, slightly modified from the one above. Added the check of the prefix sum from the beginning,
+# instead of only checking the difference between prefix sums.
+import sys
+class Solution:
+    """
+    @param: nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySumClosest(self, nums):
+        # write your code here
+        curr_sum = 0
+        prefix_sum_and_ind_list = []
+        for i, num in enumerate(nums):
+            curr_sum += num
+            if curr_sum == 0:
+                return [0, i]
+            prefix_sum_and_ind_list.append((curr_sum, i))
+        prefix_sum_and_ind_list.sort()
+        min_sum = sys.maxsize
+        prev_sum, prev_ind = 0, -1
+        best_indices = []
+        for prefix_sum, ind in prefix_sum_and_ind_list:
+            diff = abs(prefix_sum - prev_sum)
+            if diff == 0:
+                return [min(prev_ind, ind) + 1, max(prev_ind, ind)]
+            if diff < min_sum:
+                min_sum = diff
+                best_indices = [min(prev_ind, ind) + 1, max(prev_ind, ind)]
+            if abs(prefix_sum) < min_sum:
+                min_sum = abs(prefix_sum)
+                best_indices = [0, ind]
+            prev_sum, prev_ind = prefix_sum, ind
+        return best_indices
+
+    
 # My own solution. Uses a hashmap (dictionary) and sorting the prefix sum list. Has O(nlogn) time complexity.
 import sys
 class Solution:
