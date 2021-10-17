@@ -23,6 +23,25 @@ class Solution:
             prefix_sum_to_ind[curr_sum] = i
             
             
+# Solution from jiuzhang.com. It is very similar to the one above, but notice how we added the {0: -1} to the prefix hash
+# dictionary, so in the for loop we don't need to explicitly check whether prefix_sum == 0. It's more succinct.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def subarraySum(self, nums):
+        prefix_hash = {0: -1}
+        prefix_sum = 0
+        for i, num in enumerate(nums):
+            prefix_sum += num
+            if prefix_sum in prefix_hash:
+                return prefix_hash[prefix_sum] + 1, i
+            prefix_hash[prefix_sum] = i
+            
+        return -1, -1            
+            
+            
 # My own solution. It works, but the time to execute is really long.
 class Solution:
     """
