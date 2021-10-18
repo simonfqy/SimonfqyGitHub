@@ -12,7 +12,7 @@ class Solution:
         results = []
         sorted_word_to_original_words = dict()
         for word in strs:
-            sorted_word = ''.join(sorted(list(word)))
+            sorted_word = ''.join(sorted(word))
             if sorted_word not in sorted_word_to_original_words:
                 sorted_word_to_original_words[sorted_word] = []
             sorted_word_to_original_words[sorted_word].append(word)
