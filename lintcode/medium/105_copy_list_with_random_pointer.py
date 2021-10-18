@@ -46,9 +46,8 @@ class Solution:
         return copy_head
     
     
-# We construct a linked list of 1 -> 1' -> 2 -> 2' -> 3 -> 3'..., so we no longer need a map (dictionary)
-# to record the original node -> replicated node correspondence. This way the extra space complexity is O(1)
-# rather than O(n) of maintaining a map.
+# This is a solution from jiuzhang.com. We construct a linked list of 1 -> 1' -> 2 -> 2' -> 3 -> 3'..., so we no longer need a map (dictionary)
+# to record the original node -> replicated node correspondence. This way the extra space complexity is O(1) rather than O(n) of maintaining a map.
 class Solution:
     # @param head: A RandomListNode
     # @return: A RandomListNode
@@ -57,8 +56,7 @@ class Solution:
         self.copy_random(head)
         return self.split_list(head)
 
-    # In those functions, assigning head to other values will not change the head variable in the calling
-    # function, so they're safe to use.
+    # In those functions, assigning head to other values will not change the head variable in the calling function, so they're safe to use.
     def copy_next(self, head):
         while head:
             copied_node = RandomListNode(head.label)
