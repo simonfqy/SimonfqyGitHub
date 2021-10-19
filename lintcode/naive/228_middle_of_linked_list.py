@@ -73,3 +73,22 @@ class Solution:
             fast = fast.next.next
 
         return slow
+    
+    
+# My own solution. Similar to the one above, but more verbose.
+class Solution:
+    """
+    @param head: the head of linked list.
+    @return: a middle node of the linked list
+    """
+    def middleNode(self, head):
+        fast, slow = head, head
+        while fast:
+            fast = fast.next
+            if not fast:
+                break
+            fast = fast.next
+            if not fast:
+                break
+            slow = slow.next
+        return slow
