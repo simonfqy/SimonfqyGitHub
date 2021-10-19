@@ -45,3 +45,19 @@ class Solution:
         if next_node:
             curr_node.val = next_node.val
             curr_node.next = next_node.next
+            
+            
+# A more succinct solution from lintcode.com.  
+class Solution:
+    """
+    @param: node: the node in the list should be deleted
+    @return: nothing
+    """
+    def deleteNode(self, node):
+        # write your code here
+        if not node or not node.next:
+            node = None
+            return
+
+        node.val = node.next.val
+        node.next = node.next.next
