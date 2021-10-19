@@ -36,3 +36,29 @@ class Solution:
                 continue
             slow = slow.next
         return head
+    
+    
+# My own solution. Slightly optimized from the one above, does not require getting the length of the linked list.
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @param n: An integer
+    @return: The head of linked list.
+    """
+    def removeNthFromEnd(self, head, n):
+        fast, slow = head, head
+        gap = 0
+        while fast:
+            if not fast.next:
+                if gap >= n:
+                    slow.next = slow.next.next
+                else:
+                    # Handle the special situation where number of nodes in the list is n.
+                    return head.next
+                break                
+            fast = fast.next
+            if gap < n:
+                gap += 1
+                continue
+            slow = slow.next
+        return head
