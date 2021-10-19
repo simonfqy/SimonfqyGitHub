@@ -86,3 +86,23 @@ class Solution:
                 continue
             slow = slow.next
         return dummy.next
+    
+    
+# Solution from lintcode.com. It is similar to my own solution above, but it is slightly clearer.
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @param n: An integer
+    @return: The head of linked list.
+    """
+    def removeNthFromEnd(self, head, n):
+        dummy = ListNode(-1, head)
+        # Note that slow starts from dummy but fast starts from head.
+        slow, fast = dummy, head
+        for _ in range(n):
+            fast = fast.next
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
