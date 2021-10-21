@@ -76,7 +76,8 @@ class Solution:
             return -smaller_nums[0]
         
         curr_median = -smaller_nums[0]     
-        # If we remove nums[start - 1] before pushing nums[end], we'll encounter exceptions saying that the element doesn't exist in the list.   
+        # If we remove nums[start - 1] before pushing nums[end], we'll encounter exceptions saying that the element doesn't exist in the list. 
+        # If we add a condition of `nums[start - 1] in set(bigger_nums)` after `nums[start - 1] > curr_median`, it'll solve the problem.
         if nums[end] > curr_median:
             heapq.heappush(bigger_nums, nums[end])
         else:
