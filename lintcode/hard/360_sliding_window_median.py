@@ -99,3 +99,79 @@ class Solution:
             heapq.heappush(bigger_nums, -transfer)                           
 
         return -smaller_nums[0]
+    
+    
+# This is my implementation of a solution provided by a user from lintcode.com. It uses 2 heapq heaps to implement a 
+# custom Heap class. The difficult problem of remove() is now solved by having a second heapq storing the elements to
+# be removed, which are actually removed when calling the peek() and pop() functions. Time complexity is O(nlogk).
+import heapq
+
+class Heap:
+    def __init__(self):
+        self.__q1, self.__q2 = [], []
+    
+    def push(self, val):
+        heapq.heappush(self.__q1, val)
+    
+    def remove(self, val):
+        heapq.heappush(self.__q2, val)
+
+    def peek(self):
+        while len(self.__q2) > 0 and self.__q2[0] == self.__q1[0]:
+            heapq.heappop(self.__q1)
+            heapq.heappop(self.__q2)
+        if len(self.__q1) > 0:
+            return self.__q1[0]        
+
+    def pop(self):
+        while len(self.__q2) > 0 and self.__q2[0] == self.__q1[0]:
+            heapq.heappop(self.__q1)
+            heapq.heappop(self.__q2)
+        if len(self.__q1) > 0:
+            return heapq.heappop(self.__q1)
+
+    def size(self):
+        return len(self.__q1) - len(self.__q2)
+
+
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer
+    @return: The median of the element inside the window at each moving
+    """
+    def medianSlidingWindow(self, nums, k):
+        if k == 0 or not nums:
+            return []
+        smaller_nums_negative_heap = Heap()
+        bigger_nums_positive_heap = Heap()
+        medians = []
+        for end in range(len(nums)):
+            self.populate_median(nums, k, end, smaller_nums_negative_heap, bigger_nums_positive_heap, medians)
+        return medians
+
+    def populate_median(self, nums, k, end, smaller_nums_negative_heap, bigger_nums_positive_heap, medians):
+        start = end - k + 1 # Inclusive
+        if end == 0: # If we change this condition to start <= 0, we'll introduce bugs.
+            smaller_nums_negative_heap.push(-nums[end])
+        else:
+            curr_median = -smaller_nums_negative_heap.peek()            
+            if nums[end] <= curr_median:
+                smaller_nums_negative_heap.push(-nums[end])
+            else:
+                bigger_nums_positive_heap.push(nums[end])
+            if start > 0:
+                if nums[start - 1] <= curr_median:
+                    smaller_nums_negative_heap.remove(-nums[start - 1])
+                else:
+                    bigger_nums_positive_heap.remove(nums[start - 1])
+
+        if smaller_nums_negative_heap.size() < bigger_nums_positive_heap.size():
+            transfer = bigger_nums_positive_heap.pop()
+            smaller_nums_negative_heap.push(-transfer)
+        elif smaller_nums_negative_heap.size() > bigger_nums_positive_heap.size() + 1:            
+            transfer = -smaller_nums_negative_heap.pop()
+            bigger_nums_positive_heap.push(transfer)
+        if start >= 0:
+            medians.append(-smaller_nums_negative_heap.peek())
+        
