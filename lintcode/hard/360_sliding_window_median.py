@@ -46,3 +46,54 @@ class Solution:
                 place_to_insert = ind
         ordered_list.insert(place_to_insert, new_element)
         return ordered_list
+    
+    
+# This is my own solution, it uses heaps. It hits the time limit exceeded problem. Time complexity is O(n^2).
+import heapq
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer
+    @return: The median of the element inside the window at each moving
+    """
+    def medianSlidingWindow(self, nums, k):
+        if len(nums) == 0 or k == 0:
+            return []
+        smaller_nums, bigger_nums = [], []
+        medians = []
+        for start in range(len(nums) - k + 1):
+            medians.append(self.get_median(nums, k, start, smaller_nums, bigger_nums))
+        return medians
+
+    def get_median(self, nums, k, start, smaller_nums, bigger_nums):
+        end = start + k - 1 # It is inclusive
+        if start == 0:
+            sorted_section = sorted(nums[start : end + 1])
+            for i in range((k - 1)//2, -1, -1):
+                heapq.heappush(smaller_nums, -sorted_section[i])
+            for i in range((k - 1)//2 + 1, k):
+                heapq.heappush(bigger_nums, sorted_section[i])
+            return -smaller_nums[0]
+        
+        curr_median = -smaller_nums[0]     
+        # If we remove nums[start - 1] before pusing nums[end], we'll encounter exceptions.   
+        if nums[end] > curr_median:
+            heapq.heappush(bigger_nums, nums[end])
+        else:
+            heapq.heappush(smaller_nums, -nums[end])      
+        if nums[start - 1] > curr_median:
+            bigger_nums.remove(nums[start - 1])
+            # Heapify after removing element is crucial, otherwise there will be nasty errors.
+            # Whether we heapify the bigger_nums and smaller_nums right after declaring them won't make a difference.
+            heapq.heapify(bigger_nums)
+        else:
+            smaller_nums.remove(-nums[start - 1])
+            heapq.heapify(smaller_nums)            
+        if len(bigger_nums) > len(smaller_nums):
+            transfer = heapq.heappop(bigger_nums)
+            heapq.heappush(smaller_nums, -transfer)
+        elif len(smaller_nums) > len(bigger_nums) + 1:
+            transfer = heapq.heappop(smaller_nums)
+            heapq.heappush(bigger_nums, -transfer)                           
+
+        return -smaller_nums[0]
