@@ -85,7 +85,7 @@ class Solution:
             heapq.heappush(smaller_nums, -nums[end])      
         if nums[start - 1] > curr_median:
             bigger_nums.remove(nums[start - 1])
-            # Heapify after removing element is crucial, otherwise there will be nasty errors.
+            # Heapify after removing element is crucial, otherwise there will be nasty errors, because the list no longer satisfies heap requirements.
             # Whether we heapify the bigger_nums and smaller_nums right after declaring them won't make a difference.
             heapq.heapify(bigger_nums)
         else:
