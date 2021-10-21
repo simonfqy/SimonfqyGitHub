@@ -48,7 +48,7 @@ class Solution:
         return ordered_list
     
     
-# This is my own solution, it uses heaps. It hits the time limit exceeded problem. Time complexity is O(n^2).
+# This is my own solution, it uses heaps. It hits the time limit exceeded problem. Time complexity is O(nk), where n is the length of nums.
 import heapq
 class Solution:
     """
