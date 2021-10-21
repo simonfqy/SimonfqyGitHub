@@ -74,8 +74,50 @@ class Solution:
         return -heapq.nsmallest(1, self.smaller_half_negative_heap)[0]
     
     
-# This solution is from jiuzhang.com. It is similar in idea to my solution above, but it is much simpler.
-# And most importantly, it passes the test cases. 
+# My own solution, only slightly modified from the one above by changing the heapq.nsmallest() functions to directly
+# using index access. For example, changing the -heapq.nsmallest(1, self.smaller_half_negative_heap)[0] to
+# -self.smaller_half_negative_heap[0]. It drastically improved the performance and now we pass all the tests.
+# Lesson learned: for a heap queue, if we want to get the smallest element, just use queue[0] to retrieve it, don't use
+# functions like heapq.nsmallest() or min().
+import heapq
+class Solution:
+    def __init__(self):
+        self.smaller_half_negative_heap, self.bigger_half_heap = [], []
+        heapq.heapify(self.smaller_half_negative_heap)
+        heapq.heapify(self.bigger_half_heap)
+
+    """
+    @param val: a num from the data stream.
+    @return: nothing
+    """
+    def add(self, val: int):  
+        if len(self.smaller_half_negative_heap) > len(self.bigger_half_heap):
+            biggest_element_in_smaller_half = -self.smaller_half_negative_heap[0]
+            # We need to increment the self.bigger_half_heap.
+            if val >= biggest_element_in_smaller_half:
+                heapq.heappush(self.bigger_half_heap, val)
+            else:
+                largest_in_smaller_half = -heapq.heapreplace(self.smaller_half_negative_heap, -val)
+                heapq.heappush(self.bigger_half_heap, largest_in_smaller_half)
+        else:      
+            if len(self.bigger_half_heap) > 0:
+                smallest_element_in_larger_half = self.bigger_half_heap[0]
+            # Increment the self.smaller_half_negative_heap
+            if len(self.smaller_half_negative_heap) == 0 or val <= smallest_element_in_larger_half:
+                heapq.heappush(self.smaller_half_negative_heap, -val)
+            else:
+                smallest_in_larger_half = heapq.heappushpop(self.bigger_half_heap, val)
+                heapq.heappush(self.smaller_half_negative_heap, -smallest_in_larger_half)
+
+    """
+    @return: return the median of the all numbers
+    """
+    def getMedian(self) -> int:
+        return -self.smaller_half_negative_heap[0]    
+    
+    
+# This solution is from jiuzhang.com. It is similar in idea to my solution above, but it is simpler.
+# The time to execute is also similar. 
 # Lesson learned: use heap when needed; keep a standalone median variable to reduce the time complexity which
 # might be associated to selecting min value in the heap used in the solution above.
 import heapq
