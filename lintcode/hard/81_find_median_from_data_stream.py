@@ -72,3 +72,37 @@ class Solution:
     """
     def getMedian(self) -> int:
         return -heapq.nsmallest(1, self.smaller_half_negative_heap)[0]
+    
+    
+# This solution is from jiuzhang.com. It is similar in idea to my solution above, but it is much simpler.
+# And most importantly, it passes the test cases. 
+# Lesson learned: use heap when needed; keep a standalone median variable to reduce the time complexity which
+# might be associated to selecting min value in the heap used in the solution above.
+import heapq
+class Solution:
+    def __init__(self):
+        self.median = 0
+        self.is_empty = True
+        self.smaller_nums = []
+        self.larger_nums = []
+        
+    def add(self, val):
+        if self.is_empty:
+            self.median = val
+            self.is_empty = False
+            return
+        if val <= self.median:
+            heapq.heappush(self.smaller_nums, -val)
+        else:
+            heapq.heappush(self.larger_nums, val)
+        if len(self.larger_nums) > len(self.smaller_nums) + 1:
+            heapq.heappush(self.smaller_nums, -self.median)
+            self.median = heapq.heappop(self.larger_nums)
+        elif len(self.larger_nums) < len(self.smaller_nums):
+            heapq.heappush(self.larger_nums, self.median)
+            self.median = -heapq.heappop(self.smaller_nums)
+
+    def getMedian(self):
+        return self.median
+
+
