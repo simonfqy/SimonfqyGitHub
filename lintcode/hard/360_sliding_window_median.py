@@ -174,4 +174,115 @@ class Solution:
             bigger_nums_positive_heap.push(transfer)
         if start >= 0:
             medians.append(-smaller_nums_negative_heap.peek())
+            
         
+# This is the official solution from lintcode.com. It uses a custom implemented hash heap so that we can achieve 
+# O(logk) time complexity of item removal from the heap, where k is the heap size.
+class HashHeap:
+    def __init__(self, desc=False):
+        self.heap = []
+        self.item_to_ind = dict()
+        self.desc = desc
+
+    @property
+    def size(self):
+        return len(self.heap)
+
+    def top(self):
+        return self.heap[0]
+
+    def push(self, item):
+        self.heap.append(item)
+        self.item_to_ind[item] = self.size - 1
+        self._sift_up(self.size - 1)
+
+    def pop(self):
+        item = self.top()
+        self.remove(item)
+        return item
+
+    def _smaller_than(self, item_1, item_2):
+        return item_1 > item_2 if self.desc else item_1 < item_2
+
+    def remove(self, item):
+        if item not in self.item_to_ind:
+            return
+        index = self.item_to_ind[item]
+        self._swap(index, self.size - 1)
+        self.heap.pop()
+        del self.item_to_ind[item]
+        if index < self.size:
+            self._sift_down(index)
+            self._sift_up(index)
+    
+    def _sift_up(self, index):
+        while index > 0:
+            parent_ind = index // 2
+            if self._smaller_than(self.heap[parent_ind], self.heap[index]):
+                break
+            self._swap(index, parent_ind)
+            index = parent_ind
+
+    def _sift_down(self, index):
+        while index * 2 < self.size:
+            smallest = index
+            left = index * 2
+            right = index * 2 + 1
+            if self._smaller_than(self.heap[left], self.heap[smallest]):
+                smallest = left      
+            # Initially I forgot this right < self.size condition. We should include it for correctness.      
+            if right < self.size and self._smaller_than(self.heap[right], self.heap[smallest]):
+                smallest = right
+            if smallest == index:
+                break
+            self._swap(index, smallest)
+            index = smallest
+
+    def _swap(self, i, j):
+        self.item_to_ind[self.heap[i]] = j
+        self.item_to_ind[self.heap[j]] = i
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer
+    @return: The median of the element inside the window at each moving
+    """
+    def medianSlidingWindow(self, nums, k):
+        if len(nums) < k or k == 0:
+            return []
+        self.smaller_nums_heap = HashHeap(desc=True)
+        self.bigger_nums_heap = HashHeap()        
+        for i in range(k):
+            self.add((nums[i], i))
+        medians = [self.median]
+        for i in range(k, len(nums)):            
+            self.add((nums[i], i))
+            self.remove((nums[i - k], i - k))  
+            medians.append(self.median)          
+        return medians
+    
+    def add(self, item):
+        if self.smaller_nums_heap.size > self.bigger_nums_heap.size:
+            self.bigger_nums_heap.push(item)            
+        else:
+            self.smaller_nums_heap.push(item)
+        if self.smaller_nums_heap.size == 0 or self.bigger_nums_heap.size == 0:
+            return
+        if self.smaller_nums_heap.top() > self.bigger_nums_heap.top():
+            self.bigger_nums_heap.push(self.smaller_nums_heap.pop())
+            self.smaller_nums_heap.push(self.bigger_nums_heap.pop())            
+
+    def remove(self, item):
+        self.bigger_nums_heap.remove(item)
+        self.smaller_nums_heap.remove(item)
+        if self.bigger_nums_heap.size > self.smaller_nums_heap.size:
+            self.smaller_nums_heap.push(self.bigger_nums_heap.pop())
+        elif self.smaller_nums_heap.size > self.bigger_nums_heap.size + 1:
+            self.bigger_nums_heap.push(self.smaller_nums_heap.pop())
+    
+    @property
+    def median(self):
+        return self.smaller_nums_heap.top()[0]
