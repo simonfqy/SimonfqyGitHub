@@ -273,7 +273,24 @@ class Solution:
             return
         if self.smaller_nums_heap.top() > self.bigger_nums_heap.top():
             self.bigger_nums_heap.push(self.smaller_nums_heap.pop())
-            self.smaller_nums_heap.push(self.bigger_nums_heap.pop())            
+            self.smaller_nums_heap.push(self.bigger_nums_heap.pop())    
+    
+    
+    # NOTE: the existing implementation takes ~2400ms to execute. If we use the function below to substitute the existing
+    # add() function, although the time complexity is not changed, the actual time required is reduced to ~1800ms. Obviously
+    # with the add2() function, there are less heap pop() and push() operations involved, hence saving some time.
+    def add2(self, item):
+        if self.smaller_nums_heap.size == 0:
+            self.smaller_nums_heap.push(item)
+            return        
+        if item[0] <= self.median:
+            self.smaller_nums_heap.push(item)
+        else:
+            self.bigger_nums_heap.push(item)
+        if self.smaller_nums_heap.size < self.bigger_nums_heap.size:
+            self.smaller_nums_heap.push(self.bigger_nums_heap.pop())  
+        elif self.smaller_nums_heap.size > self.bigger_nums_heap.size + 1:
+            self.bigger_nums_heap.push(self.smaller_nums_heap.pop())        
 
     def remove(self, item):
         self.bigger_nums_heap.remove(item)
