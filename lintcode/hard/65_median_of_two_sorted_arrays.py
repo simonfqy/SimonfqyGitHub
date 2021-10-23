@@ -289,8 +289,8 @@ class Solution:
         return 0
     
     
-# This is my own solution. Uses recursion with binary search. In the binary search, we can't simply
-# calculate a midpoint: it will result in errors. We should calculate a proportion. 
+# This is my own solution. Uses recursion with binary search. In the binary search, we can't simply calculate a midpoint: it 
+# will result in errors. We should calculate a proportion, based on which we compute a cut-off point to narrow down the search range. 
 class Solution:
     """
     @param: A: An integer array
