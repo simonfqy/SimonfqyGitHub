@@ -287,3 +287,41 @@ class Solution:
         # Haven't found any elements with value no larger than flag. It is an indication that all the values in the
         # array have values larger than the flag, hence return 0.
         return 0
+    
+    
+# This is my own solution. Uses recursion with binary search. In the binary search, we can't simply
+# calculate a midpoint: it will result in errors. We should calculate a proportion. 
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        m, n = len(A), len(B)
+        is_even = (m + n) % 2 == 0
+        first_ind = (m + n - 1)//2
+        first_num = self.find_order_num(A, B, 0, m - 1, 0, n - 1, first_ind)
+        if not is_even:
+            return first_num
+        else:
+            second_num = self.find_order_num(A, B, 0, m - 1, 0, n - 1, first_ind + 1)
+            return (first_num + second_num) / 2
+    
+    # We cannot simply calculate a_mid and b_mid indices. We need to calculate based on proportion.
+    def find_order_num(self, A, B, a_start, a_end, b_start, b_end, order_num):        
+        if a_end - a_start <= 1 and b_end - b_start <= 1:
+            all_nums = sorted(A[a_start : a_end + 2] + B[b_start : b_end + 2])
+            return all_nums[order_num]
+        a_length = a_end - a_start + 1
+        b_length = b_end - b_start + 1
+        # Initially I use order_num + 1 as the numerator and it resulted in errors. We should make it
+        # smaller as appropriate (similar to using left + end // 2 to assign value to mid). So remove the "+1" part.
+        proportion = order_num / (a_length + b_length)
+        a_next, b_next = int(a_start + proportion * a_length), int(b_start + proportion * b_length)
+        if A[a_next] <= B[b_next]:
+            updated_order_num = order_num - (a_next - a_start) 
+            return self.find_order_num(A, B, a_next, a_end, b_start, b_next, updated_order_num)
+        else:
+            updated_order_num = order_num - (b_next - b_start) 
+            return self.find_order_num(A, B, a_start, a_next, b_next, b_end, updated_order_num)
