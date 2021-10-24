@@ -162,7 +162,8 @@ class Solution:
         #     new_target_order)
         
         
-# The original version of the previous solution on jiuzhang.com.
+# The original version of the previous solution on jiuzhang.com. It converts the original problem of finding median into finding
+# the kth element in A and B, then each step it approaches the kth element by k/2, halving k in each recursion.
 # 本参考程序来自九章算法，由 @令狐冲 提供。版权所有，转发请注明出处。
 # - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
 # - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
