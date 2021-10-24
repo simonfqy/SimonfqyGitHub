@@ -140,7 +140,6 @@ class Solution:
         if target_num_order == 0:
             return min(A[a_start], B[b_start])
         mid_pos = (target_num_order - 1) // 2
-        # mid_pos = int((target_num_order - 1) / 2)
         A_mid_val, B_mid_val = None, None
         if mid_pos + a_start <= len(A) - 1:
             A_mid_val = A[mid_pos + a_start]
@@ -155,7 +154,7 @@ class Solution:
         # Truncate the A array.
         return self.find_element_of_sorted_arrays(A, B, a_start + mid_pos + 1, b_start, new_target_order)
         # The code below introduces problem (originally the previous line was the body of an if-block, the if
-        # statement was "B_mid_val is None or ... B_mid_val > A_mid_val"). I used to think that we to handle the third 
+        # statement was "B_mid_val is None or ... B_mid_val > A_mid_val"). I used to think that we should handle the third 
         # scenario in which B_mid_val == A_mid_val, but it would cause infinite loop.
         # Truncate both arrays.
         # new_target_order = target_num_order - (mid_pos + 1) * 2
