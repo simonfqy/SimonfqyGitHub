@@ -315,8 +315,8 @@ class Solution:
             return all_nums[order_num]
         a_length = a_end - a_start + 1
         b_length = b_end - b_start + 1
-        # Initially I use order_num + 1 as the numerator and it resulted in errors. We should make it
-        # smaller as appropriate (similar to using left + end // 2 to assign value to mid). So remove the "+1" part.
+        # Initially I used order_num + 1 as the numerator and it resulted in errors. We should make it
+        # smaller as appropriate (similar to using (left + end) // 2 to assign value to mid). So remove the "+1" part.
         proportion = order_num / (a_length + b_length)
         a_next, b_next = int(a_start + proportion * a_length), int(b_start + proportion * b_length)
         if A[a_next] <= B[b_next]:
