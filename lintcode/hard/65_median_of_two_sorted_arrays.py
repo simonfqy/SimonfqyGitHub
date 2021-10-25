@@ -228,6 +228,8 @@ class Solution:
             candidates = sorted(A[A_start_ind : A_start_ind + 2] + B[B_start_ind : B_start_ind + 2])
             return candidates[1]        
         if A_start_ind + k // 2 >= len(A):
+            # The logic is more complicated than necessary. See the simplified version of the function below, where these
+            # if-branches are simplified.
             if A[-1] <= B[B_start_ind + k // 2]:
                 increment = len(A) - A_start_ind
                 return self.find_kth_element(A, B, len(A), B_start_ind, k - increment)  
@@ -241,6 +243,30 @@ class Solution:
         if A[A_start_ind + k // 2] <= B[B_start_ind + k // 2]:
             return self.find_kth_element(A, B, A_start_ind + k // 2, B_start_ind, k - k // 2)        
         return self.find_kth_element(A, B, A_start_ind, B_start_ind + k // 2, k - k // 2)    
+    
+    # This is a slightly simplified version of the helper function.    
+    def find_kth_element2(self, A, B, A_start_ind, B_start_ind, k):
+        if A_start_ind >= len(A):
+            return B[B_start_ind + k]
+        if B_start_ind >= len(B):
+            return A[A_start_ind + k]
+        if k == 0:
+            return min(A[A_start_ind], B[B_start_ind])
+        if k == 1:
+            candidates = sorted(A[A_start_ind : A_start_ind + 2] + B[B_start_ind : B_start_ind + 2])
+            return candidates[1]        
+        if A_start_ind + k // 2 >= len(A):
+            # If A[-1] is very small, B[B_start_ind + k // 2] will be smaller than the kth number, so we can safely
+            # increment the B index; if A[-1] is very large, B[B_start_ind + k // 2] will also be smaller than the kth number,
+            # we can still safely increment B index. In both cases, the A index remains unchanged. The same applies to the 
+            # scenario where B_start_ind + k // 2 >= len(B)
+            return self.find_kth_element(A, B, A_start_ind, B_start_ind + k // 2, k - k // 2)              
+        if B_start_ind + k // 2 >= len(B): 
+            return self.find_kth_element(A, B, A_start_ind + k // 2, B_start_ind, k - k // 2)
+
+        if A[A_start_ind + k // 2] <= B[B_start_ind + k // 2]:
+            return self.find_kth_element(A, B, A_start_ind + k // 2, B_start_ind, k - k // 2)        
+        return self.find_kth_element(A, B, A_start_ind, B_start_ind + k // 2, k - k // 2)
     
     
 # A tricky solution.     
