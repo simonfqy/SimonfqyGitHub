@@ -201,6 +201,48 @@ class Solution:
         return self.findKth(A, index_a, B, index_b + k // 2, k - k // 2)
     
     
+# My implementation based on the solution above. Now k starts from 1 rather than 0.
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        m, n = len(A), len(B)
+        first_ind = (m + n - 1) // 2
+        first_num = self.find_kth_element(A, B, 0, 0, first_ind)
+        if (m + n) % 2 == 1:
+            return first_num
+        second_num = self.find_kth_element(A, B, 0, 0, first_ind + 1)
+        return (first_num + second_num) / 2
+        
+    def find_kth_element(self, A, B, A_start_ind, B_start_ind, k):
+        if A_start_ind >= len(A):
+            return B[B_start_ind + k]
+        if B_start_ind >= len(B):
+            return A[A_start_ind + k]
+        if k == 0:
+            return min(A[A_start_ind], B[B_start_ind])
+        if k == 1:
+            candidates = sorted(A[A_start_ind : A_start_ind + 2] + B[B_start_ind : B_start_ind + 2])
+            return candidates[1]        
+        if A_start_ind + k // 2 >= len(A):
+            if A[-1] <= B[B_start_ind + k // 2]:
+                increment = len(A) - A_start_ind
+                return self.find_kth_element(A, B, len(A), B_start_ind, k - increment)  
+            return self.find_kth_element(A, B, A_start_ind, B_start_ind + k // 2, k - k // 2)              
+        if B_start_ind + k // 2 >= len(B): 
+            if B[-1] <= A[A_start_ind + k // 2]:
+                increment = len(B) - B_start_ind
+                return self.find_kth_element(A, B, A_start_ind, len(B), k - increment)
+            return self.find_kth_element(A, B, A_start_ind + k // 2, B_start_ind, k - k // 2)
+
+        if A[A_start_ind + k // 2] <= B[B_start_ind + k // 2]:
+            return self.find_kth_element(A, B, A_start_ind + k // 2, B_start_ind, k - k // 2)        
+        return self.find_kth_element(A, B, A_start_ind, B_start_ind + k // 2, k - k // 2)    
+    
+    
 # A tricky solution.     
 # 本参考程序来自九章算法，由 @李助教 提供。版权所有，转发请注明出处。
 # - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
