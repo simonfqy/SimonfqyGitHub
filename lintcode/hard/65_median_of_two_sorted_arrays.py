@@ -393,3 +393,79 @@ class Solution:
         else:
             updated_order_num = order_num - (b_next - b_start) 
             return self.find_order_num(A, B, a_start, a_next, b_next, b_end, updated_order_num)
+        
+        
+# The solution is from jiuzhang.com. It has the best time complexity: O(log(min(m, n))), however there are a painful amount of details to
+# take care of the indices which makes this implementation very hard to debug.
+# 解题思路
+# 对于长度为m的数组A，我们把A划分成两个部分A1 = A[0, i-1]和A2 = A[i, m-1]。对于长度为n的数组B，将B划分成B1 = B[0, j-1]和B2 = B[j, n-1]，
+# 使得len(A1) + len(B1) == len(A2) + len(B2)（记作条件1），那么当A划分后，B的划分位置就是确定的。
+# 如果我们能够确定max(A1[:], B1[:]) <= min(A2[:], B2[:])（记作条件2），说明我们已经找到合适的划分，能够把{A, B}分成长度相等的两份，
+# 且一份中的元素全部大于等于另一份。那么，中位数就为(max(A1[:], B1[:]) + min(A2[:], B2[:])) / 2。
+# 怎么找到满足条件2的划分呢？选择较短的数组，假设长度为m，对它可能的划分位置有m + 1种。我们可以进行二分搜索，那么时间复杂度能够进一步优化到O(log(min(m, n)))。
+# 算法流程
+# 如果A长度大于B，两者交换一下，保证A是更短的。
+# 对A进行二分，low和high初始化为0和m，每次循环不断缩小二分区间 对A的划分位置partition_x为区间中点low + (high - low) // 2，根据条件1计算出B的划分
+# 位置partition_y。 我们在划分处的两端，可以得到四个值：A左部分的最大值max_left_x，A右部分的最小值min_right_x，B左部分的最大值max_left_y，B右部分的最小值min_right_y。
+# 如果某个值不存在，对于这种边界情况，我们把最大值设为无穷小，最小值设为无穷大，保证后一步的比较恒成立。 
+# 如果此刻的划分满足了条件2，用上述四值来翻译一下就是max_left_x <= min_right_y and max_left_y <= min_right_x:，那么我们就找到了中位数，
+# 是max(max_left_x, max_left_y) + min(min_right_x, min_right_y)) / 2。 如果不满足，如果max_left_x > min_right_y，说明partition_x位置靠右了，
+# 令high = partition_x - 1；反之，说明partition_x位置靠左了，令low = partition_x + 1。继续我们的循环。
+class Solution:
+    """
+    @param: A: An integer array
+    @param: B: An integer array
+    @return: a double whose format is *.5 or *.0
+    """
+    def findMedianSortedArrays(self, A, B):
+        # if input1 length is greater than switch them so that input1 is smaller than input2
+        if len(A) > len(B):
+            return self.findMedianSortedArrays(B, A)
+        
+        m, n = len(A), len(B)
+        # Detail #1: high starts from m rather than m - 1
+        low, high = 0, m
+        
+        # Detail #2: instead of the typical low + 1 < high condition, we are using low <= high
+        while low <= high:
+            partition_x = low + (high - low) // 2
+            # Detail #3: need to + 1.
+            partition_y = (m + n + 1)// 2 - partition_x
+            
+            # if partition_x is 0 it means nothing is there on left side. Use -INF for max_left_x
+            if partition_x == 0:
+                max_left_x = float('-inf')
+            else:
+                max_left_x = A[partition_x - 1]
+            
+            # if partition_x is length of input then there is nothing on right side. Use +INF for min_right_x
+            if partition_x == m:
+                min_right_x = float('inf')
+            else:
+                min_right_x = A[partition_x]
+            
+            if partition_y == 0:
+                max_left_y = float('-inf')
+            else:
+                max_left_y = B[partition_y - 1]
+            
+            if partition_y == n:
+                min_right_y = float('inf')
+            else:
+                min_right_y = B[partition_y]
+            
+            if max_left_x <= min_right_y and max_left_y <= min_right_x:
+                # Now get max of left elements and min of right elements to get the median in case of even length combined array size
+                if (m + n) % 2 == 0:
+                    return (max(max_left_x, max_left_y) + min(min_right_x, min_right_y)) / 2
+                # or get max of left for odd length combined array size.
+                else:
+                    return max(max_left_x, max_left_y)
+            # we are too far on right side for partitionX. Go on left side. 
+            elif max_left_x > min_right_y:
+                # Detail #4 and #5: the high and lows are not partition_x. We need to +1 or -1.
+                high = partition_x - 1
+            # we are too far on left side for partitionX. Go on right side.
+            else:
+                low = partition_x + 1
+        return 0
