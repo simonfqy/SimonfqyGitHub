@@ -46,3 +46,46 @@ class Solution:
     """
     def topk(self):
         return self.top_k
+
+    
+# My own solution. Using a heap to keep the order, and keep a local list of top k elements. The optimization 
+# introduced by maintaining self.existing_top_k_bar and self.update_required variables don't seem to have much effect.
+# The add() function has O(logn) time complexity, while topk() function has O(klogn) time complexity.
+import heapq
+class Solution:
+    """
+    @param: k: An integer
+    """
+    def __init__(self, k):
+        self.k = k
+        self.heap = []
+        self.existing_top_k_bar = float('-inf')
+        self.update_required = True
+        self.top_k = []
+
+    """
+    @param: num: Number to be added
+    @return: nothing
+    """
+    def add(self, num):
+        heap_size = len(self.heap)
+        heapq.heappush(self.heap, -num)
+        if heap_size < self.k or num > self.existing_top_k_bar:
+            self.update_required = True
+
+    """
+    @return: Top k element
+    """
+    def topk(self):
+        if not self.update_required:
+            return self.top_k
+        self.top_k = []
+        while len(self.top_k) < self.k and len(self.heap) > 0:
+            self.top_k.append(-heapq.heappop(self.heap))
+        if len(self.top_k) == self.k:
+            self.existing_top_k_bar = self.top_k[-1] 
+        for element in self.top_k:
+            heapq.heappush(self.heap, -element)
+        self.update_required = False
+        return self.top_k
+    
