@@ -122,3 +122,25 @@ class Solution:
             heapq.heappush(self.top_k, element)
         return results[::-1]   
 
+    
+# This is a solution from a student of jiuzhang.com. I like this solution for it being succinct. But its performance is not as
+# good as the one above.
+from heapq import heappush, heappushpop
+class Solution:
+    
+    def __init__(self, k):
+        
+        self.h = []
+        self.k = k 
+        
+    def add(self, num):        
+        h, k = self.h, self.k
+        
+        if len(h) < k:
+            heappush(h, num)
+        elif num > h[0]:
+            heappushpop(h, num)
+        
+    def topk(self):        
+        self.h.sort()
+        return self.h[::-1]
