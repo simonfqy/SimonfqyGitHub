@@ -89,3 +89,36 @@ class Solution:
         self.update_required = False
         return self.top_k
     
+    
+# This solution is based on the answers from jiuzhang.com. We're only keeping a heap with size k in this way,
+# so the time complexity for add() is O(logk), that of topk() function is O(klogk).
+import heapq
+class Solution:
+    """
+    @param: k: An integer
+    """
+    def __init__(self, k):
+        self.k = k
+        self.top_k = []
+
+    """
+    @param: num: Number to be added
+    @return: nothing
+    """
+    def add(self, num):
+        if len(self.top_k) < self.k or num > self.top_k[0]:
+            heapq.heappush(self.top_k, num)
+        if len(self.top_k) > self.k:
+            heapq.heappop(self.top_k)
+
+    """
+    @return: Top k element
+    """
+    def topk(self):
+        results = []
+        while len(self.top_k) > 0:
+            results.append(heapq.heappop(self.top_k))
+        for element in results:
+            heapq.heappush(self.top_k, element)
+        return results[::-1]   
+
