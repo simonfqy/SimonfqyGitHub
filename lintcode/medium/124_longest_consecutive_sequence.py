@@ -31,6 +31,25 @@ class Solution:
         return max_length
     
     
+# A solution from a student on jiuzhang.com. Has O(n) time complexity, the idea is similar to the solution above.
+class Solution:
+    """
+    @param num: A list of integers
+    @return: An integer
+    """
+    def longestConsecutive(self, num):
+        max_length = 0
+        num_set = set(num)
+        for number in num_set:
+            if number - 1 in num_set:
+                continue
+            high = number + 1
+            while high in num_set:
+                high += 1
+            max_length = max(max_length, high - number)
+        return max_length    
+    
+    
 # My own solution. Has O(nlogn) time complexity, uses the built-in sorted() function.
 class Solution:
     """
