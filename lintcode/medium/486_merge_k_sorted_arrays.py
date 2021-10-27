@@ -102,3 +102,31 @@ class Solution:
     # is omitted.
     def merge_two_sorted_arrays(self, array_1, array_2):
         pass
+    
+    
+# My own solution. Should be correct, but hits time limit exceeded error.
+class Solution:
+    """
+    @param arrays: k sorted integer arrays
+    @return: a sorted array
+    """
+    def mergekSortedArrays(self, arrays):
+        starting_inds = [0] * len(arrays)
+        traversed_all = False
+        results = []
+        while not traversed_all:
+            traversed_all = True
+            ind_of_array_with_smallest_element = 0
+            smallest_element = float('inf')
+            for i, array in enumerate(arrays):
+                if starting_inds[i] >= len(array):
+                    continue
+                traversed_all = False
+                if array[starting_inds[i]] < smallest_element:
+                    ind_of_array_with_smallest_element = i
+                    smallest_element = array[starting_inds[i]]
+            if traversed_all:
+                break
+            results.append(smallest_element)
+            starting_inds[ind_of_array_with_smallest_element] += 1
+        return results
