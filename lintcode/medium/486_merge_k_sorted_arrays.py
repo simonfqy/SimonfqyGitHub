@@ -58,7 +58,7 @@ class Solution:
         return result
     
     
-# A recursive approach, top-down.
+# A recursive approach, top-down. Also from jiuzhang.com.
 class Solution:
     """
     @param arrays: k sorted integer arrays
