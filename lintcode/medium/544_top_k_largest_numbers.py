@@ -48,7 +48,9 @@ class Solution:
         top_k = nums[:k]
         top_k.sort(reverse=True)
         return top_k
-
+    
+    # This is the same implementation as the quickSelect algorithm, but here we don't let it return any value. It is just
+    # used for rearranging the nums list, such that nums[start : ind + 1] elements are all no smaller than nums[ind + 1:].
     def quick_select(self, nums, start, end, ind):
         if start == end:
             return
@@ -62,6 +64,7 @@ class Solution:
             if left <= right:
                 nums[left], nums[right] = nums[right], nums[left]
                 left, right = left + 1, right - 1
+        # Here, left is greater than right.
         if left <= ind:
             self.quick_select(nums, left, end, ind)
             return
@@ -99,4 +102,45 @@ class Solution:
                 right -= 1
         self.quick_sort(nums, start, right, ind)
         self.quick_sort(nums, left, end, ind)
+        
             
+# Another solution from a student on jiuzhang.com. It uses another implementation to move elements as part of the quickSelect
+# or quickSort algorithm. 
+class Solution:
+    """
+    @param nums: an integer array
+    @param k: An integer
+    @return: the top k largest numbers in array
+    """
+    def topk(self, nums, k):
+        if k < 1 or not nums:
+            return []
+        start, end = 0, len(nums) - 1
+        index = self.partition(nums, start, end)
+        target_ind = k - 1
+        while index != target_ind:
+            if index > target_ind:
+                end = index - 1
+            else:
+                start = index + 1
+            index = self.partition(nums, start, end)
+        top_k = nums[: target_ind + 1]
+        top_k.sort(reverse=True)
+        return top_k
+    
+    # This function returns index, which is the dividing point such that nums[start : index + 1] are no smaller than
+    # nums[index]. It is a component of the quickSelect or quickSort algorithm.
+    def partition(self, nums, start, end):
+        if start == end:
+            return start
+        index = start
+        # This for loop makes sure that elements in nums[start : index] are all greater than or equal to nums[end]
+        for i in range(start, end):
+            if nums[i] < nums[end]:
+                continue
+            nums[index], nums[i] = nums[i], nums[index]
+            index += 1
+        # This moves the nums[end] to the position of nums[index], so that nums[start : index + 1] contain all the
+        # elements no smaller than the original nums[end].
+        nums[index], nums[end] = nums[end], nums[index]
+        return index
