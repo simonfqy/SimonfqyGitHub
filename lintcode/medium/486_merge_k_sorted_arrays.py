@@ -51,29 +51,23 @@ class Solution:
         
         
     def merge_two_sorted_arrays(self, array_1, array_2):
-        if array_1 is None or len(array_1) <= 0:
-            return array_2
-        if array_2 is None or len(array_2) <= 0:
-            return array_1
         pointer_1, pointer_2 = 0, 0
-        answer = []
+        result = []
         while pointer_1 < len(array_1) and pointer_2 < len(array_2):
             if array_1[pointer_1] <= array_2[pointer_2]:
-                answer.append(array_1[pointer_1])
+                result.append(array_1[pointer_1])
                 pointer_1 += 1
-                continue
-            answer.append(array_2[pointer_2])
-            pointer_2 += 1
-        
-        while pointer_1 < len(array_1):
-            answer.append(array_1[pointer_1])
-            pointer_1 += 1
-            
-        while pointer_2 < len(array_2):
-            answer.append(array_2[pointer_2])
-            pointer_2 += 1
-            
-        return answer
+            else:
+                result.append(array_2[pointer_2])
+                pointer_2 += 1
+
+        if pointer_1 < len(array_1):
+            result += array_1[pointer_1:]
+
+        if pointer_2 < len(array_2):
+            result += array_2[pointer_2:]
+
+        return result
     
     
 # An iterative solution, bottom-up. Provided by jiuzhang.com. 
