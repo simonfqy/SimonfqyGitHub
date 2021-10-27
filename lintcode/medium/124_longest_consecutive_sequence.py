@@ -71,3 +71,31 @@ class Solution:
             prev = number
         return max_length
 
+    
+# A solution from a student on jiuzhang.com. Has O(n) time complexity, the special thing about it is that it only traverses 
+# the num list once. However it is too tricky and not general enough.
+class Solution:
+    """
+    @param num: A list of integers
+    @return: An integer
+    """
+    def longestConsecutive(self, num):
+        max_length = 0
+        number_to_streak_length = dict()
+        nums_set = set(num)
+        for number in num:
+            if number in number_to_streak_length:
+                continue
+            left_length, right_length = 0, 0
+            if number - 1 in number_to_streak_length:
+                left_length = number_to_streak_length[number - 1]
+            if number + 1 in number_to_streak_length:
+                right_length = number_to_streak_length[number + 1]
+            length = left_length + right_length + 1
+            max_length = max(length, max_length)
+            number_to_streak_length[number] = length
+            number_to_streak_length[number - left_length] = length
+            number_to_streak_length[number + right_length] = length
+
+        return max_length
+
