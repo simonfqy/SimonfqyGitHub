@@ -29,3 +29,26 @@ class Solution:
             if current_length > max_length:
                 max_length = current_length
         return max_length
+    
+    
+# My own solution. Has O(nlogn) time complexity, uses the built-in sorted() function.
+class Solution:
+    """
+    @param num: A list of integers
+    @return: An integer
+    """
+    def longestConsecutive(self, num):
+        num = sorted(list(set(num)))
+        max_length = 0
+        prev = None
+        curr_length = 1
+        for number in num:
+            if prev == number - 1:
+                curr_length += 1
+            else:
+                curr_length = 1
+            if curr_length > max_length:
+                max_length = curr_length
+            prev = number
+        return max_length
+
