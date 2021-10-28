@@ -357,6 +357,37 @@ class Solution:
         return 0
     
     
+    # An alternative implementation of the finf_kth() function. Changing the left and right values slightly, similar to
+    # https://github.com/simonfqy/SimonfqyGitHub/blob/356dd24d853147a23867f7b0f3e05997366ebe42/lintcode/medium/401_kth_smallest_number_in_sorted_matrix.py#L47.
+    # It seems that using left <= right and left = mid + 1 for value-based binary search is fine. 
+    # However, I also tried replicating this change to the helper() function and see that it doesn't work. The binary search in the 
+    # helper() function is searching for indices, which is probably why it doesn't work. So this left <= right search is applicable to only
+    # value based binary search, while the classical left + 1 < right search is applicable to both value-based and index-based binary search.        
+    def finf_kth2(self, A, B, k):
+        if len(A) == 0:
+            left, right = B[0], B[-1]
+        elif len(B) == 0:
+            left, right = A[0], A[-1]
+        else:
+            left, right = min(A[0], B[0]), max(A[-1], B[-1])
+        # Here we've changed the condition left + 1 < right to left <= right.
+        while left <= right:
+            mid = (left + right) // 2
+            count1 = self.helper(A, mid)
+            count2 = self.helper(B, mid)
+            if count1 + count2 < k:
+                # Here we changed left = mid to left = mid + 1
+                left = mid + 1
+            else:
+                right = mid - 1
+        count1 = self.helper(A, left)
+        count2 = self.helper(B, left)
+        if count1 + count2 >= k:
+            return left
+        else:
+            return right
+        
+    
 # This is my own solution. Uses recursion with binary search. In the binary search, we can't simply calculate a midpoint: it 
 # will result in errors. We should calculate a proportion, based on which we compute a cut-off point to narrow down the search range. 
 class Solution:
