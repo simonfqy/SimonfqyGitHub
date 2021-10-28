@@ -32,3 +32,52 @@ class Solution:
                 heapq.heappush(heap, (matrix[row][col + 1], row, col + 1))
 
         return None
+    
+    
+# A solution from jiuzhang.com, I translated it from Java to Python. Uses binary search of values rather than indices, similar to
+# https://github.com/simonfqy/SimonfqyGitHub/blob/379a222c43118293b8ed48cda1547296a3b2d756/lintcode/hard/65_median_of_two_sorted_arrays.py#L292.
+# time complexity is O(nlog(range)), where n is the maximum of the width and height of the matrix, and range is the difference between
+# max and min values in the matrix.
+class Solution:
+    """
+    @param matrix: a matrix of integers
+    @param k: An integer
+    @return: the kth smallest number in the matrix
+    """
+    def kthSmallest(self, matrix, k):
+        if not matrix or not matrix[0] or k < 0:
+            return None
+        n_row, n_col = len(matrix), len(matrix[0])
+        low, high = matrix[0][0], matrix[n_row - 1][n_col - 1]
+        while low <= high:
+            mid = (low + high) // 2
+            # Note that smaller_count contains equal count.
+            exists, smaller_count = self.find_num_order_in_matrix(matrix, mid)
+            if exists and smaller_count == k:
+                return mid
+            elif smaller_count < k:
+                # Note that it is not using mid directly, but mid + 1. Similarly for high, see below.
+                low = mid + 1
+            else:
+                high = mid - 1
+        # We have to use low, rather than high here. That's because when we exited the while loop without returning, it is
+        # due to low value reassigned as mid + 1. So now low carries the right number we're seeking. Try to go through an
+        # example where matrix is [[998,1002],[998,1003],[999,1003],[1000,1003],[1000,1004]], and k is 7, you'll see how it goes.
+        return low
+        
+    # Returns the tuple of whether val exists, and the number of elements smaller than or equal to val in the matrix.
+    def find_num_order_in_matrix(self, matrix, val):
+        n_row, n_col = len(matrix), len(matrix[0])
+        exists = False
+        i, j = n_row - 1, 0
+        smaller_count = 0
+        while i >= 0 and j < n_col:
+            if matrix[i][j] == val:
+                exists = True
+            if matrix[i][j] <= val:
+                smaller_count += i + 1
+                j += 1
+            else:
+                i -= 1
+
+        return exists, smaller_count
