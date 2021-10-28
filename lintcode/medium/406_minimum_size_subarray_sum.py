@@ -35,6 +35,38 @@ class Solution:
         return -1
     
     
+# This solution is from jiuzhang.com, I only slightly modified it. It is simpler than my first solution. 
+import sys
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        min_length = sys.maxsize
+        n = len(nums)
+        sum_so_far = 0
+        end_ind = 0
+        for start_ind in range(n):
+            # Here we don't assign the end_ind to be the max of (end_ind, start_ind); and we directly use sum_so_far in the condition
+            # of the while loop, not sum_so_far + nums[end_ind]. This simplifies the logic.
+            while end_ind < n and sum_so_far < s:
+                sum_so_far += nums[end_ind]
+                end_ind += 1
+            if sum_so_far >= s:
+                min_length = min(min_length, end_ind - start_ind)
+            else:
+                # end_ind == n, but sum is smaller than s. So there's no point continuing.
+                break
+            if min_length == 1:
+                break
+            sum_so_far -= nums[start_ind]
+
+        return -1 if min_length == sys.maxsize else min_length
+    
+    
+    
 # My own solution. Uses a prefix sum list and two pointers to solve the problem, time complexity is also O(n).
 # The performance is slightly better than the solution above, but the code is more complicated.
 class Solution:
