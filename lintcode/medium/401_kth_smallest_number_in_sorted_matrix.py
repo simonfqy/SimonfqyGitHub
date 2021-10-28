@@ -81,3 +81,26 @@ class Solution:
                 i -= 1
 
         return exists, smaller_count
+    
+    # This is a slightly modified kthSmallest() function. Here we're no longer returning low outside of the while loop. We determine whether
+    # mid has that situation within the while loop and return it if we find it matches. Also passes all test cases.
+    def kthSmallest2(self, matrix, k):
+        if not matrix or not matrix[0] or k < 0:
+            return None
+        n_row, n_col = len(matrix), len(matrix[0])
+        low, high = matrix[0][0], matrix[n_row - 1][n_col - 1]
+        while low <= high:
+            mid = (low + high) // 2
+            exists, smaller_count = self.find_num_order_in_matrix(matrix, mid)
+            if exists: 
+                # The modification can be seen here.
+                if smaller_count == k:
+                    return mid
+                if smaller_count > k:
+                    _, smaller_for_smaller = self.find_num_order_in_matrix(matrix, mid - 1)
+                    if smaller_for_smaller < k:
+                        return mid
+            if smaller_count < k:
+                low = mid + 1
+            else:
+                high = mid - 1
