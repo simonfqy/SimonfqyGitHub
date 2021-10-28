@@ -106,10 +106,10 @@ class Solution:
                 high = mid - 1
                 
                
-    # Following the solution of 
+    # Another variant of kthSmallest() function, following the solution of 
     # https://github.com/simonfqy/SimonfqyGitHub/blob/379a222c43118293b8ed48cda1547296a3b2d756/lintcode/hard/65_median_of_two_sorted_arrays.py#L292,
     # where the condition of the while statement changes to low + 1 < high, and assigning mid values to low and high, instead of mid + 1 or mid - 1.
-    def kthSmallest(self, matrix, k):
+    def kthSmallest3(self, matrix, k):
         if not matrix or not matrix[0] or k < 0:
             return None
         n_row, n_col = len(matrix), len(matrix[0])
