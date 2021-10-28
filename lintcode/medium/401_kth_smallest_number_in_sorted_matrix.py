@@ -114,13 +114,14 @@ class Solution:
             return None
         n_row, n_col = len(matrix), len(matrix[0])
         low, high = matrix[0][0], matrix[n_row - 1][n_col - 1]
+        # The while condition is the classical low + 1 < high, not low <= high
         while low + 1 < high:
             mid = (low + high) // 2
             exists, smaller_count = self.find_num_order_in_matrix(matrix, mid)
             if exists and smaller_count == k:
                 return mid
             elif smaller_count < k:
-                # Note that we can use mid directly.
+                # Note that it is using mid directly, not mid + 1. Similarly for high, see below.
                 low = mid
             else:
                 high = mid
@@ -128,4 +129,5 @@ class Solution:
         _, smaller_count_for_low = self.find_num_order_in_matrix(matrix, low)
         if smaller_count_for_low >= k:
             return low
-        return high
+        return high    
+    
