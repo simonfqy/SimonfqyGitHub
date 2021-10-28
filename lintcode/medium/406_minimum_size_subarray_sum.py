@@ -108,3 +108,47 @@ class Solution:
             sum_so_far -= nums[start_ind]
 
         return -1 if min_length == sys.maxsize else min_length
+    
+    
+# This solution is introduced by jiuzhang.com, I implemented it based on the description. It uses binary search and has O(nlogn) time complexity. 
+import sys
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        if not nums:
+            return -1
+        min_length = sys.maxsize
+        n = len(nums)
+        prefix_sum_list = []
+        prefix_sum = 0
+        for num in nums:
+            prefix_sum += num
+            prefix_sum_list.append(prefix_sum)
+        for start_ind in range(n):
+            end_ind = self.get_end_ind_of_large_enough_subarray(prefix_sum_list, start_ind, s)
+            if end_ind == n:
+                break
+            min_length = min(min_length, end_ind - start_ind + 1)
+
+        return -1 if min_length == sys.maxsize else min_length
+
+    def get_end_ind_of_large_enough_subarray(self, prefix_sum_list, start_ind, s):
+        left, right = start_ind, len(prefix_sum_list) - 1
+        base_sum = 0
+        if start_ind > 0:
+            base_sum = prefix_sum_list[start_ind - 1]
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if prefix_sum_list[mid] - base_sum >= s:
+                right = mid
+            else:
+                left = mid
+        if prefix_sum_list[left] - base_sum >= s:
+            return left
+        if prefix_sum_list[right] - base_sum >= s:
+            return right
+        return len(prefix_sum_list)
