@@ -104,3 +104,28 @@ class Solution:
                 low = mid + 1
             else:
                 high = mid - 1
+                
+               
+    # Following the solution of 
+    # https://github.com/simonfqy/SimonfqyGitHub/blob/379a222c43118293b8ed48cda1547296a3b2d756/lintcode/hard/65_median_of_two_sorted_arrays.py#L292,
+    # where the condition of the while statement changes to low + 1 < high, and assigning mid values to low and high, instead of mid + 1 or mid - 1.
+    def kthSmallest(self, matrix, k):
+        if not matrix or not matrix[0] or k < 0:
+            return None
+        n_row, n_col = len(matrix), len(matrix[0])
+        low, high = matrix[0][0], matrix[n_row - 1][n_col - 1]
+        while low + 1 < high:
+            mid = (low + high) // 2
+            exists, smaller_count = self.find_num_order_in_matrix(matrix, mid)
+            if exists and smaller_count == k:
+                return mid
+            elif smaller_count < k:
+                # Note that we can use mid directly.
+                low = mid
+            else:
+                high = mid
+        # We first decide whether low is the number we want. If not, then return high.
+        _, smaller_count_for_low = self.find_num_order_in_matrix(matrix, low)
+        if smaller_count_for_low >= k:
+            return low
+        return high
