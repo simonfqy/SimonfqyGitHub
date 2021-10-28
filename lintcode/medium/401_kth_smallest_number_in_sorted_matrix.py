@@ -125,7 +125,7 @@ class Solution:
                 low = mid
             else:
                 high = mid
-        # We first decide whether low is the number we want. If not, then return high.
+        # We first decide whether low is the number we want. If not, then return high. It is similar to the solution (linked above) for question 65.
         _, smaller_count_for_low = self.find_num_order_in_matrix(matrix, low)
         if smaller_count_for_low >= k:
             return low
