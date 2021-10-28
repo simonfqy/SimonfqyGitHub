@@ -63,8 +63,7 @@ class Solution:
                 break
             sum_so_far -= nums[start_ind]
 
-        return -1 if min_length == sys.maxsize else min_length
-    
+        return -1 if min_length == sys.maxsize else min_length    
     
     
 # My own solution. Uses a prefix sum list and two pointers to solve the problem, time complexity is also O(n).
