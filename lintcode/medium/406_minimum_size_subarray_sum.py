@@ -33,3 +33,48 @@ class Solution:
         if min_length < float('inf'):
             return min_length
         return -1
+    
+    
+# My own solution. Uses a prefix sum list and two pointers to solve the problem, time complexity is also O(n).
+# The performance is slightly better than the solution above, but the code is more complicated.
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        prefix_sum_list = []
+        sum_so_far = 0
+        n = len(nums)
+        for num in nums:
+            sum_so_far += num
+            prefix_sum_list.append(sum_so_far)
+        if not prefix_sum_list or prefix_sum_list[-1] < s:
+            return -1
+        start_ind = 0
+        min_length = float('inf')
+        # i is the ending index (inclusive).
+        for i in range(n):
+            if prefix_sum_list[i] < s:
+                continue        
+            curr_length = float('inf')    
+            # A Pythonic do-while loop.
+            while True:
+                if start_ind > 0:
+                    subarray_sum = prefix_sum_list[i] - prefix_sum_list[start_ind - 1]
+                else:
+                    subarray_sum = prefix_sum_list[i]
+                if subarray_sum >= s:
+                    curr_length = i - start_ind + 1
+                if start_ind >= i or subarray_sum < s:
+                    break
+                start_ind += 1            
+            if curr_length == 1:
+                return 1
+            if curr_length < min_length:
+                min_length = curr_length
+        if min_length < float('inf'):
+            return min_length
+        return -1
+
