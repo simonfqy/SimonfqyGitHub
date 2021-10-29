@@ -39,4 +39,25 @@ class Solution:
         return max_diff
 
 
-        
+# Solution from a student on jiuzhang.com. Most succinct. Idea is the same as the one above. 
+class Solution:
+    """
+    @param matrix: the given matrix
+    @return: the largest possible sum
+    """
+    def maxSubmatrix(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+        n_row, n_col = len(matrix), len(matrix[0])
+        max_sum = float('-inf')
+        for top in range(n_row):
+            col_sums = [0] * n_col
+            for down in range(top, n_row):
+                min_sum, prefix_sum = 0, 0
+                for col in range(n_col):
+                    col_sums[col] += matrix[down][col]
+                    prefix_sum += col_sums[col]
+                    max_sum = max(max_sum, prefix_sum - min_sum)
+                    min_sum = min(prefix_sum, min_sum)
+        return max_sum
+              
