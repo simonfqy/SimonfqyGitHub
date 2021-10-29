@@ -110,6 +110,34 @@ class Solution:
         return -1 if min_length == sys.maxsize else min_length
     
     
+# This solution is from jiuzhang.com. Rather than enumerating the left end in the for loop, we're enumerating the right end.
+# It is slightly simpler than enumerating the left end. 
+import sys
+class Solution:
+    """
+    @param nums: an array of integers
+    @param s: An integer
+    @return: an integer representing the minimum size of subarray
+    """
+    def minimumSize(self, nums, s):
+        if not nums:
+            return -1
+        min_length = sys.maxsize
+        n = len(nums)
+        sum_so_far = 0
+        left = 0
+        for right in range(n):
+            sum_so_far += nums[right]
+            while sum_so_far >= s:
+                min_length = min(min_length, right + 1 - left)
+                sum_so_far -= nums[left]
+                left += 1
+            if min_length == 1:
+                break
+
+        return -1 if min_length == sys.maxsize else min_length
+    
+    
 # This solution is introduced by jiuzhang.com, I implemented it based on the description. It uses binary search and has O(nlogn) time complexity. 
 import sys
 class Solution:
