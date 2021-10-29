@@ -28,7 +28,7 @@ class Solution:
         for row in range(n_row):
             # For each iteration, we consider the submatrix sum which starts from (row, 0)            
             for running_row in range(row, n_row):
-                sum_to_coord = dict()
+                sum_to_col = dict()
                 for col in range(n_col):
                     if row == 0:
                         base_sum = 0
@@ -38,8 +38,7 @@ class Solution:
                     diff = corner_sum - base_sum
                     if diff == 0:
                         return [[row, 0], [running_row, col]]
-                    if diff in sum_to_coord:
-                        _, y = sum_to_coord[diff]
-                        return [[row, y + 1], [running_row, col]]
-                    sum_to_coord[diff] = [running_row, col]
+                    if diff in sum_to_col:                        
+                        return [[row, sum_to_col[diff] + 1], [running_row, col]]
+                    sum_to_col[diff] = col
     
