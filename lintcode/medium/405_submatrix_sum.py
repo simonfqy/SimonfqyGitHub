@@ -42,3 +42,32 @@ class Solution:
                         return [[row, sum_to_col[diff] + 1], [running_row, col]]
                     sum_to_col[diff] = col
     
+    
+# Answer from jiuzhang.com. It is very similar to my solution above, but it is simpler: it avoids building a prefix sum matrix
+# before actually finding the zero submatrix sum. Now the prefix sum is built on the go. There is some wasted work in calculating
+# the sum for each column while traversing, but the time complexity is unchanged. 
+# Using prefix sum. Let sums_for_each_column[j] = sum[0][j] + sum[1][j] + ... + sum[i][j]. It converts this problem into finding the subarray 
+# sum zero in a row of the matrix.
+class Solution:
+    """
+    @param: matrix: an integer matrix
+    @return: the coordinate of the left-up and right-down number
+    """
+    def submatrixSum(self, matrix):
+        if not matrix or not matrix[0]:
+            return None
+        n, m = len(matrix), len(matrix[0])
+        for top in range(n):
+            sums_for_each_column = [0] * m
+            for down in range(top, n):
+                # It also adds {0: -1} to the dictionary early on, so we don't need to handle the case where prefix_sum == 0 separately.
+                sum_to_col = {0: -1}
+                prefix_sum = 0
+                for col in range(m):
+                    sums_for_each_column[col] += matrix[down][col]
+                    # Now this problem is converted to a subarray sum zero problem and can be solved easily.
+                    prefix_sum += sums_for_each_column[col]
+                    if prefix_sum in sum_to_col:
+                        return [[top, sum_to_col[prefix_sum] + 1], [down, col]]
+                    sum_to_col[prefix_sum] = col
+
