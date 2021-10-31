@@ -24,7 +24,7 @@ class Solution:
             if left > right:
                 continue
             length = right - left + 1
-            # We only need to add those contiguous subarrays who end at nums[right]. They start at nums[left], nums[left + 1], ..., 
-            # nums[right], so there are in total a {length} number of such subarrays.
+            # At the current iteration, we only need to add those contiguous subarrays who end at nums[right]. They start at nums[left], 
+            # nums[left + 1], ..., nums[right], so there are in total a {length} number of such subarrays.
             result += length
         return result
