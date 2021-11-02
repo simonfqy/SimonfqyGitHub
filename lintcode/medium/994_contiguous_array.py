@@ -29,6 +29,7 @@ class Solution:
                 running_one_count -= nums[left] == 1
                 running_zero_count -= nums[left] == 0
         return max_length
+    
                 
 # My own solution, passes the tests with good performance. Has O(n) time complexity. Converts 0s to -1s, and transforms this problem into the
 # subarray sum zero problem. Can be accomplished by dictionary (hashmap), with a single traversal of the array.
