@@ -23,11 +23,11 @@ class Solution:
             sorted_b_word = ''.join(sorted(b_word))
             if sorted_b_word in visited_b:
                 continue
-            subset = self.get_subset(subset, a_word_to_sorted_word, sorted_b_word, visited_b)     
+            subset = self.get_subset(subset, a_word_to_sorted_word, sorted_b_word)     
             visited_b.add(sorted_b_word)       
         return subset
     
-    def get_subset(self, subset, a_word_to_sorted_word, sorted_b_word, visited_b):
+    def get_subset(self, subset, a_word_to_sorted_word, sorted_b_word):
         new_subset = []
         for a_word in subset:
             sorted_a_word = a_word_to_sorted_word[a_word]
