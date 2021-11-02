@@ -34,6 +34,7 @@ class Solution:
         for i in range(len(sorted_b_word)):
             char = sorted_b_word[i]
             if char == sorted_b_word[prev]:
+                # We can simply use a continue statement to replace the following if-else statements, but keep them here for clarity.
                 if i < len(sorted_b_word) - 1:
                     continue
                 else:
