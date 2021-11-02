@@ -46,5 +46,36 @@ class Solution:
             if sorted_b_word[prev : i] not in sorted_a_word:
                 return False
             prev = i
-        return sorted_b_word[prev:] in sorted_a_word            
+        return sorted_b_word[prev:] in sorted_a_word   
+    
             
+# Solution from jiuzhang.com. Has O(n + m) time complexity, where n is the total length of strings in A, m is that of B.
+# With this solution, we no longer need to check every B word for every A; instead, we get the maximum occurrence of letters
+# throughout all B words to obtain a b_max array, and compare it against the occurrence of each letter in A. If all occurrences
+# of each letter in an A word are bigger than or equal to the corresponding entries in b_max array, then that A word is a universal word.
+
+# LESSON LEARNED: Analyze the problem more carefully and take aggregate values (in this case, max) when needed.
+class Solution:
+    alphabet_length = 26
+    """
+    @param A: a string array
+    @param B: a string array
+    @return: return an string array 
+    """
+    def wordSubsets(self, A, B):
+        b_max = [0] * self.alphabet_length
+        for b_word in B:
+            for i, count in enumerate(self.get_letter_count(b_word)):
+                b_max[i] = max(b_max[i], count)
+        result = []
+        for a_word in A:
+            if all(x >= y for (x, y) in zip(self.get_letter_count(a_word), b_max)):
+                result.append(a_word)
+        return result          
+                
+    def get_letter_count(self, word):
+        letter_count = [0] * self.alphabet_length
+        for char in word:
+            ind = ord(char) - ord('a')
+            letter_count[ind] += 1
+        return letter_count
