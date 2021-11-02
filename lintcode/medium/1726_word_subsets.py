@@ -5,6 +5,7 @@ https://www.lintcode.com/problem/1726
 # My own solution. Originally hits time limit exceeded exception without removing duplicate b words. After the duplication
 # removal, the performance is pretty well. Assuming A has size n and B has size m, and words in A and B have max length k, then
 # the time complexity is O(mnk^2).
+# Solving this problem took much longer than expected. LESSON LEARNED: de-duplicate whenever duplication might happen!
 class Solution:
     """
     @param A: a string array
