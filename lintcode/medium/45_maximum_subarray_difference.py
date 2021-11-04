@@ -47,3 +47,38 @@ class Solution:
             max_diff = max(max_diff, left_side_max_subarray_sum[i] - right_side_min_subarray_sum[i], \
                     right_side_max_subarray_sum[i] - left_side_min_subarray_sum[i])
         return max_diff
+    
+    
+# Solution from jiuzhang.com. Uses dynamic programming and greedy algorithm. Very similar to the solution above, but simpler because
+# we use greedy algorithm to determine the maximum sum subarray ending at index i when we're traversing the nums array.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: An integer indicate the value of maximum difference between two substrings
+    """
+    def maxDiffSubArrays(self, nums):
+        n = len(nums)
+        min_sum_on_left, min_sum_on_right = [0] * n, [0] * n
+        max_sum_on_left, max_sum_on_right = [0] * n, [0] * n
+        min_sum_on_left[0] = max_sum_on_left[0] = nums[0]
+        max_sum_on_right[n - 1] = min_sum_on_right[n - 1] = nums[n - 1]
+        current_subarray_sum_min = current_subarray_sum_max = nums[0]
+        for i in range(1, n):
+            # Greedy algorithm: current_subarray_sum_max is the sum of the maximum sum subarray ending at index i. If the current_subarray_sum_max
+            # is not the largest sum subarray in nums[:i + 1], then it should be equal to max_sum_on_left[i - 1], which is a subarray ending at 
+            # index i - 1 or earlier.
+            current_subarray_sum_max = max(current_subarray_sum_max + nums[i], nums[i])
+            current_subarray_sum_min = min(current_subarray_sum_min + nums[i], nums[i])
+            max_sum_on_left[i] = max(max_sum_on_left[i - 1], current_subarray_sum_max)
+            min_sum_on_left[i] = min(min_sum_on_left[i - 1], current_subarray_sum_min)
+        current_subarray_sum_min = current_subarray_sum_max = nums[n - 1]
+        for j in range(n - 2, -1, -1):
+            current_subarray_sum_max = max(current_subarray_sum_max + nums[j], nums[j])
+            current_subarray_sum_min = min(current_subarray_sum_min + nums[j], nums[j])
+            max_sum_on_right[j] = max(max_sum_on_right[j + 1], current_subarray_sum_max)
+            min_sum_on_right[j] = min(min_sum_on_right[j + 1], current_subarray_sum_min)
+        max_diff = 0
+        for i in range(n - 1):
+            max_diff = max(max_diff, max_sum_on_left[i] - min_sum_on_right[i + 1], max_sum_on_right[i + 1] - min_sum_on_left[i])
+        return max_diff
+        
