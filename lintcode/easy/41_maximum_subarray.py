@@ -74,3 +74,22 @@ class Solution:
             curr_sum = max(0, curr_sum)
             
         return max_sum
+    
+    
+# Greedy algorithm after 2 years, can be simplified further, but suffices.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A integer indicate the sum of max subarray
+    """
+    def maxSubArray(self, nums):
+        if not nums:
+            return 0
+        n = len(nums)
+        max_subarray_sum_on_left = list(nums)
+        max_sum_curr_subarray = nums[0]
+        for i in range(1, n):
+            max_sum_curr_subarray = max(max_sum_curr_subarray + nums[i], nums[i])
+            max_subarray_sum_on_left[i] = max(max_subarray_sum_on_left[i - 1], max_sum_curr_subarray)
+        return max_subarray_sum_on_left[n - 1]
+
