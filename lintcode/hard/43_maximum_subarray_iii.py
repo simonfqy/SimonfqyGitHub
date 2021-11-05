@@ -164,4 +164,71 @@ class Solution:
             right_max = self.subarray_count_to_indices_to_max_sum[1][(composite_subarray_end_ind + 1, n - 1)]
             max_sum_so_far = max(max_sum_so_far, left_max + right_max)
         return max_sum_so_far
+    
+
+# A further improved version of the one above. Finally it passes. The time complexity should still be around O(kn ^ 2), but in fact it is much 
+# improved compared to the one above.
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer denote to find k non-overlapping subarrays
+    @return: An integer denote the sum of max k non-overlapping subarrays
+    """
+    def maxSubArray(self, nums, k):
+        if not nums or k < 0 or len(nums) < k:
+            return 0
+        self.subarray_count_to_indices_to_max_sum = dict()
+        self.populate_subarray_max_sum_dict(nums, k)
+        return self.get_max_subarray_sum(nums, k)
+    
+    def populate_subarray_max_sum_dict(self, nums, k):
+        n = len(nums)
+        self.subarray_count_to_indices_to_max_sum[1] = dict()
+            
+        for start in range(n):
+            if k <= 1 and start > 0:
+                break
+            prefix_sum = 0
+            min_sum = 0
+            max_sum_so_far = float('-inf')
+            for end in range(start, n): 
+                prefix_sum += nums[end]
+                max_sum_so_far = max(max_sum_so_far, prefix_sum - min_sum)
+                min_sum = min(min_sum, prefix_sum)                
+                self.subarray_count_to_indices_to_max_sum[1][(start, end)] = max_sum_so_far   
+        
+        for subarray_count in range(2, k):
+            if subarray_count not in self.subarray_count_to_indices_to_max_sum:
+                self.subarray_count_to_indices_to_max_sum[subarray_count] = dict()
+            left_subarray_end_ind_yielding_max_total_sum = subarray_count - 2
+            for composite_subarray_end_ind in range(subarray_count - 1, n - 1):
+                if (0, composite_subarray_end_ind) in self.subarray_count_to_indices_to_max_sum[subarray_count]:
+                    continue
+                max_composite_array_sum = float('-inf')
+                # This is the main optimization. The left_subarray_end_ind_yielding_max_total_sum is monotonically increasing for a given subarray_count.
+                # This is because the nums[:left_subarray_end_ind_yielding_max_total_sum + 1] will host multiple subarrays, while the right hand side only
+                # contains 1 subarray. The sums of subarrays will monotonically increase with the number of subarrays, even if they're operating on the same
+                # nums list. That's because a finer granularity will keep the negative entries out, increasing the total sum. Hence, we should monotonically
+                # increase left_subarray_end_ind_yielding_max_total_sum whenever a larger sum is found, and only start the next rounds of search from this
+                # index, rather than starting from subarray_count - 2 all over again.
+                starting_point_for_left_end_ind = max(subarray_count - 2, left_subarray_end_ind_yielding_max_total_sum)
+                for first_subarray_end_ind in range(starting_point_for_left_end_ind, composite_subarray_end_ind):
+                    left_max = self.subarray_count_to_indices_to_max_sum[subarray_count - 1][(0, first_subarray_end_ind)]
+                    right_max = self.subarray_count_to_indices_to_max_sum[1][(first_subarray_end_ind + 1, composite_subarray_end_ind)]
+                    if left_max + right_max > max_composite_array_sum:
+                        max_composite_array_sum = left_max + right_max
+                        left_subarray_end_ind_yielding_max_total_sum = max(left_subarray_end_ind_yielding_max_total_sum, first_subarray_end_ind)
+                self.subarray_count_to_indices_to_max_sum[subarray_count][(0, composite_subarray_end_ind)] = max_composite_array_sum
+
+    def get_max_subarray_sum(self, nums, k):
+        n = len(nums)
+        if k == 1:
+            return self.subarray_count_to_indices_to_max_sum[1][(0, n - 1)]
+        prev_subarray_count = k - 1
+        max_sum_so_far = float('-inf')
+        for composite_subarray_end_ind in range(prev_subarray_count - 1, n - 1):
+            left_max = self.subarray_count_to_indices_to_max_sum[prev_subarray_count][(0, composite_subarray_end_ind)]
+            right_max = self.subarray_count_to_indices_to_max_sum[1][(composite_subarray_end_ind + 1, n - 1)]
+            max_sum_so_far = max(max_sum_so_far, left_max + right_max)
+        return max_sum_so_far
 
