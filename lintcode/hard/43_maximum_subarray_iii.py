@@ -166,7 +166,7 @@ class Solution:
         return max_sum_so_far
     
 
-# A further improved version of the one above. Finally it passes. The time complexity should still be around O(kn ^ 2), but in fact it is much 
+# A further improved version. Finally it passes. The time complexity should still be around O(kn ^ 2), but in fact it is much 
 # improved compared to the one above.
 class Solution:
     """
