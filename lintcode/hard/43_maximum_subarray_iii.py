@@ -63,7 +63,7 @@ class Solution:
     
 
 # My own solution, improves upon the previous solution by using memoization. Should be correct, but still hits time limit exceeded exception. 
-# The time complexity is O(n ^ min(1, k - 1)).
+# The time complexity is O(n ^ max(1, k - 1)).
 class Solution:
     """
     @param nums: A list of integers
