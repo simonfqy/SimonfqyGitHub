@@ -264,4 +264,31 @@ class Solution:
                     # The global max either contains nums[i - 1] or not. If not, it would be global_max[i - 1][j]. If it does, then would be local_max[i][j].
                     global_max[i][j] = max(global_max[i - 1][j], local_max[i][j])
         return global_max[n][k]
+    
 
+# Also solution from jiuzhang.com. Slightly improved upon the solution above, now the space complexity is O(k), not O(kn) anymore.
+class Solution:
+    """
+    @param nums: A list of integers
+    @param k: An integer denote to find k non-overlapping subarrays
+    @return: An integer denote the sum of max k non-overlapping subarrays
+    """
+    def maxSubArray(self, nums, k):
+        if not nums or k < 0 or len(nums) < k:
+            return 0
+        n = len(nums)
+        # local_max[i][j] is the maximum of the sum of j subarrays in the first i elements (nums[0] to nums[i - 1]) which contain nums[i - 1],
+        # global_max[i][j] is the global maximum of the sum of j subarrays in the first i elements which may or may not contain nums[i - 1]. 
+        local_max = [0] * (k + 1) 
+        global_max = [0] * (k + 1) 
+        # Unlike the solution above (non-optimized version), here swapping the order of i and j for-loops is not okay. 
+        for i in range(1, n + 1):
+            # Unlike the solution above, here we must traverse j from larger to smaller, not from smaller to larger.
+            for j in range(min(k, i), 0, -1):
+                if i == j:
+                    local_max[j] = local_max[j - 1] + nums[i - 1]
+                    global_max[j] = global_max[j - 1] + nums[i - 1]
+                else:
+                    local_max[j] = max(local_max[j], global_max[j - 1]) + nums[i - 1]
+                    global_max[j] = max(global_max[j], local_max[j])
+        return global_max[k]
