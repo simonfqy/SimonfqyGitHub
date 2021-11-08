@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/43
 '''
 
-# My own solution. Should be correct, but hits time limit exceeded exception. The time complexity is O(n^(min(1, k - 1))).
+# My own solution. Should be correct, but hits time limit exceeded exception. The time complexity is O(n^(max(1, k - 1))).
 class Solution:
     """
     @param nums: A list of integers
