@@ -35,3 +35,28 @@ class Solution:
             start += 1
 
         return max_subarray_sum
+    
+    
+# My own solution. Uses 1 pointer (sliding window), has O(n) time complexity.
+class Solution:
+    """
+    @param nums: an array of integer
+    @param k: an integer
+    @return: the largest sum
+    """
+    def maxSubarray4(self, nums, k):
+        if not nums or len(nums) < k:
+            return 0
+        n = len(nums)
+        prefix_sum = 0
+        prefix_sum_list = [0]
+        for num in nums:
+            prefix_sum += num
+            prefix_sum_list.append(prefix_sum)
+        min_sum = float('inf')
+        max_subarray_sum = float('-inf')        
+        for right in range(k, n + 1):
+            min_sum = min(min_sum, prefix_sum_list[right - k])
+            max_subarray_sum = max(max_subarray_sum, prefix_sum_list[right] - min_sum)
+
+        return max_subarray_sum
