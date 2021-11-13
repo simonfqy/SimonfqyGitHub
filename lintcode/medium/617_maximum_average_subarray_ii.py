@@ -2,7 +2,8 @@
 https://www.lintcode.com/problem/617
 '''
 
-# Uses dynamic programming. Time complexity is O(n). Took an incredible amount of work to come up with.
+# Uses dynamic programming (in fact it is greedy algorithm, because we only need to keep 1 variable rather than an array, see the optimized version below). 
+# Time complexity is O(n). Took an incredible amount of work to come up with.
 class Solution:
     """
     @param nums: an array with positive and negative numbers
