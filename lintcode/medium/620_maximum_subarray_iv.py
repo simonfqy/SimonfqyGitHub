@@ -61,6 +61,25 @@ class Solution:
 
         return max_subarray_sum
     
+    # This is an alternative implementation, in which min_sum was initialized to 0 and was assigned value after max_subarray_sum in each iteration of the for loop.
+    # It is equivalent to the implementation above.
+    def maxSubarray4_alternative(self, nums, k):
+        if not nums or len(nums) < k:
+            return 0
+        n = len(nums)
+        prefix_sum = 0
+        prefix_sum_list = [0]
+        for num in nums:
+            prefix_sum += num
+            prefix_sum_list.append(prefix_sum)
+        min_sum = 0
+        max_subarray_sum = float('-inf')        
+        for right in range(k, n + 1):            
+            max_subarray_sum = max(max_subarray_sum, prefix_sum_list[right] - min_sum)
+            min_sum = min(min_sum, prefix_sum_list[right - k + 1])
+
+        return max_subarray_sum
+    
     
 # Solution from jiuzhang.com. Compared to my solution above, it is more optimized in that the space complexity is reduced from O(n) to O(1),
 # because we no longer need to maintain a prefix sum array, just two variables to record the running prefix sum of the left and right pointers
