@@ -60,3 +60,30 @@ class Solution:
             max_subarray_sum = max(max_subarray_sum, prefix_sum_list[right] - min_sum)
 
         return max_subarray_sum
+    
+    
+# Solution from jiuzhang.com. Compared to my solution above, it is more optimized in that the space complexity is reduced from O(n) to O(1),
+# because we no longer need to maintain a prefix sum array, just two variables to record the running prefix sum of the left and right pointers
+# as we traverse the array. 
+class Solution:
+    """
+    @param nums: an array of integer
+    @param k: an integer
+    @return: the largest sum
+    """
+    def maxSubarray4(self, nums, k):
+        if not nums or len(nums) < k:
+            return 0
+        n = len(nums)        
+        min_sum = 0             
+        right_sum, left_sum = 0, 0
+        for i in range(k):
+            right_sum += nums[i]
+        max_subarray_sum = right_sum 
+        for right in range(k, n):
+            left_sum += nums[right - k]
+            right_sum += nums[right]
+            min_sum = min(min_sum, left_sum)
+            max_subarray_sum = max(max_subarray_sum, right_sum - min_sum)
+
+        return max_subarray_sum
