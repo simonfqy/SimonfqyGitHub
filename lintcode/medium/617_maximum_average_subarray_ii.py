@@ -65,3 +65,39 @@ class Solution:
                 ind_right_before_local_max_avg = ind_right_before_len_k_subarray                       
 
         return max_avg
+    
+    
+# Solution from jiuzhang.com. Uses binary search on result. Has O(nlog(max-min)) time complexity. 
+class Solution:
+    """
+    @param nums: an array with positive and negative numbers
+    @param k: an integer
+    @return: the maximum average
+    """
+    def maxAverage(self, nums, k):
+        start, end = min(nums), max(nums)
+        while start + 1e-7 < end:
+            mid = (start + end) / 2
+            if self.candidate_avg_not_too_large(nums, k, mid):
+                start = mid
+            else:
+                end = mid
+        return start
+
+    def candidate_avg_not_too_large(self, nums, k, candidate_avg):
+        n = len(nums)
+        prefix_sum_list = [0]
+        prefix_sum = 0
+        # Subtract each number by the candidate average value.
+        for num in nums:
+            prefix_sum += num - candidate_avg
+            prefix_sum_list.append(prefix_sum)
+        min_left_presum = 0
+        for right in range(k, n + 1):
+            min_left_presum = min(min_left_presum, prefix_sum_list[right - k])
+            # If any subarray (with each element subtracted by the candidate average value) with length at least k has sum at least 0, it means
+            # the largest subarray (length >= k) average is equal to or more than the candidate average. In this case we return True, and in 
+            # the binary search, the candidate value is assigned to the start variable.
+            if prefix_sum_list[right] - min_left_presum >= 0:
+                return True
+        return False
