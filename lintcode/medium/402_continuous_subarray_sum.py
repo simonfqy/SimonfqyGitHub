@@ -19,14 +19,16 @@ class Solution:
         candidate_start_ind = 0
         for i, num in enumerate(A):
             prefix_sum += num
-            subarray_sum = prefix_sum - min_sum
-            if subarray_sum > max_subarray_sum:
-                max_subarray_sum = subarray_sum
+            # The maximum subarray sum among all subarrays ending at A[i].
+            curr_max_subarray_sum = prefix_sum - min_sum
+            if curr_max_subarray_sum > max_subarray_sum:
+                max_subarray_sum = curr_max_subarray_sum
                 end_ind = i
                 start_ind = candidate_start_ind
             if prefix_sum < min_sum:
                 min_sum = prefix_sum
-                # Updated whenever prefix_sum is smaller than the smallest record.
+                # Updated whenever prefix_sum is smaller than the smallest record. The candidate starting index is right after the 
+                # index yielding the minimum prefix sum so far.
                 candidate_start_ind = i + 1
         return [start_ind, end_ind]
     
