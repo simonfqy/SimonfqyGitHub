@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/402
 '''
 
-# My own solution. Uses prefix sum array. Has O(n) time complexity and O(1) space complexity.
+# My own solution. Uses prefix sum (single variable). Has O(n) time complexity and O(1) space complexity.
 class Solution:
     """
     @param: A: An integer array
