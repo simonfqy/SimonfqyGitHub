@@ -55,9 +55,8 @@ class Solution:
         ind_right_before_local_max_avg = 0
         max_avg = float('-inf')
         for right in range(k, n + 1):
-            ind_right_before_len_k_subarray = right - k
-            prefix_sum_before_subarray = prefix_sum_list[ind_right_before_len_k_subarray]            
-            curr_len_k_subarray_avg = (prefix_sum_list[right] - prefix_sum_before_subarray) / k
+            ind_right_before_len_k_subarray = right - k            
+            curr_len_k_subarray_avg = (prefix_sum_list[right] - prefix_sum_list[ind_right_before_len_k_subarray]) / k
             ind_before_prev_local_max_start = ind_right_before_local_max_avg
             curr_longer_subarray_avg = (prefix_sum_list[right] - prefix_sum_list[ind_before_prev_local_max_start]) / (right - ind_before_prev_local_max_start)
             max_avg = max(max_avg, curr_len_k_subarray_avg, curr_longer_subarray_avg)
