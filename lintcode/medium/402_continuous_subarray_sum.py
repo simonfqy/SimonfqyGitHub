@@ -15,6 +15,7 @@ class Solution:
         min_sum = 0
         prefix_sum = 0
         start_ind, end_ind = 0, 0
+        # This variable actually makes this algorithm harder to maintain than the solution from jiuzhang.com, shown below.
         candidate_start_ind = 0
         for i, num in enumerate(A):
             prefix_sum += num
@@ -25,6 +26,7 @@ class Solution:
                 start_ind = candidate_start_ind
             if prefix_sum < min_sum:
                 min_sum = prefix_sum
+                # Updated whenever prefix_sum is smaller than the smallest record.
                 candidate_start_ind = i + 1
         return [start_ind, end_ind]
     
