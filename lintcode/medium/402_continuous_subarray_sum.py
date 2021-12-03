@@ -27,4 +27,34 @@ class Solution:
                 min_sum = prefix_sum
                 candidate_start_ind = i + 1
         return [start_ind, end_ind]
+    
 
+# Solution from jiuzhang.com. Does not use prefix sum. Has O(n) time complexity and O(1) space complexity.
+# Greedily maintains the starting and ending indices of the global max subarray, and the largest subarray ending at A[i]
+# where i is the index when we traverse through A. It is less error prone than my own solution shown above. 
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySum(self, A):
+        if not A:
+            return [0, 0]
+        # Starting and ending indices of the global max subarray.
+        start, end = 0, 0
+        # Starting index of the largest subarray ending at A[i] as we traverse through the array A.
+        start_ind_of_curr_subarray = 0
+        max_sum = float('-inf') 
+        curr_max_subarray_sum = 0               
+        for i, num in enumerate(A):
+            if curr_max_subarray_sum < 0:
+                start_ind_of_curr_subarray = i
+                curr_max_subarray_sum = num
+            else:
+                curr_max_subarray_sum += num
+            if curr_max_subarray_sum > max_sum:
+                max_sum = curr_max_subarray_sum
+                start = start_ind_of_curr_subarray
+                end = i                        
+        return [start, end]
+    
