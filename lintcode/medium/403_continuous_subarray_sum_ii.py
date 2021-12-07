@@ -113,3 +113,38 @@ class Solution:
 
         return [start, end]
     
+    
+# My own solution, slightly optimized from the one above. Now we no longer need to maintain a prefix sum list.
+# The space and time complexities are still O(n).
+from collections import deque
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        n = len(A)
+        presum = 0
+        max_sum = float('-inf')
+        # Each tuple: (index + 1, prefix sum)
+        min_presum_queue = deque([(0, 0)])
+        for i in range(2 * n):
+            index = i % n
+            presum += A[index]
+            if i >= n:
+                while min_presum_queue[0][0] <= index:
+                    min_presum_queue.popleft()
+            subarray_sum = presum - min_presum_queue[0][1]
+            if subarray_sum > max_sum:
+                max_sum = subarray_sum
+                start = min_presum_queue[0][0]
+                end = index
+            # Add the current prefix sum to the queue.            
+            while min_presum_queue and min_presum_queue[-1][1] > presum:
+                min_presum_queue.pop()
+            min_presum_queue.append((i + 1, presum))
+
+        return [start, end]
+    
