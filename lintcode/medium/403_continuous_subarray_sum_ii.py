@@ -70,3 +70,41 @@ class Solution:
 
         return [start, end]             
         
+# My own solution, using queue to maintain the minimum prefix sum. Similar to 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/c6a67e9fe0e746390396ee2db18f7bb809cefe32/lintcode/medium/621_maximum_subarray_v.py#L41.
+# Has O(n) space and time complexities.
+from collections import deque
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        n = len(A)
+        presum = 0
+        presum_list = [0]
+        for i in range(2 * n):
+            presum += A[i % n]
+            presum_list.append(presum)
+        max_sum = float('-inf')
+        # Each tuple: (index + 1, prefix sum)
+        min_presum_queue = deque([(0, 0)])
+        for i in range(1, 2 * n + 1):
+            index = (i - 1) % n
+            if i > n:
+                while min_presum_queue[0][0] <= index:
+                    min_presum_queue.popleft()
+            subarray_sum = presum_list[i] - min_presum_queue[0][1]
+            if subarray_sum > max_sum:
+                max_sum = subarray_sum
+                start = min_presum_queue[0][0]
+                end = index
+            # Add the current prefix sum to the queue.            
+            while min_presum_queue and min_presum_queue[-1][1] > presum_list[i]:
+                min_presum_queue.pop()
+            min_presum_queue.append((i, presum_list[i]))
+
+        return [start, end]
+    
