@@ -136,12 +136,17 @@ class Solution:
             if i >= n:
                 while min_presum_queue[0][0] <= index:
                     min_presum_queue.popleft()
+            # The duplicate calculation will happen here if we don't have the "continue" statement when i >= n.
             subarray_sum = presum - min_presum_queue[0][1]
             if subarray_sum > max_sum:
                 max_sum = subarray_sum
                 start = min_presum_queue[0][0]
                 end = index
-            # Add the current prefix sum to the queue.            
+            # If we don't have this if-statement, the result will still be correct, but that would result in
+            # duplicate calculation and waste time.
+            if i >= n:
+                continue
+            # Add the current prefix sum to the queue, when i < n.            
             while min_presum_queue and min_presum_queue[-1][1] > presum:
                 min_presum_queue.pop()
             min_presum_queue.append((i + 1, presum))
