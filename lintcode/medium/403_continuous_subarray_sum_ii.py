@@ -32,5 +32,41 @@ class Solution:
             if i <= n and min_sum > presum_list[i]:
                 min_sum = presum_list[i]
                 candidate_start = i % n
-             
-        return [start, end]
+        return [start, end]        
+                
+# Another of my solution, incorrect. For this, I tried to copy the solution from jiuzhang.com for question 402, 
+# also failed.
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        n = len(A)
+        max_subarray_sum_ending_in_curr_element = 0
+        max_subarray_sum = float('-inf')
+        start, end = 0, 0
+        start_ind_of_curr_subarray = 0
+        for i in range(2 * n):
+            index = i % n
+            if i < n: 
+                if max_subarray_sum_ending_in_curr_element < 0:
+                    max_subarray_sum_ending_in_curr_element = A[i]
+                    start_ind_of_curr_subarray = i
+                else:
+                    max_subarray_sum_ending_in_curr_element += A[i]
+            else:
+                if start_ind_of_curr_subarray > index:
+                    max_subarray_sum_ending_in_curr_element += A[index]
+                else:
+                    start_ind_of_curr_subarray = (index + 1) % n
+
+            if max_subarray_sum_ending_in_curr_element > max_subarray_sum:
+                max_subarray_sum = max_subarray_sum_ending_in_curr_element
+                start = start_ind_of_curr_subarray
+                end = index                
+
+        return [start, end]             
+        
