@@ -96,6 +96,7 @@ class Solution:
         for i in range(1, 2 * n + 1):
             index = (i - 1) % n
             if i > n:
+                # In this case, we have to make the start index greater than the end index.
                 while min_presum_queue[0][0] <= index:
                     min_presum_queue.popleft()
             subarray_sum = presum_list[i] - min_presum_queue[0][1]
