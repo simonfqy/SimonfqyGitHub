@@ -104,7 +104,9 @@ class Solution:
                 max_sum = subarray_sum
                 start = min_presum_queue[0][0]
                 end = index
-            # Add the current prefix sum to the queue.            
+            # Add the current prefix sum to the queue. For earlier prefix sums which are larger than the current one, they won't be needed
+            # in calculating the largest subarray sum anymore, so we can safely pop them without problems. This is similar to the solution
+            # of question 621.
             while min_presum_queue and min_presum_queue[-1][1] > presum_list[i]:
                 min_presum_queue.pop()
             min_presum_queue.append((i, presum_list[i]))
