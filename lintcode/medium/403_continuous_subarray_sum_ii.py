@@ -32,7 +32,8 @@ class Solution:
             if i <= n and min_sum > presum_list[i]:
                 min_sum = presum_list[i]
                 candidate_start = i % n
-        return [start, end]        
+        return [start, end]    
+    
                 
 # Another of my solution, incorrect. For this, I tried to copy the solution from jiuzhang.com for question 402, 
 # also failed.
@@ -68,7 +69,8 @@ class Solution:
                 start = start_ind_of_curr_subarray
                 end = index                
 
-        return [start, end]             
+        return [start, end]    
+    
         
 # My own solution, using queue to maintain the minimum prefix sum. Similar to 
 # https://github.com/simonfqy/SimonfqyGitHub/blob/c6a67e9fe0e746390396ee2db18f7bb809cefe32/lintcode/medium/621_maximum_subarray_v.py#L41.
