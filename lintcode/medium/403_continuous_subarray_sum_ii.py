@@ -204,3 +204,52 @@ class Solution:
         return [min_end + 1, min_start - 1]
     
     
+# A variant of the solution above. Now we use prefix sum to calculate. Like the above solution, this one also 
+# has O(n) time complexity and O(1) space complexity. 
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        n = len(A)
+        # Need to find the maximum sum continuous subarray and the minimum sum continuous subarray.
+        max_subarray_sum = float('-inf')
+        min_subarray_sum = float('inf')
+        curr_max_subarray_sum = 0
+        curr_min_subarray_sum = 0
+        max_start, max_end = 0, 0
+        min_start, min_end = 0, 0
+        min_prefix_sum, max_prefix_sum = 0, 0
+        prefix_sum = 0
+        candidate_max_start, candidate_min_start = 0, 0        
+        for i, num in enumerate(A):
+            prefix_sum += num
+            curr_max_subarray_sum = prefix_sum - min_prefix_sum
+            curr_min_subarray_sum = prefix_sum - max_prefix_sum
+            if curr_max_subarray_sum > max_subarray_sum:
+                max_subarray_sum = curr_max_subarray_sum
+                max_start = candidate_max_start
+                max_end = i
+            if curr_min_subarray_sum < min_subarray_sum:
+                min_subarray_sum = curr_min_subarray_sum
+                min_start = candidate_min_start
+                min_end = i
+            if prefix_sum < min_prefix_sum:
+                min_prefix_sum = prefix_sum
+                candidate_max_start = i + 1
+            if prefix_sum > max_prefix_sum:
+                max_prefix_sum = prefix_sum
+                candidate_min_start = i + 1            
+        # Handle the special case.
+        if min_start == 0 and min_end == n - 1:
+            return [max_start, max_end]
+        wrapping_max_subarray_sum = prefix_sum - min_subarray_sum
+        if max_subarray_sum >= wrapping_max_subarray_sum:
+            return [max_start, max_end]
+        # The wrapping_max_subarray_sum is actually larger.        
+        return [min_end + 1, min_start - 1]
+    
+    
