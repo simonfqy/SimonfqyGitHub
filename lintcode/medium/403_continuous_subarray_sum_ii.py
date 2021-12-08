@@ -153,3 +153,54 @@ class Solution:
 
         return [start, end]
     
+    
+# My implementation based on the instruction on jiuzhang.com. It has O(n) time complexity and O(1) space complexity.
+# The time to execute is shorter than my own solution above.
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        n = len(A)
+        # Need to find the maximum sum continuous subarray and the minimum sum continuous subarray.
+        max_subarray_sum = float('-inf')
+        min_subarray_sum = float('inf')
+        curr_max_subarray_sum = 0
+        curr_min_subarray_sum = 0
+        max_start, max_end = 0, 0
+        min_start, min_end = 0, 0
+        candidate_max_start, candidate_min_start = 0, 0
+        total_sum = sum(A)
+        for i, num in enumerate(A):
+            if curr_max_subarray_sum < 0:
+                curr_max_subarray_sum = num
+                candidate_max_start = i
+            else:
+                curr_max_subarray_sum += num
+            if curr_max_subarray_sum > max_subarray_sum:
+                max_subarray_sum = curr_max_subarray_sum
+                max_start = candidate_max_start
+                max_end = i
+
+            if curr_min_subarray_sum > 0:
+                curr_min_subarray_sum = num
+                candidate_min_start = i
+            else:
+                curr_min_subarray_sum += num
+            if curr_min_subarray_sum < min_subarray_sum:
+                min_subarray_sum = curr_min_subarray_sum
+                min_start = candidate_min_start
+                min_end = i
+        # Handle the special case.
+        if min_start == 0 and min_end == n - 1:
+            return [max_start, max_end]
+        wrapping_max_subarray_sum = total_sum - min_subarray_sum
+        if max_subarray_sum >= wrapping_max_subarray_sum:
+            return [max_start, max_end]
+        # The wrapping_max_subarray_sum is actually larger.        
+        return [min_end + 1, min_start - 1]
+    
+    
