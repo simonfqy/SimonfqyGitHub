@@ -90,3 +90,23 @@ class Solution:
             result += int(binary[i]) << (n - 1 - i)
         return result
     
+    
+# Solution from a student on jiuzhang.com. More succinct and easier than the official answer from jiuzhang.com.
+class Solution:
+    """
+    @param x: a number
+    @return: return the next sparse number behind x
+    """
+    def nextSparseNum(self, x):
+        original = x
+        for i in range(32):
+            tmp = 1 << i
+            if tmp & x and (tmp << 1) & x:
+                # Adding this number can remove the adjacent 1's.
+                x += tmp
+        for i in range(33, -1, -1):
+            tmp = 1 << i
+            if tmp & x and x - tmp >= original:
+                x -= tmp
+        return x
+    
