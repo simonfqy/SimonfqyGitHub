@@ -253,3 +253,40 @@ class Solution:
         return [min_end + 1, min_start - 1]
     
     
+# Solution provided by jiuzhang.com. Does not make use of prefix sum. More succinct than my own implementation, because
+# this one factors out the common logic into helper functions. 
+class Solution:
+    """
+    @param: A: An integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def continuousSubarraySumII(self, A):
+        if not A:
+            return [0, 0]
+        total_sum = sum(A)
+        max_sum, max_start, max_end = self.get_maximum_subarray(A)
+        min_sum, min_start, min_end = self.get_maximum_subarray([-a for a in A])
+        min_sum = -min_sum
+
+        if max_sum >= total_sum - min_sum or min_end - min_start == len(A) - 1:
+            return [max_start, max_end]
+        return [min_end + 1, min_start - 1]
+    
+    def get_maximum_subarray(self, A):
+        curr_max_sum = 0
+        curr_max_subarray_start = 0
+        start, end = 0, 0
+        max_sum = float('-inf')
+        for i, num in enumerate(A):
+            if curr_max_sum < 0:
+                curr_max_sum = num
+                curr_max_subarray_start = i
+            else:
+                curr_max_sum += num
+            if curr_max_sum > max_sum:
+                max_sum = curr_max_sum
+                start = curr_max_subarray_start
+                end = i
+        
+        return max_sum, start, end
+    
