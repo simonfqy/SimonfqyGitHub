@@ -62,3 +62,32 @@ class Solution:
         return len(substrings)
     
     
+# My implementation of the solution from jiuzhang.com. It uses two pointers and has O(n) time and space complexities.
+# It does not have the skipping functionality of my own solution, but performance is similar.
+from collections import defaultdict
+class Solution:
+    """
+    @param stringIn: The original string.
+    @param K: The length of substrings.
+    @return: return the count of substring of length K and exactly K distinct characters.
+    """
+    def KSubstring(self, stringIn, K):
+        substrings = set()
+        char_to_occurrence = defaultdict(int)
+        unique_char_count_in_word = 0
+        for i in range(len(stringIn)):
+            if i >= K:
+                # Remove the leftmost char.
+                char_to_occurrence[stringIn[i - K]] -= 1
+                if char_to_occurrence[stringIn[i - K]] == 0:
+                    unique_char_count_in_word -= 1
+            # Add the current char.
+            char_to_occurrence[stringIn[i]] += 1
+            if char_to_occurrence[stringIn[i]] == 1:
+                unique_char_count_in_word += 1
+            if unique_char_count_in_word == K:
+                substrings.add(stringIn[i - K + 1 : i + 1])
+                
+        return len(substrings)
+    
+    
