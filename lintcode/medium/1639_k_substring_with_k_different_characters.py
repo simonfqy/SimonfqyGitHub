@@ -90,3 +90,29 @@ class Solution:
         return len(substrings)
     
     
+# Solution from a student on jiuzhang.com. Uses 2 pointers, in which the right pointer belongs to a while loop and
+# monotonically increases, while the left pointer is part of a for loop.
+class Solution:
+    """
+    @param stringIn: The original string.
+    @param K: The length of substrings.
+    @return: return the count of substring of length K and exactly K distinct characters.
+    """
+    def KSubstring(self, stringIn, K):
+        substrings = set()
+        n = len(stringIn)
+        right = 0
+        unique_char_for_each_word = set()
+        for left in range(n - K + 1):
+            while right < n and len(unique_char_for_each_word) < K:
+                if stringIn[right] in unique_char_for_each_word:
+                    break
+                unique_char_for_each_word.add(stringIn[right])
+                right += 1
+                if len(unique_char_for_each_word) == K:
+                    substrings.add(stringIn[left : right])
+            unique_char_for_each_word.remove(stringIn[left])        
+
+        return len(substrings)
+    
+    
