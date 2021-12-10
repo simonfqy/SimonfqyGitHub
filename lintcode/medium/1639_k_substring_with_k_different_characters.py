@@ -16,8 +16,7 @@ class Solution:
         characters_to_pos = dict()
         # right: the next char to be added.
         while right < n:
-            # The condition stringIn[left] in characters_to_pos is necessary, because stringIn[left] may not be visited yet.
-            if right - left >= K and stringIn[left] in characters_to_pos:
+            if right - left >= K:
                 # First remove the left character.
                 del characters_to_pos[stringIn[left]]
                 left += 1
