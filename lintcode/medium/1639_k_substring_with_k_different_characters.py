@@ -24,7 +24,7 @@ class Solution:
                 left += 1
             # Try to add the right char.
             char = stringIn[right]
-            # Remove the part containing duplicate character.
+            # Remove the part containing duplicate characters of stringIn[right].
             if char in characters_to_pos:
                 new_left = characters_to_pos[char] + 1
                 # All the characters in between must be removed from the dictionary.
