@@ -13,7 +13,6 @@ class Solution:
         substrings = set()
         n = len(stringIn)
         left, right = 0, 0
-        count = 0
         characters_to_pos = dict()
         # right: the next char to be added.
         while right < n:
@@ -35,12 +34,10 @@ class Solution:
             # Actually adding the right char after removing duplicates.
             characters_to_pos[char] = right
             if right - left == K - 1:
-                if stringIn[left : right + 1] not in substrings:
-                    substrings.add(stringIn[left : right + 1])
-                    count += 1
+                substrings.add(stringIn[left : right + 1])
             right += 1         
 
-        return count
+        return len(substrings)
     
             
 # My own, simple solution. Uses two pointers, also has O(n) time and space complexities.
@@ -55,15 +52,13 @@ class Solution:
         substrings = set()
         n = len(stringIn)
         start = 0
-        count = 0
         while start + K - 1 < n:
             end = start + K
             word = stringIn[start : end]
-            if len(set(word)) == len(word) and word not in substrings:
+            if len(set(word)) == len(word):
                 substrings.add(word)
-                count += 1
             start += 1                   
 
-        return count
+        return len(substrings)
     
     
