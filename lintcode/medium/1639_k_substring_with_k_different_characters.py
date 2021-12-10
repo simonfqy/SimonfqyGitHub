@@ -41,4 +41,29 @@ class Solution:
             right += 1         
 
         return count
+    
             
+# My own, simple solution. Uses two pointers, also has O(n) time and space complexities.
+# The performance is not as good as the solution above (because this one does not skip substrings)  
+class Solution:
+    """
+    @param stringIn: The original string.
+    @param K: The length of substrings.
+    @return: return the count of substring of length K and exactly K distinct characters.
+    """
+    def KSubstring(self, stringIn, K):
+        substrings = set()
+        n = len(stringIn)
+        start = 0
+        count = 0
+        while start + K - 1 < n:
+            end = start + K
+            word = stringIn[start : end]
+            if len(set(word)) == len(word) and word not in substrings:
+                substrings.add(word)
+                count += 1
+            start += 1                   
+
+        return count
+    
+    
