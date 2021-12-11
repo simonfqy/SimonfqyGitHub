@@ -31,3 +31,30 @@ class Solution:
         return results
       
       
+# My own solution. Uses Python heapq, has time complexity O(nlogn) and space complexity O(n).
+# Time to execute is much longer than the deque solution.
+import heapq
+class Solution:
+    """
+    @param nums: A list of integers.
+    @param k: An integer
+    @return: The maximum number inside the window at each moving.
+    """
+    def maxSlidingWindow(self, nums, k):
+        n = len(nums)
+        results = []
+        # Each element: (-value, index)
+        heap = []
+        for i, num in enumerate(nums):
+            if i >= k:
+                # Pop the left element.
+                while heap and heap[0][1] <= i - k:
+                    heapq.heappop(heap)
+            # Add to the heap.
+            heapq.heappush(heap, (-num, i))
+            if i >= k - 1:
+                results.append(-heap[0][0])
+
+        return results
+    
+    
