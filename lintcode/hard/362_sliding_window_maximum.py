@@ -18,7 +18,7 @@ class Solution:
         queue = deque()
         for right in range(n):
             if right >= k:
-                # Pop the earlier element.
+                # Pop the earlier element(s).
                 while queue and queue[0][0] <= right - k:
                     queue.popleft()
             # Add the right element. Pop the elements which are earlier and smaller, since they won't appear in the result anyways.
@@ -41,13 +41,12 @@ class Solution:
     @return: The maximum number inside the window at each moving.
     """
     def maxSlidingWindow(self, nums, k):
-        n = len(nums)
         results = []
         # Each element: (-value, index)
         heap = []
         for i, num in enumerate(nums):
             if i >= k:
-                # Pop the left element.
+                # Pop the left element(s).
                 while heap and heap[0][1] <= i - k:
                     heapq.heappop(heap)
             # Add to the heap.
