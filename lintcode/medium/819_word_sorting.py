@@ -23,3 +23,19 @@ class Solution:
         return ''.join(converted_char_list)
       
       
+# My own solution. Overriding the key= function in the sorted() built-in function of Python.
+class Solution:
+    """
+    @param alphabet: the new alphabet
+    @param words: the original string array
+    @return: the string array after sorting
+    """
+    def wordSort(self, alphabet, words):
+        orthodox_alphabet = "abcdefghijklmnopqrstuvwxyz"
+        self.unorthodox_to_orthodox = {unorthodox: orthodox for (unorthodox, orthodox) in zip(alphabet, orthodox_alphabet)}
+        return sorted(words, key=self.unorthodox_to_ortho_word)
+
+    def unorthodox_to_ortho_word(self, word):
+        ortho_word_list = [self.unorthodox_to_orthodox[letter] for letter in word]
+        return ''.join(ortho_word_list)
+    
