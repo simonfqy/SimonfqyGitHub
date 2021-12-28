@@ -28,3 +28,20 @@ class Solution:
         return max_profit
       
       
+# Solution from jiuzhang.com. Has O(n) time complexity, traverses through the array once. It's also greedy algorithm.
+class Solution:
+    """
+    @param prices: Given an integer array
+    @return: Maximum profit
+    """
+    def maxProfit(self, prices):
+        if not prices or len(prices) < 2:
+            return 0
+        n = len(prices)
+        max_profit = 0
+        for i in range(1, n):
+            # You either sell at prices[i], or you don't sell at position i.
+            max_profit += max(0, prices[i] - prices[i - 1])
+        return max_profit
+    
+    
