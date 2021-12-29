@@ -68,3 +68,32 @@ class Solution:
         return dp[K][n - 1]
     
     
+# Solution from a student on jiuzhang.com. Similar to 
+# https://github.com/simonfqy/SimonfqyGitHub/blob/6d09fe4b1e5cd5beed9b14c14319edd79aa6b92b/lintcode/medium/151_best_time_to_buy_and_sell_stock_iii.py#L87.
+# Uses dynamic programming focusing on the net cash in the account when the transactions happen.
+class Solution:
+    """
+    @param K: An integer
+    @param prices: An integer array
+    @return: Maximum profit
+    """
+    def maxProfit(self, K, prices):
+        if len(prices) < 2 or K == 0:
+            return 0
+        if K >= len(prices) // 2:
+            max_profit = 0
+            for i in range(1, len(prices)):
+                max_profit += max(0, prices[i] - prices[i - 1])
+            return max_profit
+
+        net_cash_while_holding = [-max(prices)] * K
+        net_cash_after_selling = [0] * K
+        for price in prices:
+            for transaction_count in range(K):
+                net_cash_while_holding[transaction_count] = max(net_cash_while_holding[transaction_count], 
+                    net_cash_after_selling[transaction_count - 1] - price if transaction_count > 0 else -price)
+                net_cash_after_selling[transaction_count] = max(net_cash_after_selling[transaction_count],
+                    net_cash_while_holding[transaction_count] + price)
+        return net_cash_after_selling[K - 1]
+    
+    
