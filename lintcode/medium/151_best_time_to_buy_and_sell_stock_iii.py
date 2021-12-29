@@ -83,3 +83,21 @@ class Solution:
             max_profit_array[i] = max_profit
             
             
+# Solution from jiuzhang.com. Uses 4 variables which represent the net cash in the account. It is greedy algorithm.
+class Solution:
+    """
+    @param prices: Given an integer array
+    @return: Maximum profit
+    """
+    def maxProfit(self, prices):
+        if len(prices) < 2:
+            return 0
+        # h stands for hold, s stands for sell. H and s represent the net cash in the account while holding and after
+        # selling the stock, respectively.
+        h1 = h2 = -max(prices)
+        s1 = s2 = 0
+        for price in prices:
+            h1, s1, h2, s2 = max(h1, -price), max(s1, h1 + price), max(h2, s1 - price), max(s2, h2 + price)
+        return s2
+    
+    
