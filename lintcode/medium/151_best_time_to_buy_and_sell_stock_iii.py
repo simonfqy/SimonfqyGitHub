@@ -2,7 +2,8 @@
 Link: https://www.lintcode.com/problem/151
 '''
 
-# My own solution. Has O(n) time complexity. Traverses through the array twice.
+# My own solution. Has O(n) time complexity. Traverses through the array twice. The idea is derived from enumerating the middile line
+# and calculating the sum of values on each side.
 class Solution:
     """
     @param prices: Given an integer array
