@@ -45,3 +45,21 @@ class Solution:
         return max_profit
     
     
+# My implementation of a solution from a student on jiuzhang.com. Has O(n) time complexity, similar to the solutions 
+# above. Kinda uses dynamic programming.
+class Solution:
+    """
+    @param prices: Given an integer array
+    @return: Maximum profit
+    """
+    def maxProfit(self, prices):
+        if not prices or len(prices) < 2:
+            return 0
+        n = len(prices)
+        max_profit = 0
+        for i in range(1, n):
+            # You either sell at prices[i], or you don't sell at position i.
+            max_profit = max(max_profit, max_profit + prices[i] - prices[i - 1])
+        return max_profit
+    
+    
