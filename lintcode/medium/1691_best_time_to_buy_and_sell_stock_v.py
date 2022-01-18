@@ -38,3 +38,22 @@ class Solution:
             prev_cash = list(cash)              
             
         return cash[0]
+    
+    
+# Solution from jiuzhang.com. Uses greedy algorithm with heap, has O(nlogn) time complexity. 
+import heapq
+class Solution:
+    """
+    @param a: the array a
+    @return: return the maximum profit
+    """
+    def getAns(self, a):
+        result = 0
+        minheap = []
+        for price in a:
+            if minheap and price > minheap[0]:
+                result += price - heapq.heappop(minheap)
+                heapq.heappush(minheap, price)
+            heapq.heappush(minheap, price)
+        return result
+    
