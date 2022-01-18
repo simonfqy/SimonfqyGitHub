@@ -83,6 +83,29 @@ class Solution:
             max_profit_array[i] = max_profit
             
             
+# Solution from jiuzhang.com. It is a general solution for K transactions. The generic version can be found in
+# https://github.com/simonfqy/SimonfqyGitHub/blob/37fb0f9f2f8ce2ac00c7ed452b4f134cb0cfedb2/lintcode/medium/393_best_time_to_buy_and_sell_stock_iv.py#L40
+class Solution:
+    """
+    @param prices: Given an integer array
+    @return: Maximum profit
+    """
+    def maxProfit(self, prices):
+        n = len(prices)
+        K = 2
+        # corner case
+        if n == 0:
+            return 0
+        # main part
+        dp = [[0] * n for _ in range(K + 1)]
+        for i in range(1, K + 1):
+            max_diff = float('-inf')
+            for j in range(1, n):
+                max_diff = max(max_diff, dp[i - 1][j - 1] - prices[j - 1])
+                dp[i][j] = max(dp[i][j - 1], prices[j] + max_diff)
+        return dp[K][n - 1]            
+            
+            
 # Solution from jiuzhang.com. Uses 4 variables which represent the net cash in the account. It is greedy algorithm.
 class Solution:
     """
@@ -98,6 +121,5 @@ class Solution:
         s1 = s2 = 0
         for price in prices:
             h1, s1, h2, s2 = max(h1, -price), max(s1, h1 + price), max(h2, s1 - price), max(s2, h2 + price)
-        return s2
-    
+        return s2    
     
