@@ -98,12 +98,12 @@ class LRUCache:
         next_node = target_node.next            
         if next_node:
             # Originally the target_node is not at the end of the linked list.
-            self.key_to_prev[key] = self.tail
-            self.key_to_prev[next_node.key] = prev_node
             prev_node.next = next_node
-            target_node.next = None
-            # Initially forgot about this assignment to overwrite self.tail.next.
+            self.key_to_prev[next_node.key] = prev_node
+            self.key_to_prev[target_node.key] = self.tail  
+            # Initially forgot about this assignment to overwrite self.tail.next.          
             self.tail.next = target_node
+            target_node.next = None
             self.tail = target_node
     
     def evict_old(self):
