@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/518
 '''
 
-# My own solution. Uses dynamic programming, has O(n) time and space complexities. This solution is basically copied from
+# My own solution. Uses dynamic programming, has O(nk) time complexity and O(n) space complexity. This solution is basically copied from
 # https://github.com/simonfqy/SimonfqyGitHub/blob/d9370febac2ec7aac65edf564abaa5887f2c2e21/lintcode/medium/4_ugly_number_ii.py#L52
 class Solution:
     """
@@ -24,3 +24,5 @@ class Solution:
                     pointers[j] += 1
 
         return dp[n - 1]
+
+    
