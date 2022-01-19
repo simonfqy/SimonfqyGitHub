@@ -47,4 +47,25 @@ class Solution:
         return ugly_num
     
 
+# A variant of the above solution making use of a hashmap for deduplication. Has O(nklognk) time complexity and O(nk) space complexity.
+import heapq
+class Solution:
+    """
+    @param n: a positive integer
+    @param primes: the given prime list
+    @return: the nth super ugly number
+    """
+    def nthSuperUglyNumber(self, n, primes):
+        min_heap = [1]
+        ugly_num = 1
+        visited = set()
+        for _ in range(n):
+            ugly_num = heapq.heappop(min_heap)
+            for factor in primes:
+                new_num = ugly_num * factor
+                if new_num in visited:
+                    continue
+                visited.add(new_num)
+                heapq.heappush(min_heap, new_num)
+        return ugly_num
     
