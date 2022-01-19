@@ -46,3 +46,73 @@ class LRUCache:
                 del self.key_to_val[old_item_key] 
                 
                 
+# My implementation based on the __init__() functions provided by jiuzhang.com. Uses singly linked list with head and tail pointers, 
+# as well as hash maps.
+class LinkedNode:
+    
+    def __init__(self, key=None, value=None, next=None):
+        self.key = key
+        self.value = value
+        self.next = next
+
+class LRUCache:
+    """
+    @param: capacity: An integer
+    """
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_to_prev = dict()
+        self.dummy = LinkedNode()
+        self.tail = self.dummy        
+
+    """
+    @param: key: An integer
+    @return: An integer
+    """
+    def get(self, key):
+        if key not in self.key_to_prev:
+            return -1
+        self.move_to_end_of_list(key)
+        return self.tail.value        
+
+    """
+    @param: key: An integer
+    @param: value: An integer
+    @return: nothing
+    """
+    def set(self, key, value):
+        if key not in self.key_to_prev:
+            curr_node = LinkedNode(key=key, value=value)
+            prev_node = self.tail
+            prev_node.next = curr_node
+            self.key_to_prev[key] = prev_node
+            self.tail = curr_node
+            self.evict_old()
+        else:
+            self.move_to_end_of_list(key) 
+            self.tail.value = value     
+
+    def move_to_end_of_list(self, key):
+        prev_node = self.key_to_prev[key]
+        target_node = prev_node.next            
+        next_node = target_node.next            
+        if next_node:
+            # Originally the target_node is not at the end of the linked list.
+            self.key_to_prev[key] = self.tail
+            self.key_to_prev[next_node.key] = prev_node
+            prev_node.next = next_node
+            target_node.next = None
+            # Initially forgot about this assignment to overwrite self.tail.next.
+            self.tail.next = target_node
+            self.tail = target_node
+    
+    def evict_old(self):
+        if len(self.key_to_prev) > self.capacity:
+            head_node = self.dummy.next
+            new_head = head_node.next
+            self.dummy.next = new_head
+            self.key_to_prev[new_head.key] = self.dummy
+            head_node.next = None
+            del self.key_to_prev[head_node.key]
+            
+            
