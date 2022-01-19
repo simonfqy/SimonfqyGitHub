@@ -28,3 +28,30 @@ class Solution:
                 ugly_numbers_set.add(new_num)
                 
                 
+# My implementation based on the Dynamic Programming solution from jiuzhang.com. Uses pointers instead of heap, has O(n) time complexity. 
+class Solution:
+    """
+    @param n: An integer
+    @return: return a  integer as description.
+    """
+    def nthUglyNumber(self, n):
+        # Index of the pointers
+        # Intuition: the next ugly number must be constructed by *2, *3 or *5, so we can maintain pointers to the element producing the
+        # current ugly number. dp[pointers[i]] * factors[i] where i = 0, 1, 2 are the only 3 candidates for the next ugly number. Hence,
+        # we don't need to use a heap.
+        pointers = [0, 0, 0]
+        factors = [2, 3, 5]
+        dp = [1] * n
+        for i in range(1, n):
+            triplet = (dp[pointers[0]] * factors[0], dp[pointers[1]] * factors[1], dp[pointers[2]] * factors[2])
+            dp[i] = min(triplet)
+            for j in range(3):
+                if triplet[j] == dp[i]:
+                    pointers[j] += 1   
+                    # We cannot use break here; otherwise duplicates will be introduced, for example, 2 * 3 = 6 and 3 * 2 = 6.
+                    # Need to increment the pointer for duplicates too.                 
+
+        return dp[n - 1]
+    
+
+    
