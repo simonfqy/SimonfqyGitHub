@@ -11,8 +11,6 @@ class Solution:
     def isUgly(self, num: int) -> bool:
         if num < 1:
             return False
-        if num == 1:
-            return True
         expected_prime_factors = [2, 3, 5]
         divisible = True
         while divisible:
