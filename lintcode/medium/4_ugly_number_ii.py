@@ -71,7 +71,6 @@ class Solution:
                     # We cannot use break here; otherwise duplicates will be introduced, for example, 2 * 3 = 6 and 3 * 2 = 6.
                     # Need to increment the pointer for duplicates too.                 
 
-        return dp[n - 1]
-    
+        return dp[n - 1]    
 
     
