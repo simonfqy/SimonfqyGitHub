@@ -27,6 +27,26 @@ class Solution:
                 heapq.heappush(min_heap, new_num)
                 ugly_numbers_set.add(new_num)
                 
+         
+# A solution from a student on jiuzhang.com. Uses heap and has O(nlogn) time complexity, but does not need to use hashmap for deduplication,
+# because the ascending order of prime factors is guaranteed when producing the ugly numbers. 
+import heapq
+class Solution:
+    """
+    @param n: An integer
+    @return: return a  integer as description.
+    """
+    def nthUglyNumber(self, n):
+        min_heap = [(1, 1)]
+        num = 1
+        for _ in range(n):
+            num, m = heapq.heappop(min_heap)
+            for factor in [2, 3, 5]:
+                if factor < m:
+                    continue
+                heapq.heappush(min_heap, (num * factor, factor))
+        return num        
+        
                 
 # My implementation based on the Dynamic Programming solution from jiuzhang.com. Uses pointers instead of heap, has O(n) time complexity. 
 class Solution:
