@@ -26,3 +26,31 @@ class Solution:
         return total_volume
       
       
+# Another solution from jiuzhang.com. 每个位置上的盛水数目 = min(左侧最高，右侧最高) - 当前高度
+# It is an optimization of the solution above.
+# 时间复杂度 O(n)，空间复杂度 O(1)
+class Solution:
+    """
+    @param heights: a list of integers
+    @return: a integer
+    """
+    def trapRainWater(self, heights):
+        total_volume = 0
+        n = len(heights)
+        left_max, right_max = 0, 0
+        left, right = 0, n - 1        
+        while left <= right:
+            # Right_max could become even larger as the right pointer moves leftward, but it is irrelevant: the water
+            # volume only depends on the minimum, in this case, left_max. Similar for the else block.
+            if left_max < right_max:
+                left_max = max(left_max, heights[left])
+                total_volume += left_max - heights[left]
+                left += 1
+            else:            
+                right_max = max(right_max, heights[right])
+                total_volume += right_max - heights[right]
+                right -= 1
+            
+        return total_volume
+    
+    
