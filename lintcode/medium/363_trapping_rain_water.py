@@ -54,3 +54,26 @@ class Solution:
         return total_volume
     
     
+# Solution from a student on jiuzhang.com. Maintains a stack of indices corresponding to monitonically decreasing height, which are basically candidate left banks.
+# 时间复杂度 O(n)，空间复杂度 O(n). The advantage is that it does not require knowing the entire input list; data stream is fine.
+class Solution:
+    """
+    @param heights: a list of integers
+    @return: a integer
+    """
+    def trapRainWater(self, heights):
+        total_volume = 0
+        candidate_left_banks = []
+        for i, height in enumerate(heights):
+            while candidate_left_banks and height >= heights[candidate_left_banks[-1]]:
+                ground = heights[candidate_left_banks.pop()]
+                if not candidate_left_banks:
+                    continue
+                left_bank_ind = candidate_left_banks[-1]
+                water_line = min(heights[left_bank_ind], height)
+                total_volume += (water_line - ground) * (i - left_bank_ind - 1)
+            candidate_left_banks.append(i)
+            
+        return total_volume
+    
+    
