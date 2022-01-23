@@ -24,5 +24,22 @@ class Solution:
         for char in element_order:
             if char in singular:
                 return char
+            
               
-              
+# My own solution. Has O(n) time complexity. Uses an ordered dictionary.
+from collections import OrderedDict
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, string):
+        char_to_freq = OrderedDict()
+        for char in string:
+            if char not in char_to_freq:
+                char_to_freq[char] = 0
+            char_to_freq[char] += 1
+        for char in char_to_freq:
+            if char_to_freq[char] == 1:
+                return char
+            
