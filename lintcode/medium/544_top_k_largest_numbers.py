@@ -120,6 +120,7 @@ class Solution:
         target_ind = k - 1
         while index != target_ind:
             if index > target_ind:
+                # Have to contain +1 and -1, otherwise we'll enter infinite loop.
                 end = index - 1
             else:
                 start = index + 1
