@@ -183,3 +183,39 @@ class Stack:
         return not self.queue_b
     
     
+# Another solution from jiuzhang.com, which I slightly modified. It only uses 1 queue.
+# Its top() and pop() operations have O(1) time complexity, while that of push() is O(n). 
+from collections import deque
+class Stack:
+    def __init__(self):
+        self.queue = deque()
+    """
+    @param: x: An integer
+    @return: nothing
+    """
+    def push(self, x):
+        self.queue.append(x)
+        size = len(self.queue)
+        # Move the early elements to the rear, so the most recently added element becomes the head.
+        for _ in range(size - 1):
+            self.queue.append(self.queue.popleft())
+
+    """
+    @return: nothing
+    """
+    def pop(self):
+        return self.queue.popleft()
+        
+    """
+    @return: An integer
+    """
+    def top(self):
+        return self.queue[0]        
+
+    """
+    @return: True if the stack is empty
+    """
+    def isEmpty(self):
+        return not self.queue
+    
+    
