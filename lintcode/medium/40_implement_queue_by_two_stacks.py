@@ -75,4 +75,39 @@ class MyQueue:
         return self.stack_1[-1]
     
     
+# Another of my own solution. push() has O(1) time complexity, while pop() and top() have O(n) time complexity. 
+class MyQueue:
+    
+    def __init__(self):
+        self.stack_1, self.stack_2 = [], []
+
+    """
+    @param: element: An integer
+    @return: nothing
+    """
+    def push(self, element):
+        self.stack_1.append(element)
+
+    """
+    @return: An integer
+    """
+    def pop(self):
+        while len(self.stack_1) > 1:
+            self.stack_2.append(self.stack_1.pop())
+        element = self.stack_1.pop()
+        while self.stack_2:
+            self.stack_1.append(self.stack_2.pop())
+        return element
+
+    """
+    @return: An integer
+    """
+    def top(self):
+        while len(self.stack_1) > 1:
+            self.stack_2.append(self.stack_1.pop())
+        element = self.stack_1[0]
+        while self.stack_2:
+            self.stack_1.append(self.stack_2.pop())
+        return element
+    
     
