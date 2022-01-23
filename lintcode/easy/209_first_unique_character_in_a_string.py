@@ -25,7 +25,26 @@ class Solution:
             if char in singular:
                 return char
             
-              
+            
+# Solution similar to jiuzhang.com. Has O(n) time complexity. Uses only 1 dictionary and 1 list.
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, string):
+        char_to_freq = dict()
+        elements = []
+        for char in string:
+            if char not in char_to_freq:
+                char_to_freq[char] = 0
+                elements.append(char)
+            char_to_freq[char] += 1
+        for char in elements:
+            if char_to_freq[char] == 1:
+                return char
+            
+            
 # My own solution. Has O(n) time complexity. Uses an ordered dictionary.
 from collections import OrderedDict
 class Solution:
