@@ -62,3 +62,57 @@ class Solution:
             if char_to_freq[char] == 1:
                 return char
             
+            
+# My own solution inspired by the instructions on jiuzhang.com. Uses a custom linked list, has O(n) time complexity, traverses through the string once. 
+# Uses 1 dictionary to help with counting.
+class LinkedNode:
+    def __init__(self, value, next):
+        self.value = value
+        self.next = next
+
+class LinkedList:
+    def __init__(self):
+        self.value_to_prev = dict()
+        self.dummy = LinkedNode(None, None)
+        self.tail = self.dummy
+
+    def append(self, value):
+        new_node = LinkedNode(value, None)
+        self.tail.next = new_node
+        self.value_to_prev[value] = self.tail
+        self.tail = new_node
+
+    def remove(self, value):
+        prev_node = self.value_to_prev[value]
+        node_to_remove = prev_node.next
+        next_node = node_to_remove.next
+        prev_node.next = next_node
+        if node_to_remove != self.tail:          
+            self.value_to_prev[next_node.value] = prev_node
+            node_to_remove.next = None
+        else:
+            self.tail = prev_node
+        del self.value_to_prev[value]
+
+    def get_first_value(self):
+        return self.dummy.next.value
+
+
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, string):
+        char_to_freq = dict()
+        unique_char_list = LinkedList()
+        for char in string:
+            char_to_freq[char] = char_to_freq.get(char, 0) + 1
+            if char_to_freq[char] == 1:
+                unique_char_list.append(char)
+            elif char_to_freq[char] == 2:
+                unique_char_list.remove(char)
+        return unique_char_list.get_first_value()
+    
+    
+    
