@@ -104,3 +104,46 @@ class Stack:
         return (len(self.current_queue) + len(self.majority_queue)) == 0
     
     
+# My own solution, which is slightly simplified from the solution on jiuzhang.com. Just like that one, the top() and pop() operations have O(n) 
+# time complexity. The difference from the original solution is that, here we require that self.queue_1 contain the most recent element. So the 
+# pointer swapping at the beginning of pop() and top() functions in the original solution is avoided here. 
+from collections import deque
+class Stack:
+    def __init__(self):
+        # queue_1 contains the most recent element.
+        self.queue_1, self.queue_2 = deque(), deque()
+
+    """
+    @param: x: An integer
+    @return: nothing
+    """
+    def push(self, x):
+        self.queue_1.append(x)
+
+    """
+    @return: nothing
+    """
+    def pop(self):
+        while len(self.queue_1) > 1:
+            self.queue_2.append(self.queue_1.popleft())
+        self.queue_1.popleft()
+        self.queue_1, self.queue_2 = self.queue_2, self.queue_1
+        
+
+    """
+    @return: An integer
+    """
+    def top(self):
+        while len(self.queue_1) > 1:
+            self.queue_2.append(self.queue_1.popleft())
+        return self.queue_1[0]
+        
+
+    """
+    @return: True if the stack is empty
+    """
+    def isEmpty(self):
+        return not self.queue_1
+    
+    
+    
