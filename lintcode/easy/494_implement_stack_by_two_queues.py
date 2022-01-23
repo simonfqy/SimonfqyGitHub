@@ -65,8 +65,9 @@ class Stack:
         return len(self.queue_1) == 0 and len(self.queue_2) == 0
 
    
-# My own solution. Require that current_queue always only contain 1 element, such that every time top() operation only has O(1)
-# time complexity, rather than the O(n) top() operation in the solution provided by jiuzhang.com.
+# My own solution. It requires that current_queue always only contain 1 element, such that every time top() operation only has O(1)
+# time complexity, rather than the O(n) top() operation in the solution provided by jiuzhang.com. Push() has O(1) complexity, while 
+# pop() has O(n) time complexity.
 from collections import deque
 class Stack:
     def __init__(self):
@@ -87,8 +88,7 @@ class Stack:
     def pop(self):
         self.current_queue.popleft()
         while len(self.majority_queue) > 1:
-            element = self.majority_queue.popleft()
-            self.current_queue.append(element)
+            self.current_queue.append(self.majority_queue.popleft())
         self.current_queue, self.majority_queue = self.majority_queue, self.current_queue
 
     """
