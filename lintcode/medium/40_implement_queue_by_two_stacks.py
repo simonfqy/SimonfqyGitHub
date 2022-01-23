@@ -74,6 +74,7 @@ class MyQueue:
     
     
 # Another of my own solution. push() has O(1) time complexity, while pop() and top() have O(n) time complexity. 
+# This is the brute-force solution mentioned previously.
 class MyQueue:
     
     def __init__(self):
