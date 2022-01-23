@@ -2,10 +2,8 @@
 Link: https://www.lintcode.com/problem/implement-queue-by-two-stacks/description
 '''
 
-# Based on the teaching from jiuzhang.com. When I was thinking I thought of a brute-force solution,
-# in which I thought that after each popping, the pop_stack should pop all its elements and push them into
-# push_stack, but it turned out that this was not necessary, we would not have problems if we simply keep the
-# remaining elements inside the pop_stack.
+# Based on the teaching from jiuzhang.com. Initially I thought of a brute-force solution, in which after each popping, the pop_stack should pop all its 
+# elements and push them to push_stack, but it turned out to be unnecessary: we would not have problems if we simply keep the remaining elements inside the pop_stack.
 class MyQueue:
     
     def __init__(self):
