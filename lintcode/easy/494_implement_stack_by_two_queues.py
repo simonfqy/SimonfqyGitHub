@@ -146,4 +146,40 @@ class Stack:
         return not self.queue_1
     
     
+# Another solution from jiuzhang.com. It ensures that queue_b always contains all the elements in reverse order, while queue_a is empty. 
+# Its top() and pop() operations have O(1) time complexity, while that of push() is O(n). 
+# The interesting part of this solution is that it shows you how to maintain a queue with reverse order of elements.
+from collections import deque
+class Stack:
+    def __init__(self):
+        self.queue_a = deque()
+        self.queue_b = deque()
+    """
+    @param: x: An integer
+    @return: nothing
+    """
+    def push(self, x):
+        self.queue_a.append(x)
+        while self.queue_b:
+            self.queue_a.append(self.queue_b.popleft())
+        self.queue_a, self.queue_b = self.queue_b, self.queue_a        
+
+    """
+    @return: nothing
+    """
+    def pop(self):
+        self.queue_b.popleft()
+        
+    """
+    @return: An integer
+    """
+    def top(self):
+        return self.queue_b[0]        
+
+    """
+    @return: True if the stack is empty
+    """
+    def isEmpty(self):
+        return not self.queue_b
+    
     
