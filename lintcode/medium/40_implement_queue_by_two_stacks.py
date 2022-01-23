@@ -42,3 +42,37 @@ class MyQueue:
                 ele = self.push_stack.pop()
                 self.pop_stack.append(ele)        
         return self.pop_stack[-1]
+
+    
+# My own solution. Push() has O(n) time complexity, while pop() and top() has O(1) time complexity.
+# Stack_1 is the stack containing all the elements (in reverse order), while stack_2 shouldn't contain any element.
+class MyQueue:
+    
+    def __init__(self):
+        self.stack_1, self.stack_2 = [], []
+
+    """
+    @param: element: An integer
+    @return: nothing
+    """
+    def push(self, element):
+        while self.stack_1:
+            self.stack_2.append(self.stack_1.pop())
+        self.stack_1.append(element)
+        while self.stack_2:
+            self.stack_1.append(self.stack_2.pop())
+
+    """
+    @return: An integer
+    """
+    def pop(self):
+        return self.stack_1.pop()
+
+    """
+    @return: An integer
+    """
+    def top(self):
+        return self.stack_1[-1]
+    
+    
+    
