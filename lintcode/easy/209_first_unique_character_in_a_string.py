@@ -115,4 +115,28 @@ class Solution:
         return unique_char_list.get_first_value()
     
     
+# Solution from a student on jiuzhang.com. Also implements a custom linked list, but the code is more succinct.
+# It also offers protection against the case where there's no unique character in the string.
+class Solution:
+    
+    def firstUniqChar(self, s):
+        
+        dummy = ListNode(None); tail = dummy
+        tab, invalid = {}, object()
+        for c in s:            
+            if c not in tab:
+                node = ListNode(c)
+                tab[c], tail.next, tail = tail, node, node
+            else:
+                if tab[c] is invalid:
+                    continue
+                prv, nxt = tab[c], tab[c].next.next
+                prv.next = nxt 
+                if nxt:
+                    tab[nxt.val] = prv
+                else:
+                    tail = prv
+                tab[c] = invalid
+            
+        return dummy.next.val if dummy.next else '0'
     
