@@ -134,3 +134,30 @@ class Solution:
         if point_one.x != point_two.x:
             return point_one.x < point_two.x
         return point_one.y < point_two.y
+    
+    
+# My own solution which uses heap. Has O(nlogn) time complexity.
+import heapq
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        distance_heap = []
+        results = []
+        for point in points:
+            distance = self.get_distance(point, origin)
+            triplet = tuple([distance, point.x, point.y])
+            heapq.heappush(distance_heap, triplet)
+        for _ in range(k):
+            _, x, y = heapq.heappop(distance_heap)
+            results.append(Point(x, y))
+        return results
+        
+    def get_distance(self, point_1, point_2):
+        return ((point_1.x - point_2.x) ** 2 + (point_1.y - point_2.y) ** 2) ** 0.5
+    
+    
