@@ -1,4 +1,5 @@
 '''
+Link: https://www.lintcode.com/problem/6/
 '''
 
 # My own solution. It is largely copying from
