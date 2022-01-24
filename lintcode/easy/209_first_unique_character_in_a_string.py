@@ -140,3 +140,59 @@ class Solution:
             
         return dummy.next.val if dummy.next else '0'
     
+    
+# Another solution from a student on jiuzhang.com. It is similar to the solution above. In fact, that above solution is simplified from this one.    
+class ListCharNode:
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+        
+class DataStream:
+    def __init__(self, charToPrev={}, dupChars=set()):
+        self.charToPrev = charToPrev
+        self.dupChars = dupChars
+        self.dummy = ListCharNode('.')
+        self.tail = self.dummy
+            
+    def add(self, c):
+        if c in self.dupChars:
+            return 
+            
+        if c not in self.charToPrev:
+            node = ListCharNode(c)
+            self.charToPrev[c] = self.tail
+            self.tail.next = node
+            self.tail = node 
+            return 
+            
+        #  delete the existing node 
+        prev = self.charToPrev[c]
+        prev.next = prev.next.next
+        if prev.next is None:
+            # tail node removed
+            self.tail = prev                
+        else:
+            self.charToPrev[prev.next.val] = prev
+                
+        self.charToPrev.pop(c)
+        self.dupChars.add(c)
+            
+    def firstUniqueChar(self):
+        return self.dummy.next.val
+
+class Solution:
+    """
+    @param str: str: the given string
+    @return: char: the first unique character in a given string
+    """
+    def firstUniqChar(self, str):
+        # Write your code here
+        ds = DataStream()
+        for i in range(len(str)):
+            ds.add(str[i])
+            
+        return ds.firstUniqueChar()
+        # if ask for the index 
+        # return str.find(ds.firstUniqueChar())
+        
+        
