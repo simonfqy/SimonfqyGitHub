@@ -65,6 +65,7 @@ class Solution:
                 nums[left], nums[right] = nums[right], nums[left]
                 left, right = left + 1, right - 1
         # Here, left is greater than right.
+        # This condition can be left < ind, and the second one can be right > end. Whether including "=" is inconsequential.
         if left <= ind:
             self.quick_select(nums, left, end, ind)
             return
