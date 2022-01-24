@@ -74,6 +74,35 @@ class Solution:
         
         return result_head    
     
+   
+# Optimized compared to the last version. This is based on a solution from a student on jiuzhang.com. The difference from the above
+# solution is that, we now store triplets in the heap, which includes the node itself, so we can simply use node = node.next to go
+# to the next element in each linked list.
+import heapq
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        min_heap = []
+        for i, list_node in enumerate(lists):
+            if not list_node:
+                continue
+            heapq.heappush(min_heap, (list_node.val, i, list_node))
+        dummy = ListNode(0)
+        tail = dummy
+        while min_heap:
+            _, ind, head = heapq.heappop(min_heap)
+            tail.next = head
+            tail = tail.next
+            head = head.next
+            if not head:
+                continue            
+            heapq.heappush(min_heap, (head.val, ind, head))
+        
+        return dummy.next  
+    
     
 # Merge sort, top-down.
 class Solution:
