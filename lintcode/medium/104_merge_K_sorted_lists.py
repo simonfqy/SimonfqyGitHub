@@ -43,6 +43,38 @@ class Solution:
         return head
     
     
+# My own solution after 2.5 years. It does not overwrite the __lt__ function of ListNode; rather, it keeps the index of each
+# list in the linked lists, so we can track each linked list down to the end. Otherwise, it is very similar to the solution above.
+import heapq
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        min_heap = []
+        for i, list_node in enumerate(lists):
+            if not list_node:
+                continue
+            heapq.heappush(min_heap, (list_node.val, i))
+        result_head = None
+        tail = None
+        while min_heap:
+            val, list_ind = heapq.heappop(min_heap)
+            if not result_head:
+                result_head = lists[list_ind]
+                tail = result_head
+            else:
+                tail.next = lists[list_ind]
+                tail = tail.next
+            lists[list_ind] = lists[list_ind].next
+            if not lists[list_ind]:
+                continue
+            heapq.heappush(min_heap, (lists[list_ind].val, list_ind))
+        
+        return result_head    
+    
+    
 # Merge sort, top-down.
 class Solution:
     """
