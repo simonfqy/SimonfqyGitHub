@@ -33,6 +33,28 @@ class Solution:
         top_k = nums[len(nums) - k:]
         top_k.reverse()
         return top_k
+    
+    
+# Solution from jiuzhang.com which I slightly modified. Has O(nlogk) time complexity, since we always maintain a heap with size k.
+import heapq
+class Solution:
+    """
+    @param nums: an integer array
+    @param k: An integer
+    @return: the top k largest numbers in array
+    """
+    def topk(self, nums, k):
+        if not nums or k == 0:
+            return []
+        min_heap = []
+        for num in nums:
+            heapq.heappush(min_heap, num)
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+        result = [0] * k
+        for i in range(k - 1, -1, -1):
+            result[i] = heapq.heappop(min_heap)
+        return result
             
         
 # Slightly converted from the solution provided by students of jiuzhang.com. Uses quickSelect algorithm to make nums[:k]
