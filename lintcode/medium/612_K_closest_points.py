@@ -41,8 +41,7 @@ class Solution:
             
         while len(answer) < k:
             answer.append(converted_to_orig[heapq.heappop(heap)])
-        return answer
-    
+        return answer    
     
     
 # 本参考程序来自九章算法，由 @令狐冲 提供。版权所有，转发请注明出处。
@@ -50,10 +49,9 @@ class Solution:
 # - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
 # - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
 # - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
-
+# The time complexity is O(nlogk).
 
 import heapq
-
 class Solution:
     """
     @param points: a list of points
@@ -65,8 +63,7 @@ class Solution:
         self.heap = []
         for point in points:
             dist = self.getDistance(point, origin)
-            heapq.heappush(self.heap, (-dist, -point.x, -point.y))
-            
+            heapq.heappush(self.heap, (-dist, -point.x, -point.y))            
             if len(self.heap) > k:
                 heapq.heappop(self.heap)
 
@@ -79,8 +76,7 @@ class Solution:
         return ret
 
     def getDistance(self, a, b):
-        return (a.x - b.x) ** 2 + (a.y - b.y) ** 2
-    
+        return (a.x - b.x) ** 2 + (a.y - b.y) ** 2    
     
     
  # My solution using a custom-implemented quick sort. Causes time limit exceeded problem.
