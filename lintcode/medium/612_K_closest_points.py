@@ -157,3 +157,49 @@ class Solution:
         return ((point_1.x - point_2.x) ** 2 + (point_1.y - point_2.y) ** 2) ** 0.5
     
     
+# Solution modified from the one in jiuzhang.com (of a student). Uses quick select, Has O(max(n, klogk)) time complexity.
+import heapq
+class Solution:
+    """
+    @param points: a list of points
+    @param origin: a point
+    @param k: An integer
+    @return: the k closest points
+    """
+    def kClosest(self, points, origin, k):
+        distance_heap = []
+        ordering_list = []
+        for point in points:
+            distance = self.get_distance(point, origin)
+            triplet = tuple([distance, point.x, point.y])
+            ordering_list.append(triplet)
+        # Use quick select algorithm to select the K closest points (unordered), shrinking the problem size required in sorting.
+        self.quick_select(ordering_list, 0, len(points) - 1, k - 1)
+        ordering_list = sorted(ordering_list[:k])
+        return [Point(x, y) for _, x, y in ordering_list]
+        
+    def get_distance(self, point_1, point_2):
+        return ((point_1.x - point_2.x) ** 2 + (point_1.y - point_2.y) ** 2) ** 0.5
+
+    def quick_select(self, array, start, end, index):
+        if start == end:
+            return
+        left, right = start, end
+        pivot = array[(left + right) // 2]
+        while left <= right:
+            while left <= right and array[left] < pivot:
+                left += 1
+            while left <= right and array[right] > pivot:
+                right -= 1
+            if left > right:
+                break
+            array[left], array[right] = array[right], array[left]
+            left, right = left + 1, right - 1
+        if left <= index:
+            self.quick_select(array, left, end, index)
+            return
+        if right >= index:
+            self.quick_select(array, start, right, index)
+            
+            
+            
