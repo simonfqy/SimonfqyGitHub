@@ -94,6 +94,12 @@ class NumMatrix:
         bottom_left_sum = self.dp[row2 + 1][col1] - self.dp[row1][col1]                             
 
         return bottom_right_sum - bottom_left_sum   
-
     
+    # Another optimization from a student on jiuzhang.com: increment row2 and col2 first, so the formula looks tidier.
+    def sumRegion2(self, row1, col1, row2, col2):
+        row2, col2 = row2 + 1, col2 + 1
+        bottom_right_sum = self.dp[row2][col2] - self.dp[row1][col2]
+        bottom_left_sum = self.dp[row2][col1] - self.dp[row1][col1]                             
+
+        return bottom_right_sum - bottom_left_sum 
     
