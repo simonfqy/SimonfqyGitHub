@@ -31,7 +31,32 @@ class Solution:
             occurrence = common_element_to_freq[num]
             result += [num] * occurrence
         return result
-      
+    
+    
+# Solution borrowed from jiuzhang.com with my own modifications. It is similar to the one above, but much more succinct with less memory
+# footprint.
+from collections import defaultdict
+class Solution:
+    """
+    @param nums1: an integer array
+    @param nums2: an integer array
+    @return: an integer array
+    """
+    def intersection(self, nums1, nums2):
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        nums1_element_to_freq = defaultdict(int)
+        result = []
+        for num in nums1:
+            nums1_element_to_freq[num] += 1
+        for num in nums2:
+            if nums1_element_to_freq[num] == 0:
+                continue
+            result.append(num)
+            nums1_element_to_freq[num] -= 1
+            
+        return result
+    
       
 # My own solution using two pointers, which involve sorting in the beginning. Time complexity is O(nlogn + mlogm), where n is the size
 # of nums1, m is the size of nums2.
