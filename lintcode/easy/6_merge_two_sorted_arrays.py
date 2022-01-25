@@ -28,3 +28,45 @@ class Solution:
         return result
       
       
+# Based on a solution from a student on jiuzhang.com. It is optimized for the case where one array (A) is very large while the other (B)
+# is very small. Here we have O(mlogn) time complexity, where m < n, m is the size of B and n is the size of A. 
+class Solution:
+    """
+    @param A: sorted integer array A
+    @param B: sorted integer array B
+    @return: A new sorted integer array
+    """
+    def mergeSortedArray(self, A, B):
+        # Enforce that A is the larger array.
+        if len(A) < len(B):
+            A, B = B, A
+        A_ind = 0
+        merged_array = []
+        for i in range(len(B)):
+            b_element_pos_in_A = self.get_pos(A, B[i])
+            while A_ind < b_element_pos_in_A:
+                merged_array.append(A[A_ind])
+                A_ind += 1
+            merged_array.append(B[i])
+        # There could be remaining elements in A. Add them to the merged array.
+        merged_array.extend(A[A_ind:])
+        return merged_array
+        
+    # Get the position of target if it were to be inserted into A. Here if there are ties, we require that target to be inserted after
+    # all ties in A. This way it is consistent with the order of adding members of A before B in the for-loop of the parent function.
+    def get_pos(self, A, target):
+        left, right = 0, len(A) - 1
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if A[mid] <= target:
+                left = mid
+            else:
+                right = mid        
+        if A[left] > target:
+            return left   
+        if A[right] > target:
+            return right     
+        return right + 1
+    
+    
+    
