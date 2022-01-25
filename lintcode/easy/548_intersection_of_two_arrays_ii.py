@@ -12,6 +12,9 @@ class Solution:
     @return: an integer array
     """
     def intersection(self, nums1, nums2):
+        # Let nums1 be the smaller array
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
         nums1_element_to_freq, common_element_to_freq = defaultdict(int), dict()
         for num in nums1:
             nums1_element_to_freq[num] += 1
