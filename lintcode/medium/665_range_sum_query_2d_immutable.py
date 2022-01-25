@@ -4,7 +4,8 @@ Link: https://www.lintcode.com/problem/665
 
 
 # My own solution. Initially I used a (top_row, row, col) triplet as the key of dictionary, which caused a memory limit exceeded exception.
-# This version only uses (row, col) to locate the value in the matrix. 
+# This version only uses (row, col) to locate the value in the matrix. It makes the sumRegion() function more complicated than the first solution,
+# but saves space considerably.
 class NumMatrix:
     """
     @param: matrix: a 2D matrix
