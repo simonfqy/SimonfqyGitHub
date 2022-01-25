@@ -30,3 +30,29 @@ class Solution:
         return result
       
       
+# My own solution using two pointers, which involve sorting in the beginning. Time complexity is O(nlogn + mlogm), where n is the size
+# of nums1, m is the size of nums2.
+class Solution:
+    """
+    @param nums1: an integer array
+    @param nums2: an integer array
+    @return: an integer array
+    """
+    def intersection(self, nums1, nums2):
+        nums1.sort()
+        nums2.sort()
+        i = j = 0
+        result = []
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] < nums2[j]:
+                i += 1
+            elif nums1[i] > nums2[j]:
+                j += 1
+            else:
+                result.append(nums1[i])
+                i, j = i + 1, j + 1
+
+        return result
+    
+    
+    
