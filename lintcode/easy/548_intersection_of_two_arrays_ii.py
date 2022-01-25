@@ -2,7 +2,7 @@
 Link: https://www.lintcode.com/problem/548/
 '''
 
-# My own solution. Uses dictionary to store the occurrence of each element.
+# My own solution. Uses dictionary to store the occurrence of each element. Has O(n + m) time complexity, where n is the size of nums1, m is that of nums2.
 from collections import defaultdict
 class Solution:
     """
