@@ -155,7 +155,7 @@ class NumArray:
         return self.get_prefix_sum(j) - self.get_prefix_sum(i - 1)
     
     
-  # My implementation based on a solution from a student on jiuzhang.com. It uses segment tree, which has O(logn) time complexity.
+# My implementation based on a solution from a student on jiuzhang.com. It uses segment tree, which has O(logn) time complexity.
 # The implementation of sumRange() function is not very intuitive. 
 class NumArray:
 
@@ -182,7 +182,8 @@ class NumArray:
             # This line below is also okay if we don't use diff: if i is odd, left is i - 1, if i is even, right is i + 1
             # self.tree_arr[i >> 1] = self.tree_arr[i] + self.tree_arr[i ^ 1]
             index >>= 1   
-
+    
+    # To help understand the problem, we can let self.n = 8, i = 3, j = 6. 
     def sumRange(self, i, j):
         """
         :type i: int
@@ -192,10 +193,13 @@ class NumArray:
         l, r = i + self.n, j + self.n
         res = 0
         while l <= r:
+            # It means l = 2k + 1 for some k. Let l = (l + 1) >> 1, then l becomes k + 1.
             if l & 1:
                 res += self.segment_tree_arr[l]
                 l += 1
             l >>= 1
+            # It means r = 2m for some m, where m > k. Let r = (r - 1) >> 1, then r becomes m - 1. The values of r and l are likely to get closer (if not already
+            # passing each other) after this iteration of the while loop.
             if not r & 1:
                 res += self.segment_tree_arr[r]
                 r -= 1
