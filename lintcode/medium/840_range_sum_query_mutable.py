@@ -9,8 +9,7 @@ class NumArray:
         """
         :type nums: List[int]
         """
-        self.nums = nums
-        
+        self.nums = nums        
 
     def update(self, i, val):
         """
@@ -18,8 +17,7 @@ class NumArray:
         :type val: int
         :rtype: void
         """
-        self.nums[i] = val
-        
+        self.nums[i] = val        
 
     def sumRange(self, i, j):
         """
@@ -156,5 +154,52 @@ class NumArray:
         """
         return self.get_prefix_sum(j) - self.get_prefix_sum(i - 1)
     
+    
+  # My implementation based on a solution from a student on jiuzhang.com. It uses segment tree, which has O(logn) time complexity.
+# The implementation of sumRange() function is not very intuitive. 
+class NumArray:
+
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        """
+        self.n = len(nums)
+        self.segment_tree_arr = [0] * self.n + nums
+        for i in range(self.n - 1, 0, -1):
+            # i's sons are 2i, 2i + 1
+            self.segment_tree_arr[i] = self.segment_tree_arr[i << 1] + self.segment_tree_arr[i << 1 | 1]                   
+        
+    def update(self, i, val):
+        """
+        :type i: int
+        :type val: int
+        :rtype: void
+        """
+        index = i + self.n
+        diff = val - self.segment_tree_arr[index]        
+        while index > 0:
+            self.segment_tree_arr[index] += diff
+            # This line below is also okay if we don't use diff: if i is odd, left is i - 1, if i is even, right is i + 1
+            # self.tree_arr[i >> 1] = self.tree_arr[i] + self.tree_arr[i ^ 1]
+            index >>= 1   
+
+    def sumRange(self, i, j):
+        """
+        :type i: int
+        :type j: int
+        :rtype: int
+        """
+        l, r = i + self.n, j + self.n
+        res = 0
+        while l <= r:
+            if l & 1:
+                res += self.segment_tree_arr[l]
+                l += 1
+            l >>= 1
+            if not r & 1:
+                res += self.segment_tree_arr[r]
+                r -= 1
+            r >>= 1
+        return res
     
     
