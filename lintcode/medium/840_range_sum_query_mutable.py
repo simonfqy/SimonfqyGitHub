@@ -107,4 +107,54 @@ class NumArray:
         return original_sum
     
     
+# My implementation based on the solution from jiuzhang.com. It uses binary index tree (also called Fenwick tree), which has O(logn) time complexity
+# on both update() and prefix sum operations. 
+class NumArray:
+
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        """
+        self.nums = nums
+        self.n = len(self.nums)
+        self.binary_index_tree_array = [0] * (self.n + 1)
+        for i in range(self.n):
+            self.add_val_to_all_affected_entries(i, self.nums[i])             
+        
+    def update(self, i, val):
+        """
+        :type i: int
+        :type val: int
+        :rtype: void
+        """
+        diff = val - self.nums[i]
+        self.nums[i] = val
+        self.add_val_to_all_affected_entries(i, diff)
+
+    def get_lowest_bit(self, x):
+        return x & (-x)
+
+    def add_val_to_all_affected_entries(self, index, val):
+        index += 1
+        while index <= self.n:
+            self.binary_index_tree_array[index] += val
+            index += self.get_lowest_bit(index)
+    
+    def get_prefix_sum(self, index):
+        index += 1
+        prefix_sum = 0
+        while index > 0:
+            prefix_sum += self.binary_index_tree_array[index]
+            index -= self.get_lowest_bit(index)
+        return prefix_sum    
+
+    def sumRange(self, i, j):
+        """
+        :type i: int
+        :type j: int
+        :rtype: int
+        """
+        return self.get_prefix_sum(j) - self.get_prefix_sum(i - 1)
+    
+    
     
