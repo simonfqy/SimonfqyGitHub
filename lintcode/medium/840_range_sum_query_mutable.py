@@ -207,3 +207,130 @@ class NumArray:
         return res
     
     
+# My implementation of segment tree using an array, which has O(logn) time complexity. It is based on a Youtube video:
+# https://www.youtube.com/watch?v=ZBHKZF5w4YU
+class NumArray:
+
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        """
+        self.n = len(nums)
+        i = 1
+        self.size = 0
+        while True:
+            power = 2 ** i
+            if power >= self.n:
+                self.size = 2 * power - 1
+                break
+            i += 1
+        self.segment_tree_arr = [0] * self.size
+        self.nums_ind_to_segtree_ind = dict()
+        self.construct_segment_tree(nums, 0, self.n - 1, 0)
+
+    def construct_segment_tree(self, nums, low, high, pos):
+        if low == high:
+            self.segment_tree_arr[pos] = nums[low]
+            self.nums_ind_to_segtree_ind[low] = pos
+            return
+        mid = (low + high) // 2
+        self.construct_segment_tree(nums, low, mid, 2 * pos + 1)
+        self.construct_segment_tree(nums, mid + 1, high, 2 * pos + 2)
+        self.segment_tree_arr[pos] = self.segment_tree_arr[2 * pos + 1] + self.segment_tree_arr[2 * pos + 2]                      
+        
+    def update(self, i, val):
+        """
+        :type i: int
+        :type val: int
+        :rtype: void
+        """
+        segtree_ind = self.nums_ind_to_segtree_ind[i]
+        self.segment_tree_arr[segtree_ind] = val
+        while True:
+            segtree_ind = (segtree_ind - 1) // 2
+            if segtree_ind < 0:
+                break
+            self.segment_tree_arr[segtree_ind] = self.segment_tree_arr[2 * segtree_ind + 1] + self.segment_tree_arr[2 * segtree_ind + 2]           
+        
+    def sumRange(self, i, j):
+        """
+        :type i: int
+        :type j: int
+        :rtype: int
+        """
+        return self.get_range_sum(i, j, 0, self.n - 1, 0)
+    
+    def get_range_sum(self, qlow, qhigh, low, high, pos):
+        if qlow <= low and qhigh >= high:
+            return self.segment_tree_arr[pos]
+        if qlow > high or qhigh < low:
+            return 0
+        mid = (low + high) // 2
+        return self.get_range_sum(qlow, qhigh, low, mid, 2 * pos + 1) + self.get_range_sum(qlow, qhigh, mid + 1, high, 2 * pos + 2)
+    
+    
+# A segment tree solution from a student on jiuzhang.com. Unlike my solution above, this one uses real tree structure, instead of an array.
+class NumArray(object):
+    class SegmentTree:
+        def __init__(self, start,end , val):
+            self.start, self.end , self.val = start,end , val 
+            self.left, self.right = None, None
+    
+    def Build(self, nums, start, end ):
+        root = self.SegmentTree(start, end , nums[start])
+        if start >= end:
+            return root 
+        mid = (start + end ) // 2 
+        root.left = self.Build(nums, start, mid )
+        root.right = self.Build(nums, mid + 1, end )
+        if root.left and root.right:
+            root.val = root.left.val + root.right.val
+        return root        
+
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        """
+        if len(nums) == 0:
+            return None
+        self.root = self.Build(nums, 0, len(nums) - 1 )
+        
+
+    def modify(self,root,index, val):
+        if root.start == root.end:
+            root.val = val
+            return
+        if root is None:
+            return None
+        if root.left.end < index:
+            self.modify(root.right,index,val)
+        else:
+            self.modify(root.left, index,val)
+        root.val = root.left.val + root.right.val            
+    
+    def update(self, i, val):
+        """
+        :type i: int
+        :type val: int
+        :rtype: void
+        """
+        return self.modify(self.root, i, val )           
+
+    def sumRange(self, i, j):
+        """
+        :type i: int
+        :type j: int
+        :rtype: int
+        """
+        return self.query(i,j,self.root)        
+        
+    def query(self, start,end , root):
+        if start > end:
+            return 0
+        if root.start >= start and root.end <= end:
+            return root.val
+        if start > root.end or end < root.start:
+            return 0
+        return self.query(start,end,root.left) + self.query(start,end, root.right)
+    
+    
