@@ -222,6 +222,38 @@ class NumMatrix(object):
         self.update_1d_segtree(low, mid, ind, pos_1, 2 * pos_2 + 1, diff)
         self.update_1d_segtree(mid + 1, high, ind, pos_1, 2 * pos_2 + 2, diff)
         self.segtrees[pos_1][pos_2] = self.segtrees[pos_1][2 * pos_2 + 1] + self.segtrees[pos_1][2 * pos_2 + 2]
+        
+    # The two functions below are modified from the original update segtree functions. We use sets to record the entries that need to be updated, rather
+    # than blindly summing up all elements in an array. However, they still cause time limit exceeded exceptions.   
+    def update_2d_segtree_2(self, low_1, high_1, low_2, high_2, row_ind, col_ind, pos_1, pos_2, diff):
+        if low_1 > row_ind or high_1 < row_ind:
+            return set()
+        if low_1 == high_1 == row_ind:
+            modified_entries_in_1d_segtree = set()
+            self.update_1d_segtree(low_2, high_2, col_ind, pos_1, pos_2, diff, modified_entries_in_1d_segtree)
+            return modified_entries_in_1d_segtree
+        mid_1 = (low_1 + high_1) // 2
+        modified_entries_1 = self.update_2d_segtree(low_1, mid_1, low_2, high_2, row_ind, col_ind, 2 * pos_1 + 1, pos_2, diff)
+        modified_entries_2 = self.update_2d_segtree(mid_1 + 1, high_1, low_2, high_2, row_ind, col_ind, 2 * pos_1 + 2, pos_2, diff)
+        modified_entries = modified_entries_1 | modified_entries_2
+        for entry in modified_entries:
+            self.segtrees[pos_1][entry] = self.segtrees[2 * pos_1 + 1][entry] + self.segtrees[2 * pos_1 + 2][entry]
+        return modified_entries
+
+    def update_1d_segtree_2(self, low, high, ind, pos_1, pos_2, diff, modified_entries):
+        if low > ind or high < ind:
+            return
+        if low == high == ind:
+            self.segtrees[pos_1][pos_2] += diff
+            modified_entries.add(pos_2)
+            return
+        mid = (low + high) // 2
+        self.update_1d_segtree(low, mid, ind, pos_1, 2 * pos_2 + 1, diff, modified_entries)
+        self.update_1d_segtree(mid + 1, high, ind, pos_1, 2 * pos_2 + 2, diff, modified_entries)
+        if 2 * pos_2 + 1 in modified_entries or 2 * pos_2 + 2 in modified_entries:
+            self.segtrees[pos_1][pos_2] = self.segtrees[pos_1][2 * pos_2 + 1] + self.segtrees[pos_1][2 * pos_2 + 2]
+            modified_entries.add(pos_2)
+            
            
     def range_sum_query_2d(self, qlow_1, qhigh_1, qlow_2, qhigh_2, low_1, high_1, low_2, high_2, pos_1, pos_2):
         if low_1 > qhigh_1 or high_1 < qlow_1:
