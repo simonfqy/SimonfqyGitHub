@@ -70,6 +70,64 @@ class NumMatrix(object):
         bottom_right = self.get_prefix_sum_in_bit_tree(right_bit_tree, row2 + 1) - self.get_prefix_sum_in_bit_tree(right_bit_tree, row1)
         bottom_left = self.get_prefix_sum_in_bit_tree(left_bit_tree, row2 + 1) - self.get_prefix_sum_in_bit_tree(left_bit_tree, row1)
         return bottom_right - bottom_left
+    
+    
+# My implementation of the 2D Binary Indexed Tree solution from jiuzhang.com. 
+class NumMatrix(object):
+
+    def __init__(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        """
+        self.n, self.m = len(matrix), len(matrix[0])
+        self.matrix = [[0] * self.m for _ in range(self.n)]
+        self.bit_trees = [[0] * (self.m + 1) for _ in range(self.n + 1)]
+        for row in range(self.n):
+            for col in range(self.m):
+                self.update(row, col, matrix[row][col])        
+
+    def update(self, row, col, val):
+        """
+        :type row: int
+        :type col: int
+        :type val: int
+        :rtype: void
+        """
+        row_ind, col_ind = row + 1, col + 1
+        diff = val - self.matrix[row][col]
+        self.matrix[row][col] = val
+        i = row_ind
+        while i <= self.n:
+            # We need to re-initialize col_ind to be the value of j. Otherwise, j will be a large number after the 1st iteration of i.
+            j = col_ind
+            while j <= self.m:
+                self.bit_trees[i][j] += diff
+                j += self.get_last_digit(j)
+            i += self.get_last_digit(i)        
+    
+    def get_last_digit(self, x):
+        return x & (-x)
+    
+    def get_presum(self, row_ind, col_ind):
+        res = 0
+        i = row_ind
+        while i > 0:
+            j = col_ind
+            while j > 0:
+                res += self.bit_trees[i][j]
+                j -= self.get_last_digit(j)
+            i -= self.get_last_digit(i)
+        return res
+
+    def sumRegion(self, row1, col1, row2, col2):
+        """
+        :type row1: int
+        :type col1: int
+        :type row2: int
+        :type col2: int
+        :rtype: int
+        """
+        return (self.get_presum(row2 + 1, col2 + 1) - self.get_presum(row1, col2 + 1) - self.get_presum(row2 + 1, col1) + self.get_presum(row1, col1))    
       
       
 # My own solution. Let each row be a segment tree. We also have padded 0s as the first row and column, respectively.
