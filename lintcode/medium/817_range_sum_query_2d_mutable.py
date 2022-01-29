@@ -110,7 +110,10 @@ class NumMatrix(object):
         self.construct_segtree(array, segtree, low, mid, 2 * pos + 1)
         self.construct_segtree(array, segtree, mid + 1, high, 2 * pos + 2)
         segtree[pos] = segtree[2 * pos + 1] + segtree[2 * pos + 2]  
-
+    
+    # This implementation of update() is different from what I did for a similar problem:
+    # https://github.com/simonfqy/SimonfqyGitHub/blob/0c22536dc64d8d940508b2b115c568a410fb04bb/lintcode/medium/840_range_sum_query_mutable.py#L241.
+    # This solution here does not use a dictionary which maps the array indices to segtree indices.
     def update(self, row, col, val):
         """
         :type row: int
