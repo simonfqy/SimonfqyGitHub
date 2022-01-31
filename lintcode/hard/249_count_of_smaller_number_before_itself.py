@@ -53,3 +53,46 @@ class Solution:
             i += 1
             
             
+# My own implementation using Binary Indexed Tree (Fenwick Tree). Should be correct, but also hits time limit exceeded exception.
+class Solution:
+    """
+    @param A: an integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def countOfSmallerNumberII(self, A):
+        self.n = len(A)
+        self.fenwick_tree = [(float('inf'), float('-inf'))] * (self.n + 1)
+        counts = []
+        for i, val in enumerate(A):
+            counts.append(self.get_num_smaller_numbers(A, i, val))
+            self.update(i, val)
+        return counts
+
+    def update(self, index, val):
+        index += 1
+        while index <= self.n:
+            self.fenwick_tree[index] = (min(self.fenwick_tree[index][0], val), max(self.fenwick_tree[index][1], val))
+            index += self.get_last_digit(index)
+
+    def get_num_smaller_numbers(self, array, index, val):        
+        if index <= 0:
+            return 0
+        smaller_count = 0
+        min_val, max_val = self.fenwick_tree[index]
+        decrement = self.get_last_digit(index)
+        if max_val < val:
+            smaller_count += decrement
+        elif min_val < val:
+            prev_ind = index - 1
+            smaller_count = self.get_num_smaller_numbers(array, prev_ind, val)
+            smaller_count += (array[index - 1] < val)
+            return smaller_count
+
+        index -= decrement
+        smaller_count += self.get_num_smaller_numbers(array, index, val)
+        return smaller_count
+    
+    def get_last_digit(self, x):
+        return x & (-x)
+    
+  
