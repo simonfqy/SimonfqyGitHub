@@ -176,3 +176,57 @@ class Solution:
             i += 1    
 
             
+# Solution from jiuzhang.com. It uses value-based block array, where each block records the count of each value within a range, and the blocks
+# are ordered in their value ranges. Time complexity is O(n * sqrt(size)), where size is the number of data values (here it is 0 to 10000, so size = 10001).
+class Block:
+    def __init__(self):
+        self.total_count = 0
+        self.counter = {}
+        
+        
+class BlockArray:
+    def __init__(self, max_value):
+        self.block_size = int(max_value ** 0.5)
+        self.blocks = [
+            Block()
+            for _ in range(max_value // self.block_size + 1)
+        ]
+    
+    def count_smaller(self, value):
+        count = 0
+        block_index = value // self.block_size
+        for i in range(block_index):
+            count += self.blocks[i].total_count
+        
+        counter = self.blocks[block_index].counter
+        for val in counter:
+            if val < value:
+                count += counter[val]
+        return count
+        
+    def insert(self, value):
+        block_index = value // self.block_size
+        block = self.blocks[block_index]
+        block.total_count += 1
+        block.counter[value] = block.counter.get(value, 0) + 1
+
+
+class Solution:
+    """
+    @param A: an integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def countOfSmallerNumberII(self, A):
+        if not A:
+            return []
+
+        block_array = BlockArray(10000)
+        results = []
+        for a in A:
+            count = block_array.count_smaller(a)
+            results.append(count)
+            block_array.insert(a)
+        return results
+    
+    
+    
