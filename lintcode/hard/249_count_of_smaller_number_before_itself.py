@@ -129,4 +129,50 @@ class Solution:
         return x & (-x)
     
     
-    
+# My own solution, using value-based rather than index-based segment tree. Successfully passed without 
+# time limit exceeded exception.
+class Solution:
+    """
+    @param A: an integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def countOfSmallerNumberII(self, A):
+        max_val_nums = 10001
+        segtree_size = self.get_segtree_size(max_val_nums)
+        self.segtree = [0] * segtree_size
+        smaller_counts = []
+        for val in A:
+            smaller_counts.append(self.get_smaller_count(val, 0, max_val_nums - 1, 0))
+            self.increment_count(val, 0, max_val_nums - 1, 0)
+        return smaller_counts
+
+    def get_smaller_count(self, val, low, high, pos):
+        if low >= val:
+            return 0
+        if high < val:
+            return self.segtree[pos]
+        mid = (low + high) // 2
+        left_smaller = self.get_smaller_count(val, low, mid, 2 * pos + 1)
+        right_smaller = self.get_smaller_count(val, mid + 1, high, 2 * pos + 2)
+        return left_smaller + right_smaller
+
+    def increment_count(self, val, low, high, pos):        
+        if low > val or high < val:
+            return
+        if low == high == val:
+            self.segtree[pos] += 1
+            return
+        mid = (low + high) // 2
+        self.increment_count(val, low, mid, 2 * pos + 1)
+        self.increment_count(val, mid + 1, high, 2 * pos + 2)
+        self.segtree[pos] = self.segtree[2 * pos + 1] + self.segtree[2 * pos + 2]
+
+    def get_segtree_size(self, num_entries):
+        i = 0
+        while True:
+            power = 2 ** i
+            if power >= num_entries:
+                return 2 * power - 1
+            i += 1    
+
+            
