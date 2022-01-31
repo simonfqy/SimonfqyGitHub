@@ -96,3 +96,37 @@ class Solution:
         return x & (-x)
     
   
+# Following the Binary Indexed Tree (Fenwick Tree) solution from jiuzhang.com. The fact that it uses value-based rather than index-based BIT
+# prevents the time limit exceeded exception.
+class Solution:
+    """
+    @param A: an integer array
+    @return: A list of integers includes the index of the first number and the index of the last number
+    """
+    def countOfSmallerNumberII(self, A):
+        self.max_ind = 10001
+        self.fenwick_tree = [0] * 10002
+        smaller_counts = []
+        for val in A:
+            smaller_counts.append(self.get_smaller_count(val))
+            self.increment_count(val)
+        return smaller_counts
+
+    def get_smaller_count(self, val):        
+        smaller_count = 0
+        while val > 0:
+            smaller_count += self.fenwick_tree[val]
+            val -= self.get_last_digit(val)  
+        return smaller_count      
+    
+    def increment_count(self, val):
+        val += 1
+        while val <= self.max_ind:
+            self.fenwick_tree[val] += 1
+            val += self.get_last_digit(val)
+
+    def get_last_digit(self, x):
+        return x & (-x)
+    
+    
+    
