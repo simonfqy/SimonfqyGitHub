@@ -97,7 +97,7 @@ class Solution:
     
   
 # Following the Binary Indexed Tree (Fenwick Tree) solution from jiuzhang.com. The fact that it uses value-based rather than index-based BIT
-# prevents the time limit exceeded exception.
+# prevents the time limit exceeded exception. The values stored in the Fenwick tree are counts of occurrences of the value (corresponding to the index).
 class Solution:
     """
     @param A: an integer array
