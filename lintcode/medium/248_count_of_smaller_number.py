@@ -103,3 +103,38 @@ class Solution:
             i += 1
             
             
+# My own solution using value-based Fenwick tree.
+class Solution:
+    """
+    @param A: An integer array
+    @param queries: The query list
+    @return: The number of element in the array that are smaller that the given integer
+    """
+    def countOfSmallerNumber(self, A, queries):
+        self.max_unique_nums = 10001
+        self.fenwick_tree = [0] * (self.max_unique_nums + 1)
+        smaller_counts = []
+        for val in A:
+            self.increment_count(val)
+        for query_val in queries:
+            smaller_counts.append(self.get_smaller_count(query_val))
+        return smaller_counts
+    
+    def increment_count(self, val):
+        val += 1
+        while val <= self.max_unique_nums:
+            self.fenwick_tree[val] += 1
+            val += self.get_last_digit(val)
+
+    def get_smaller_count(self, val):
+        count = 0
+        while val > 0:
+            count += self.fenwick_tree[val]
+            val -= self.get_last_digit(val)
+        return count
+    
+    def get_last_digit(self, x):
+        return x & (-x)
+    
+    
+    
