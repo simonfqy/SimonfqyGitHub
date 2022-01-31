@@ -3,7 +3,7 @@ Link: https://www.lintcode.com/problem/248
 '''
 
 
-# My own solution. Used sorting + binary search.
+# My own solution. Used sorting + binary search. Passed.
 class Solution:
     """
     @param A: An integer array
@@ -35,3 +35,24 @@ class Solution:
         return right + 1
       
       
+# My own simple solution. Even with the slight optimization of sorting A, it still causes time limit exceeded exception.
+class Solution:
+    """
+    @param A: An integer array
+    @param queries: The query list
+    @return: The number of element in the array that are smaller that the given integer
+    """
+    def countOfSmallerNumber(self, A, queries):
+        res = []
+        A.sort()
+        for query_val in queries:
+            smaller_count = 0
+            for val in A:
+                if val >= query_val:
+                    break
+                smaller_count += 1
+            res.append(smaller_count)
+        return res
+    
+    
+    
