@@ -3,7 +3,7 @@ Link: https://www.lintcode.com/problem/249/
 '''
 
 
-# My own solution. Should be correct, but hits time limit exceeded exception.
+# My own solution which uses segment tree. Should be correct, but hits time limit exceeded exception.
 class Solution:
     """
     @param A: an integer array
