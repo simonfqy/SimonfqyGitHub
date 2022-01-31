@@ -137,4 +137,56 @@ class Solution:
         return x & (-x)
     
     
-    
+# My own solution using index-based segment tree. Sorting A first will prevent getting time out.
+class Solution:
+    """
+    @param A: An integer array
+    @param queries: The query list
+    @return: The number of element in the array that are smaller that the given integer
+    """
+    def countOfSmallerNumber(self, A, queries):
+        self.n = len(A)
+        segtree_size = self.get_segtree_size(self.n)
+        self.segtree = [(float('inf'), float('-inf'))] * segtree_size
+        smaller_counts = []
+        # If we don't sort here, we will encounter time limit exceeded exception.
+        A.sort()
+        for i, val in enumerate(A):
+            self.update_segtree(i, val, 0, self.n - 1, 0)
+        for query_val in queries:
+            smaller_counts.append(self.get_smaller_count(query_val, 0, self.n - 1, 0))
+        return smaller_counts
+
+    def update_segtree(self, index, val, low, high, pos):
+        if index < low or index > high:
+            return
+        if low == high == index:
+            self.segtree[pos] = (val, val)
+            return
+        mid = (low + high) // 2
+        self.update_segtree(index, val, low, mid, 2 * pos + 1)
+        self.update_segtree(index, val, mid + 1, high, 2 * pos + 2)
+        self.segtree[pos] = (min(self.segtree[2 * pos + 1][0], self.segtree[2 * pos + 2][0]), 
+                max(self.segtree[2 * pos + 1][1], self.segtree[2 * pos + 2][1]))
+
+    def get_smaller_count(self, val, low, high, pos):
+        min_val, max_val = self.segtree[pos]
+        if min_val > max_val:
+            return 0
+        if min_val >= val:
+            return 0
+        if max_val < val:
+            return high - low + 1
+        mid = (low + high) // 2
+        left_count = self.get_smaller_count(val, low, mid, 2 * pos + 1)
+        right_count = self.get_smaller_count(val, mid + 1, high, 2 * pos + 2)
+        return left_count + right_count
+
+    def get_segtree_size(self, num_entries):
+        i = 0
+        while True:
+            power = 2 ** i
+            if power >= num_entries:
+                return 2 * power - 1
+            i += 1
+            
