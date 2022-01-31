@@ -55,4 +55,51 @@ class Solution:
         return res
     
     
+# My own solution using value-based segment tree.
+class Solution:
+    """
+    @param A: An integer array
+    @param queries: The query list
+    @return: The number of element in the array that are smaller that the given integer
+    """
+    def countOfSmallerNumber(self, A, queries):
+        max_unique_nums = 10001
+        segtree_size = self.get_segtree_size(max_unique_nums)
+        self.segtree = [0] * segtree_size
+        smaller_counts = []
+        for val in A:
+            self.increment_count_in_segtree(val + 1, 0, max_unique_nums - 1, 0)
+        for query_val in queries:
+            smaller_counts.append(self.get_smaller_count(query_val + 1, 0, max_unique_nums - 1, 0))
+        return smaller_counts
     
+    def increment_count_in_segtree(self, val, low, high, pos):
+        if val < low or val > high:
+            return
+        if low == high == val:
+            self.segtree[pos] += 1
+            return
+        mid = (low + high) // 2
+        self.increment_count_in_segtree(val, low, mid, 2 * pos + 1)
+        self.increment_count_in_segtree(val, mid + 1, high, 2 * pos + 2)
+        self.segtree[pos] = self.segtree[2 * pos + 1] + self.segtree[2 * pos + 2]
+
+    def get_smaller_count(self, val, low, high, pos):
+        if val <= low:
+            return 0
+        if val > high:
+            return self.segtree[pos]
+        mid = (low + high) // 2
+        left_smaller_count = self.get_smaller_count(val, low, mid, 2 * pos + 1)
+        right_smaller_count = self.get_smaller_count(val, mid + 1, high, 2 * pos + 2)
+        return left_smaller_count + right_smaller_count
+
+    def get_segtree_size(self, num_entries):
+        i = 0
+        while True:
+            power = 2 ** i
+            if num_entries <= power:
+                return 2 * power - 1
+            i += 1
+            
+            
