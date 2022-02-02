@@ -233,4 +233,48 @@ class Solution:
             return right
         return right + 1
 
-                
+    
+# Solution from a student on jiuzhang.com. Similar to mine, this solution uses merge sort, but it is very fast. The trick is in reusing the nums array.
+class Solution:
+    """
+    @param nums: the given k sorted arrays
+    @return: the median of the given k sorted arrays
+    """
+    def findMedian(self, nums):
+        # write your code here
+        if not nums:
+            return float(0)
+        
+        # If we create new arrays here rather than reusing the nums, we'll hit time limit exceeded exception. But with this implementation,
+        # it is super fast.
+        while len(nums) > 1:
+            nums.append( self.mergeTwo(nums.pop(0), nums.pop(0)) )
+                    
+        size = len(nums[0])
+        if size == 0:
+            return float(0)
+        if size % 2 == 0:
+            return (nums[0][int(size / 2)] + nums[0][int(size / 2) - 1]) / 2
+        else:
+            return float(nums[0][int(size/2)])
+        
+    def mergeTwo(self, nums1, nums2):
+        res = []
+        i, j, size1, size2 = 0, 0, len(nums1), len(nums2)
+        
+        while i < size1 or j < size2:
+            if i == size1:
+                res.append(nums2[j])
+                j += 1 
+            elif j == size2:
+                res.append(nums1[i])
+                i += 1 
+            elif nums1[i] < nums2[j]:
+                res.append(nums1[i])
+                i += 1 
+            else:
+                res.append(nums2[j])
+                j += 1 
+        
+        return res
+    
