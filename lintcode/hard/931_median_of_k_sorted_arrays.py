@@ -171,4 +171,66 @@ class Solution:
         return res          
 
         
-        
+# Solution from jiuzhang.com. Uses 2 levels of binary search: the 1st level is value-based binary search, starting with the range of elements.
+# It finds the proper mth value. The second level is index-based binary search on each array in the nums in the input, which returns the number
+# of elements smaller than or equal to val.
+import heapq
+class Solution:
+    """
+    @param nums: the given k sorted arrays
+    @return: the median of the given k sorted arrays
+    """
+    def findMedian(self, nums):
+        total_length = sum([len(arr) for arr in nums])
+        if total_length == 0:
+            return 0
+        if total_length % 2 == 1:
+            return self.get_mth_element(nums, total_length // 2 + 1)
+        else:
+            return (self.get_mth_element(nums, total_length // 2) + self.get_mth_element(nums, total_length // 2 + 1)) / 2
+
+    # m starts from 1.
+    def get_mth_element(self, nums, m):
+        start, end = self.get_range(nums)
+        while start + 1 < end:
+            mid = (start + end) // 2
+            # There could be multiple values of "mid" that satisfy self.get_total_smaller_or_equal_number(nums, mid) == m, we want to get the first
+            # among them. Otherwise it may not be a number existing in nums.
+            if self.get_total_smaller_or_equal_number(nums, mid) < m:
+                start = mid
+            else:
+                end = mid
+        if self.get_total_smaller_or_equal_number(nums, start) >= m:
+            return start
+        return end
+    
+    def get_range(self, nums):
+        start = min([arr[0] for arr in nums if len(arr)])
+        end = max([arr[-1] for arr in nums if len(arr)])
+        return start, end
+    
+    def get_total_smaller_or_equal_number(self, nums, val):
+        count = 0
+        for arr in nums:
+            if not arr:
+                continue
+            count += self.get_smaller_than_or_equal_count(arr, val)
+        return count
+
+    def get_smaller_than_or_equal_count(self, arr, val):
+        left, right = 0, len(arr) - 1
+        while left + 1 < right:
+            mid = (left + right) // 2
+            # We can let this condition be arr[mid] < val and still pass all the tests. But it is more intuitive to use <=, since we
+            # want to count all the elements that are smaller than or equal to val.
+            if arr[mid] <= val:
+                left = mid
+            else:
+                right = mid
+        if arr[left] > val:
+            return left
+        if arr[right] > val:
+            return right
+        return right + 1
+
+                
