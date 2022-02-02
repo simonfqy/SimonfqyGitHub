@@ -97,3 +97,85 @@ class Solution:
             merged_list.extend(list_2[j:])
         return merged_list
     
+    
+# My own solution which tries to use something similar to binary search. Did not return the correct result.
+import heapq
+class Solution:
+    """
+    @param nums: the given k sorted arrays
+    @return: the median of the given k sorted arrays
+    """
+    def findMedian(self, nums):
+        k = len(nums)
+        total_length = 0
+        self.lengths = []
+        for num_list in nums:
+            self.lengths.append(len(num_list))
+            total_length += len(num_list)
+        if total_length == 0:
+            return 0
+        is_odd = True
+        largest_ind_needed = (total_length - 1) // 2
+        if total_length % 2 == 0:
+            is_odd = False
+            largest_ind_needed += 1
+        inds = [0] * k
+        if is_odd:
+            return self.find_mth_element(nums, largest_ind_needed + 1, inds, list(self.lengths))
+        else:
+            first_num = self.find_mth_element(nums, largest_ind_needed, inds, list(self.lengths))
+            inds = [0] * k
+            second_num = self.find_mth_element(nums, largest_ind_needed + 1, inds, list(self.lengths))
+            return (first_num + second_num) / 2
+        
+    # m starts from 1.
+    def find_mth_element(self, nums, m, inds, remaining_element_counts):
+        non_empty_lists = [i for i, count in enumerate(remaining_element_counts) if count > 0]
+        ki = len(non_empty_lists)  
+        if ki == 1:            
+            return nums[non_empty_lists[0]][m - 1]       
+        if m < ki:
+            return self.find_mth_element_without_binary_search(nums, m, inds, non_empty_lists)
+        
+        increment = m // ki
+        # uninspected_element_count = 0
+        min_heap = []        
+        for i in non_empty_lists:
+            if remaining_element_counts[i] < increment:
+                continue
+            heapq.heappush(min_heap, (nums[i][inds[i] + increment - 1], i, inds[i]))
+        original_heap_size = len(min_heap)
+        if len(min_heap) == 1:
+            _, ind_of_array, _ = heapq.heappop(min_heap)
+            inds[ind_of_array] += increment
+            remaining_element_counts[ind_of_array] -= increment
+            m -= increment
+            return self.find_mth_element(nums, m, inds, remaining_element_counts)
+        
+        while len(min_heap) > (original_heap_size + 1) // 2:
+            _, ind_of_array, _ = heapq.heappop(min_heap)
+            inds[ind_of_array] += increment
+            remaining_element_counts[ind_of_array] -= increment 
+            m -= increment
+        return self.find_mth_element(nums, m, inds, remaining_element_counts)
+            
+    def find_mth_element_without_binary_search(self, nums, m, inds, non_empty_lists):    
+        min_heap = []
+        counter = 1
+        res = 0
+        for array_ind in non_empty_lists:
+            ind_within_array = inds[array_ind]                
+            heapq.heappush(min_heap, (nums[array_ind][ind_within_array], array_ind, ind_within_array))
+        while counter <= m:
+            val, array_ind, ind_within_array = heapq.heappop(min_heap)
+            if counter == m:
+                res = val
+                break
+            ind_within_array += 1
+            if ind_within_array < self.lengths[array_ind]:
+                heapq.heappush(min_heap, (nums[array_ind][ind_within_array], array_ind, ind_within_array))
+            counter += 1
+        return res    
+
+        
+        
