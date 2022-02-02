@@ -124,8 +124,8 @@ class Solution:
             return self.find_mth_element(nums, largest_ind_needed + 1, inds, list(self.lengths))
         else:
             first_num = self.find_mth_element(nums, largest_ind_needed, inds, list(self.lengths))
-            inds = [0] * k
-            second_num = self.find_mth_element(nums, largest_ind_needed + 1, inds, list(self.lengths))
+            remaining_element_counts = [length - ind for (length, ind) in zip(self.lengths, inds)]
+            second_num = self.find_mth_element(nums, 1, inds, remaining_element_counts)
             return (first_num + second_num) / 2
         
     # m starts from 1.
@@ -162,13 +162,13 @@ class Solution:
         while counter <= m:
             val, array_ind, ind_within_array = heapq.heappop(min_heap)
             if counter == m:
-                res = val
-                break
+                res = val                
             ind_within_array += 1
+            inds[array_ind] += 1
             if ind_within_array < self.lengths[array_ind]:
                 heapq.heappush(min_heap, (nums[array_ind][ind_within_array], array_ind, ind_within_array))
             counter += 1
-        return res        
+        return res          
 
         
         
