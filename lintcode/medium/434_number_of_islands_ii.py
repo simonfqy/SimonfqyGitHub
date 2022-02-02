@@ -49,15 +49,12 @@ class Solution:
     def count_islands(self, n, m, land_coords):
         island_count = 0
         visited = set()
-        for row in range(n):
-            for col in range(m):
-                if (row, col) not in land_coords:
-                    continue
-                if (row, col) in visited:
-                    continue
-                visited.add((row, col))
-                self.explore_island(row, col, n, m, land_coords, visited)
-                island_count += 1
+        for (row, col) in land_coords:
+            if (row, col) in visited:
+                continue
+            visited.add((row, col))
+            self.explore_island(row, col, n, m, land_coords, visited)
+            island_count += 1        
         return island_count
 
     def explore_island(self, curr_row, curr_col, n, m, land_coords, visited):        
@@ -65,10 +62,10 @@ class Solution:
         while queue:
             x, y = queue.popleft()
             for delta_x, delta_y in self.delta:
-                new_x, new_y = x + delta_x, y + delta_y
-                if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
-                    continue
+                new_x, new_y = x + delta_x, y + delta_y                
                 if (new_x, new_y) not in land_coords:
+                    continue
+                if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
                     continue
                 if (new_x, new_y) in visited:
                     continue
