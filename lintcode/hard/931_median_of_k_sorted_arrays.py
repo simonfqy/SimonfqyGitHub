@@ -138,14 +138,14 @@ class Solution:
             return self.find_mth_element_without_binary_search(nums, m, inds, non_empty_lists)
         
         increment = m // ki
-        min_heap = []        
+        min_candidate, ind_of_array = float('inf'), None        
         for i in non_empty_lists:
             if remaining_element_counts[i] < increment:
                 continue
-            heapq.heappush(min_heap, (nums[i][inds[i] + increment - 1], i))
-            
-        # Only pop the smallest one.
-        _, ind_of_array = heapq.heappop(min_heap)
+            if nums[i][inds[i] + increment - 1] < min_candidate:
+                min_candidate = nums[i][inds[i] + increment - 1]
+                ind_of_array = i           
+                
         inds[ind_of_array] += increment
         remaining_element_counts[ind_of_array] -= increment
         m -= increment
