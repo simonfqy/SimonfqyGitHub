@@ -98,7 +98,7 @@ class Solution:
         return merged_list
     
     
-# My own solution which tries to use something similar to binary search. Did not return the correct result.
+# My own solution which tries to use something similar to binary search. Very slow, but passed.
 import heapq
 class Solution:
     """
@@ -138,26 +138,19 @@ class Solution:
             return self.find_mth_element_without_binary_search(nums, m, inds, non_empty_lists)
         
         increment = m // ki
-        # uninspected_element_count = 0
         min_heap = []        
         for i in non_empty_lists:
             if remaining_element_counts[i] < increment:
                 continue
-            heapq.heappush(min_heap, (nums[i][inds[i] + increment - 1], i, inds[i]))
-        original_heap_size = len(min_heap)
-        if len(min_heap) == 1:
-            _, ind_of_array, _ = heapq.heappop(min_heap)
-            inds[ind_of_array] += increment
-            remaining_element_counts[ind_of_array] -= increment
-            m -= increment
-            return self.find_mth_element(nums, m, inds, remaining_element_counts)
-        
-        while len(min_heap) > (original_heap_size + 1) // 2:
-            _, ind_of_array, _ = heapq.heappop(min_heap)
-            inds[ind_of_array] += increment
-            remaining_element_counts[ind_of_array] -= increment 
-            m -= increment
+            heapq.heappush(min_heap, (nums[i][inds[i] + increment - 1], i))
+            
+        # Only pop the smallest one.
+        _, ind_of_array = heapq.heappop(min_heap)
+        inds[ind_of_array] += increment
+        remaining_element_counts[ind_of_array] -= increment
+        m -= increment
         return self.find_mth_element(nums, m, inds, remaining_element_counts)
+        
             
     def find_mth_element_without_binary_search(self, nums, m, inds, non_empty_lists):    
         min_heap = []
@@ -175,7 +168,7 @@ class Solution:
             if ind_within_array < self.lengths[array_ind]:
                 heapq.heappush(min_heap, (nums[array_ind][ind_within_array], array_ind, ind_within_array))
             counter += 1
-        return res    
+        return res        
 
         
         
