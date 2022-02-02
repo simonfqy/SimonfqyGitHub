@@ -98,7 +98,7 @@ class Solution:
         return merged_list
     
     
-# My own solution which tries to use something similar to binary search. Very slow, but passed.
+# My own solution which tries to use something similar to binary search. Kinda slow, but passed.
 import heapq
 class Solution:
     """
