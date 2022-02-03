@@ -164,3 +164,51 @@ class Solution:
             coord_to_island_ind[(row, col)] = smallest_available_ind               
 
             
+# Solution from jiuzhang.com. Uses union find. Each island is represented by a root coordinate.
+DELTA = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+class Solution:
+    """
+    @param n: An integer
+    @param m: An integer
+    @param operators: an array of point
+    @return: an integer array
+    """
+    def numIslands2(self, n, m, operators):
+        land_coords = set()
+        self.size = 0
+        self.father = dict()
+        island_counts = []
+        for operator in operators:
+            x, y = operator.x, operator.y
+            if (x, y) in land_coords:
+                island_counts.append(self.size)
+                continue
+            self.father[(x, y)] = (x, y)
+            self.size += 1
+            land_coords.add((x, y))
+            for d_x, d_y in DELTA:
+                x_, y_ = x + d_x, y + d_y
+                if (x_, y_) not in land_coords:
+                    continue
+                self.union((x_, y_), (x, y))
+            island_counts.append(self.size)
+
+        return island_counts
+
+    def union(self, coord_a, coord_b):
+        root_a = self.find_root(coord_a)
+        root_b = self.find_root(coord_b)
+        if root_a != root_b:
+            self.father[root_a] = root_b
+            self.size -= 1    
+
+    def find_root(self, point):
+        path = [point]
+        while point != self.father[point]:
+            point = self.father[point] 
+            path.append(point)
+        for p in path:
+            self.father[p] = point
+        return point  
+    
+    
