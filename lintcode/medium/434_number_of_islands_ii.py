@@ -73,3 +73,49 @@ class Solution:
                 visited.add((new_x, new_y))
                 
 
+# My own solution. Should be correct, but also hits time limit exceeded problem.
+from collections import deque
+class Solution:
+    """
+    @param n: An integer
+    @param m: An integer
+    @param operators: an array of point
+    @return: an integer array
+    """
+    def numIslands2(self, n, m, operators):
+        island_counts = []
+        islands = deque()
+        self.delta = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        for point in operators:                
+            self.update_islands(point, islands)                   
+            island_counts.append(len(islands))
+            
+        return island_counts
+        
+    def update_islands(self, point, islands):
+        affected_island_inds = set()
+        expanded_island = set([(point.x, point.y)])      
+        max_affected_island_ind = -1   
+        for i, island in enumerate(islands):
+            if (point.x, point.y) in island:
+                return
+            for delta_x, delta_y in self.delta:
+                new_x, new_y = point.x + delta_x, point.y + delta_y                
+                if (new_x, new_y) not in island:
+                    continue             
+                expanded_island |= island
+                affected_island_inds.add(i)
+                max_affected_island_ind = i
+                break
+        
+        for i in range(len(islands)):
+            if i > max_affected_island_ind:
+                break
+            island = islands.popleft()            
+            if i in affected_island_inds:
+                continue            
+            islands.append(island)
+        islands.appendleft(expanded_island)
+
+
+               
