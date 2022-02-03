@@ -118,4 +118,49 @@ class Solution:
         islands.appendleft(expanded_island)
 
 
-               
+# This solution also hits the time limit exceeded problem.
+class Solution:
+    """
+    @param n: An integer
+    @param m: An integer
+    @param operators: an array of point
+    @return: an integer array
+    """
+    def numIslands2(self, n, m, operators):
+        island_counts = []
+        island_ind_to_island = dict()
+        coord_to_island_ind = dict()
+        self.delta = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        for point in operators:                
+            self.update_islands(point, island_ind_to_island, coord_to_island_ind)                   
+            island_counts.append(len(island_ind_to_island))
+            
+        return island_counts
+        
+    def update_islands(self, point, island_ind_to_island, coord_to_island_ind):
+        if (point.x, point.y) in coord_to_island_ind:
+            return
+        expanded_island = set([(point.x, point.y)])
+        if island_ind_to_island:      
+            smallest_available_ind = max(island_ind_to_island) + 1
+        else:
+            smallest_available_ind = 0
+        affected_island_inds = set()
+        
+        for delta_x, delta_y in self.delta:
+            new_x, new_y = point.x + delta_x, point.y + delta_y                
+            if (new_x, new_y) not in coord_to_island_ind:
+                continue             
+            island_ind = coord_to_island_ind[(new_x, new_y)]
+            expanded_island |= island_ind_to_island[island_ind]  
+            affected_island_inds.add(island_ind)             
+            
+        for ind in affected_island_inds:            
+            smallest_available_ind = min(smallest_available_ind, ind)
+            del island_ind_to_island[ind]
+        
+        island_ind_to_island[smallest_available_ind] = expanded_island
+        for row, col in expanded_island:
+            coord_to_island_ind[(row, col)] = smallest_available_ind               
+
+            
