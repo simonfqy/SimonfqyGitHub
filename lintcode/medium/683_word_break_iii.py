@@ -53,3 +53,28 @@ class Solution:
         return self.dp[0] 
     
     
+# Solution borrowed from jiuzhang.com with my own modifications. It also uses DP, largely similar to the solution above.
+# This solution has 1 more entry in the dp array and goes from left to right.
+class Solution:
+    """
+    @param s: A string
+    @param dictionary: A set of word
+    @return: the number of possible sentences.
+    """
+    def wordBreak3(self, s, dictionary):
+        self.dictionary = {word.lower() for word in dictionary}
+        self.s = s.lower()
+        n = len(s)
+        # dp[i] represents the number of sentences that can be formed by s[0 : i].
+        self.dp = [0] * (n + 1)
+        # There is 1 way to split empty string.
+        self.dp[0] = 1
+        for start in range(n):
+            for end in range(start, n):
+                if self.s[start : end + 1] not in self.dictionary:
+                    continue
+                self.dp[end + 1] += self.dp[start]
+        return self.dp[n] 
+    
+    
+    
