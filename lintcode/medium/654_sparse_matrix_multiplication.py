@@ -40,3 +40,24 @@ class Solution:
             result_row[col_ind] = summ
             
             
+# Solution from jiuzhang.com. It has O(mn^2) time complexity, where m is the number of non-zero entries in each row.
+class Solution:
+    """
+    @param A: a sparse matrix
+    @param B: a sparse matrix
+    @return: the result of A * B
+    """
+    def multiply(self, A, B):
+        a_rows, a_cols = len(A), len(A[0])
+        _, b_cols = len(B), len(B[0])
+        res = [[0] * b_cols for _ in range(a_rows)]        
+        for i in range(a_rows):
+            for j in range(a_cols):
+                if A[i][j] == 0:
+                    continue
+                for k in range(b_cols):
+                    res[i][k] += A[i][j] * B[j][k]
+        return res
+    
+    
+    
