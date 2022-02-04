@@ -30,3 +30,26 @@ class Solution:
         return self.inds_to_sentence_count[(start, end)]
         
         
+# My own solution. Uses dynamic programming. Has O(n^2) time complexity, where n is the length of s.
+class Solution:
+    """
+    @param s: A string
+    @param dictionary: A set of word
+    @return: the number of possible sentences.
+    """
+    def wordBreak3(self, s, dictionary):
+        self.dictionary = {word.lower() for word in dictionary}
+        self.s = s.lower()
+        n = len(s)
+        # dp[i] represents the number of sentences that can be constructed from s[i : n]. 
+        self.dp = [0] * n
+        for start in range(n - 1, -1, -1):
+            if self.s[start : n] in self.dictionary:
+                self.dp[start] += 1
+            for second_word_start in range(start + 1, n):
+                if self.s[start : second_word_start] not in self.dictionary:
+                    continue
+                self.dp[start] += self.dp[second_word_start]
+        return self.dp[0] 
+    
+    
