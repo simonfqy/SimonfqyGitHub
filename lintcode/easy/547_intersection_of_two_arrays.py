@@ -27,4 +27,16 @@ class Solution:
         return res
       
       
-      
+# My own solution. Used set operations to extract common elements. Beats 100% of submissions in execution time.
+class Solution:
+    """
+    @param nums1: an integer array
+    @param nums2: an integer array
+    @return: an integer array
+    """
+    def intersection(self, nums1, nums2):
+        nums1_set = set(nums1)
+        nums2_set = set(nums2)
+        return list(nums1_set & nums2_set)      
+
+    
