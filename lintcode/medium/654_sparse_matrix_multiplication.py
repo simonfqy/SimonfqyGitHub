@@ -60,4 +60,32 @@ class Solution:
         return res
     
     
+# Solution from jiuzhang.com. It is optimized compared to the above solution.
+class Solution:
+    """
+    @param A: a sparse matrix
+    @param B: a sparse matrix
+    @return: the result of A * B
+    """
+    def multiply(self, A, B):
+        a_rows, a_cols = len(A), len(A[0])
+        _, b_cols = len(B), len(B[0])
+        res = [[0] * b_cols for _ in range(a_rows)]     
+        nonzero_entries_in_each_row_of_B = []
+        for i in range(a_cols):
+            nonzero_entries_in_each_row_of_B.append([])
+            for j in range(b_cols):
+                if B[i][j] == 0:
+                    continue
+                nonzero_entries_in_each_row_of_B[i].append(j)
+
+        for i in range(a_rows):
+            for k in range(a_cols):
+                if A[i][k] == 0:
+                    continue
+                for j in nonzero_entries_in_each_row_of_B[k]:
+                    res[i][j] += A[i][k] * B[k][j]
+        return res
+
+    
     
