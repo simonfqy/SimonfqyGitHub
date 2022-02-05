@@ -17,7 +17,6 @@ class Solution:
                 continue
             intersection_so_far.intersection_update(arr)
         return len(intersection_so_far)
-
     
 
 '''
@@ -68,3 +67,23 @@ class Solution:
         if count == len(arrs):
             intersection += 1
         return intersection
+
+    
+# My own solution using set.
+class Solution:
+    """
+    @param arrs: the arrays
+    @return: the number of the intersection of the arrays
+    """
+    def intersectionOfArrays(self, arrs):
+        set_1, set_2 = set(), set()
+        for i, arr in enumerate(arrs):
+            for element in arr:                
+                if i > 0 and element not in set_1:
+                    continue
+                set_2.add(element)
+            set_1, set_2 = set_2, set_1
+            set_2.clear()
+        return len(set_1)
+    
+    
