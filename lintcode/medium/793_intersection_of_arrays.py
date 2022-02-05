@@ -69,6 +69,38 @@ class Solution:
         return intersection
 
     
+# My own solution using heap. Very similar to the one above, but the code is neater.
+import heapq
+class Solution:
+    """
+    @param arrs: the arrays
+    @return: the number of the intersection of the arrays
+    """
+    def intersectionOfArrays(self, arrs):
+        min_heap = []
+        k = len(arrs)
+        for i, arr in enumerate(arrs):
+            if not arr:
+                continue
+            arr.sort()
+            heapq.heappush(min_heap, (arr[0], i, 0))
+        
+        prev_val = float('inf')
+        intersection_size = 0
+        while min_heap:
+            curr_val, arr_ind, ind_within_array = heapq.heappop(min_heap)
+            if curr_val != prev_val:
+                count_of_curr_val = 0
+                prev_val = curr_val
+            count_of_curr_val += 1
+            if count_of_curr_val == k:
+                intersection_size += 1
+            ind_within_array += 1
+            if len(arrs[arr_ind]) > ind_within_array:
+                heapq.heappush(min_heap, (arrs[arr_ind][ind_within_array], arr_ind, ind_within_array))
+        return intersection_size    
+    
+    
 # My own solution using set.
 class Solution:
     """
