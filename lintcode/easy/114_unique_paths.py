@@ -51,3 +51,23 @@ class Solution:
         return dp[0][0]
     
     
+# Solution from jiuzhang.com, which is a mathematics solution. Time complexity is O(min(m, n)).
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        if m == 1 or n == 1:
+            return 1
+        if m >= n:
+            m, n = n, m
+        numerator = denominator = 1
+        for i in range(1, m):
+            denominator *= i
+        for j in range(n, m + n - 1):
+            numerator *= j
+        return numerator // denominator  
+    
+    
