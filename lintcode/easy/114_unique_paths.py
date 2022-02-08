@@ -51,6 +51,24 @@ class Solution:
         return dp[0][0]
     
     
+# DP Solution from jiuzhang.com. Time complexity is O(mn). Logic is simpler than mine.
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        dp = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if i == 0 or j == 0:
+                    dp[i][j] = 1
+                else:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        return dp[m - 1][n - 1]     
+    
+    
 # Solution from jiuzhang.com, which is a mathematics solution. Time complexity is O(min(m, n)).
 class Solution:
     """
