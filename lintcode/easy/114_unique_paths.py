@@ -69,6 +69,23 @@ class Solution:
         return dp[m - 1][n - 1]     
     
     
+# Optimized DP Solution from jiuzhang.com, which replaces the 2D matrix in the above solution with 1d array. Time complexity is O(mn).
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        dp = [0] * n 
+        dp[0] = 1
+        for i in range(m):
+            # Note that here j starts from 1, not 0.
+            for j in range(1, n):                
+                dp[j] += dp[j - 1]
+        return dp[n - 1]       
+    
+    
 # Solution from jiuzhang.com, which is a mathematics solution. Time complexity is O(min(m, n)).
 class Solution:
     """
