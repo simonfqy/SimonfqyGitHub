@@ -25,4 +25,29 @@ class Solution:
         right_count = self.get_path_count(row, col + 1)
         self.path_counts[row][col] = down_count + right_count
         return self.path_counts[row][col]
+    
         
+# My own solution using dp. Time complexity is also O(mn).
+class Solution:
+    """
+    @param m: positive integer (1 <= m <= 100)
+    @param n: positive integer (1 <= n <= 100)
+    @return: An integer
+    """
+    def uniquePaths(self, m, n):
+        dp = [[0] * n for _ in range(m)]        
+        for row in range(m - 1, -1, -1):
+            for col in range(n - 1, -1, -1):
+                if row == m - 1: 
+                    if col == n - 1:
+                        dp[row][col] = 1
+                        continue
+                    dp[row][col] = dp[row][col + 1]
+                    continue
+                # Now row < m - 1
+                dp[row][col] = dp[row + 1][col]
+                if col < n - 1:
+                    dp[row][col] += dp[row][col + 1]
+        return dp[0][0]
+    
+    
