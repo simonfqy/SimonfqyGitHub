@@ -61,3 +61,36 @@ class Solution:
         return self.grid_cell_to_path[row][col]
     
     
+# Dynamic programming solution. The dp cells are the same as the one in memoized search solution.
+class Solution:
+    """
+    @param obstacleGrid: A list of lists of integers
+    @return: An integer
+    """
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        if not obstacleGrid or not obstacleGrid[0]:
+            return 0
+        n, m = len(obstacleGrid), len(obstacleGrid[0])
+        self.grid_cell_to_paths = [[0] * m for _ in range(n)]
+        self.populate_cells(obstacleGrid, n, m)
+        return self.grid_cell_to_paths[0][0]         
+
+    def populate_cells(self, obstacleGrid, n, m):
+        if obstacleGrid[n - 1][m - 1] == 1:
+            return
+        self.grid_cell_to_paths[n - 1][m - 1] = 1
+        for row in range(n - 1, -1, -1):
+            for col in range(m - 1, -1, -1):
+                if row == n - 1 and col == m - 1:
+                    continue
+                if obstacleGrid[row][col] == 1:
+                    continue                
+                if row < n - 1: 
+                    self.grid_cell_to_paths[row][col] = self.grid_cell_to_paths[row + 1][col]
+                    if col < m - 1:
+                        self.grid_cell_to_paths[row][col] += self.grid_cell_to_paths[row][col + 1]
+                    continue
+                # Now, row == n - 1 and col < m - 1
+                self.grid_cell_to_paths[row][col] = self.grid_cell_to_paths[row][col + 1]
+                
+                
