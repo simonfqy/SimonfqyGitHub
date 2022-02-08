@@ -128,3 +128,29 @@ class Solution:
         return dp[n-1][m-1]
     
     
+# Another DP solution from jiuzhang.com provided by a student. It is simpler than the one above.
+class Solution:
+    """
+    @param obstacleGrid: A list of lists of integers
+    @return: An integer
+    """
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        if not obstacleGrid or not obstacleGrid[0]:
+            return 0
+        n, m = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [[0] * m for _ in range(n)]
+        if obstacleGrid[0][0] == 0:
+            dp[0][0] = 1
+        for i in range(n):
+            for j in range(m):
+                if obstacleGrid[i][j] == 1:
+                    dp[i][j] = 0
+                    continue
+                if i > 0:
+                    dp[i][j] += dp[i - 1][j]
+                if j > 0:
+                    dp[i][j] += dp[i][j - 1]
+        return dp[n - 1][m - 1]
+    
+    
+    
