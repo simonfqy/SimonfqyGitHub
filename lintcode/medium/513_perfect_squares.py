@@ -43,3 +43,23 @@ class Solution:
         return square_list
 
       
+# Solution from jiuzhang.com which uses DP. Easily hits time limit exceeded and memory limit exceeded exceptions.
+class Solution:
+    """
+    @param n: a positive integer
+    @return: An integer
+    """
+    def numSquares(self, n):
+        dp = [float('inf')] * (n + 1)
+        for i in range(1, n + 1):
+            if i * i > n:
+                break
+            dp[i * i] = 1
+        for j in range(1, n + 1):
+            for i in range(1, n + 1):
+                if j + i * i > n:
+                    break
+                dp[j + i * i] = min(dp[j + i * i], dp[j] + 1)
+
+        return dp[n]
+
