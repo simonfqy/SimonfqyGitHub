@@ -153,4 +153,29 @@ class Solution:
         return dp[n - 1][m - 1]
     
     
-    
+# Optimized DP solution from jiuzhang.com based on the solution above, now using 1d array. 
+class Solution:
+    """
+    @param obstacleGrid: A list of lists of integers
+    @return: An integer
+    """
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        if not obstacleGrid or not obstacleGrid[0]:
+            return 0
+        n, m = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [0] * m
+        if obstacleGrid[0][0] == 0:
+            dp[0] = 1
+        for i in range(n):
+            for j in range(m):
+                if obstacleGrid[i][j] == 1:
+                    dp[j] = 0
+                    continue
+                if i > 0 and j > 0:
+                    dp[j] += dp[j - 1]
+                    continue
+                if j > 0:
+                    dp[j] = dp[j - 1]
+        return dp[m - 1]     
+                
+                    
