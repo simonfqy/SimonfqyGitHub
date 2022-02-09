@@ -46,7 +46,6 @@ class Solution:
             # Update the element after the last_smaller_element_ind in the array if nums[i] is smaller than it. 
             lis_len_to_smallest_ending_num[ind_to_overwrite] = min(lis_len_to_smallest_ending_num[ind_to_overwrite], num)            
         return len(lis_len_to_smallest_ending_num) - 1
-
     
     def get_last_smaller_element_ind(self, array, num):
         left, right = 0, len(array) - 1
