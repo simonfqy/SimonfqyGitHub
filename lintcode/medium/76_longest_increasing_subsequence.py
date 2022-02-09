@@ -35,6 +35,7 @@ class Solution:
             return 0    
         # Each element lis_len_to_smallest_ending_num[j] is the smallest ending number of any LIS with length j.
         # This array is monotonically increasing.
+        # We can initialize it with float('-inf') only, no second element required.
         lis_len_to_smallest_ending_num = [float('-inf'), nums[0]]
         for i, num in enumerate(nums):
             # We need to find the last element in lis_len_to_smallest_ending_num array which is smaller than nums[i].
