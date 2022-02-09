@@ -13,6 +13,7 @@ class Solution:
         if not nums:
             return 0
         n = len(nums)
+        # dp[i] is the length of the LIS ending at nums[i].
         dp = [1] * n
         for i in range(n):
             for j in range(i):
