@@ -22,7 +22,37 @@ class Solution:
                 dp[i] = max(dp[i], dp[j] + 1)
                 
         return max(dp)
-    
+   
+
+# Instructed by jiuzhang.com, implemented by myself. It is basically the solution above, with the added functionality of printing the longest subsequence.
+class Solution:
+    """
+    @param nums: An integer array
+    @return: The length of LIS (longest increasing subsequence)
+    """
+    def longestIncreasingSubsequence(self, nums):
+        if not nums:
+            return 0    
+        n = len(nums)
+        # dp[i] represents the length of LIS ending at nums[i]
+        dp = [1] * n
+        ind_to_prev_in_lis = [-1] * n
+        longest = 1
+        last = -1
+        for i in range(n):
+            for j in range(i):
+                if nums[i] > nums[j] and dp[j] + 1 > dp[i]:
+                    dp[i] = dp[j] + 1
+                    ind_to_prev_in_lis[i] = j
+                    last = i
+                    longest = max(longest, dp[i])
+        path = []
+        while last != -1:
+            path.append(nums[last])
+            last = ind_to_prev_in_lis[last]
+        print(path[::-1])
+        return longest
+
         
 # Instructed by jiuzhang.com, implemented by myself. DP with binary search, has O(nlogn) time complexity.
 class Solution:
