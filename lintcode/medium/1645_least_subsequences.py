@@ -23,3 +23,22 @@ class Solution:
         return max(dp)
 
                 
+# Solution from a student on jiuzhang.com. Uses binary search on a monotonically increasing array of tail elements of each descending subsequence.
+# The number of tail elements in this array is the (least) number of decreasing subsequences. Directly uses the bisect library in Python. The bisect() function
+# has this property: The returned insertion point i partitions the array a into two halves so that all(val <= x for val in a[lo : i]) for the left side 
+# and all(val > x for val in a[i : hi]) for the right side.
+import bisect
+class Solution:
+    
+    def LeastSubsequences(self, nums):
+        
+        tails = []        
+        for num in nums:
+            i = bisect.bisect(tails, num)
+            if i == len(tails):
+                tails.append(num)
+            else:
+                tails[i] = num
+        
+        return len(tails)
+                
