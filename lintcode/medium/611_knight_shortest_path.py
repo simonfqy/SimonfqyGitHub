@@ -91,7 +91,8 @@ class Solution:
         n, m = len(grid), len(grid[0])
         if n <= 0 or m <= 0:
             return -1
-        # dp[i][j] stores the length of the path from the source to grid[i][j].
+        if source.x == destination.x and source.y == destination.y and grid[source.x][source.y] == 0:
+            return 0
         dp = [[float('inf')] * m for _ in range(n)]
         dp[source.x][source.y] = 0
         sources_to_start_from = [source]
@@ -111,12 +112,15 @@ class Solution:
                         continue                    
                     if dp[x][y] + 1 < dp[new_x][new_y]:
                         dp[new_x][new_y] = dp[x][y] + 1
+                        # Guaranteed to be the shortest if we encounter it for the first time. Returning now is correct.
+                        if new_x == destination.x and new_y == destination.y:
+                            return dp[new_x][new_y]
                         new_sources_to_start_from.append(Point(new_x, new_y))
                         visited.add((new_x, new_y))
 
             sources_to_start_from = new_sources_to_start_from
          
-        return dp[destination.x][destination.y] if dp[destination.x][destination.y] < float('inf') else -1
+        return -1
     
     
     
