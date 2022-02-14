@@ -90,6 +90,8 @@ class Solution:
                 
 
 # Solution from jiuzhang.com, which I modified by myself. Time complexity is very good, and memory footprint is far less than my own solution above.
+# The transition function is dp[num] = max(dp[num], dp[factor] + 1) across all factors of num. The dp here is the num_to_largest_divisible_subset_size
+# dictionary in the code.
 class Solution:
     """
     @param nums: a set of distinct positive integers
