@@ -76,3 +76,47 @@ class Solution:
                     dest_visited.add((x, y))
             
         return -1
+    
+    
+# My own solution. Uses 2d dynamic programming. Has O(n^2) time complexity. 
+DELTA = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
+class Solution:
+    """
+    @param grid: a chessboard included 0 (false) and 1 (true)
+    @param source: a point
+    @param destination: a point
+    @return: the shortest path 
+    """
+    def shortestPath(self, grid, source, destination):
+        n, m = len(grid), len(grid[0])
+        if n <= 0 or m <= 0:
+            return -1
+        # dp[i][j] stores the length of the path from the source to grid[i][j].
+        dp = [[float('inf')] * m for _ in range(n)]
+        dp[source.x][source.y] = 0
+        sources_to_start_from = [source]
+        # For de-duplication.
+        visited = set([(source.x, source.y)])
+        while sources_to_start_from:
+            new_sources_to_start_from = []
+            for curr_source in sources_to_start_from:
+                x, y = curr_source.x, curr_source.y
+                for delta in DELTA:
+                    new_x, new_y = x + delta[0], y + delta[1]
+                    if (new_x, new_y) in visited:
+                        continue
+                    if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
+                        continue
+                    if grid[new_x][new_y] == 1:
+                        continue                    
+                    if dp[x][y] + 1 < dp[new_x][new_y]:
+                        dp[new_x][new_y] = dp[x][y] + 1
+                        new_sources_to_start_from.append(Point(new_x, new_y))
+                        visited.add((new_x, new_y))
+
+            sources_to_start_from = new_sources_to_start_from
+         
+        return dp[destination.x][destination.y] if dp[destination.x][destination.y] < float('inf') else -1
+    
+    
+    
