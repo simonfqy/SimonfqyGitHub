@@ -93,6 +93,7 @@ class Solution:
             return -1
         if source.x == destination.x and source.y == destination.y and grid[source.x][source.y] == 0:
             return 0
+        # dp[i][j] stores the length of the path from the source to grid[i][j].
         dp = [[float('inf')] * m for _ in range(n)]
         dp[source.x][source.y] = 0
         sources_to_start_from = [source]
