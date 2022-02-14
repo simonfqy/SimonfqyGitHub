@@ -103,6 +103,8 @@ class Solution:
         num_with_largest_divisible_subset = nums[0]
         for num in nums:
             num_to_largest_divisible_subset_size[num] = 1
+            # We use this dictionary to store the factor which has the largest size of divisible subset. With this, we no longer need to store the entire
+            # divisible subset like what I did in my solution above.
             num_to_the_factor_with_largest_subset[num] = -1
         for num in nums:
             for factor in self.get_factors(num):
