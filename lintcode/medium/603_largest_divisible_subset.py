@@ -91,8 +91,8 @@ class Solution:
 
 # Solution from jiuzhang.com, which I modified by myself. Time complexity is very good, and memory footprint is far less than my own solution above.
 # The transition function is dp[num] = max(dp[num], dp[factor] + 1) across all factors of num. The dp here is the num_to_largest_divisible_subset_size
-# dictionary in the code. The method is called 接龙型动态规划 in Chinese. Probably because we need to use another map, which is num_to_the_factor_with_largest_subset
-# in this code, to reversely construct the path which constitutes the largest divisible subset.
+# dictionary in the code. The method is called 接龙型动态规划 in Chinese. Kind of similar to question 76:
+# https://github.com/simonfqy/SimonfqyGitHub/blob/643e85071e5df02555c053cab85d85f564b95e72/lintcode/medium/76_longest_increasing_subsequence.py#L7
 class Solution:
     """
     @param nums: a set of distinct positive integers
