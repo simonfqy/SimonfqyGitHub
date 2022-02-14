@@ -70,11 +70,11 @@ class Solution:
                     subsets_after_curr_num.append(updated_subset)
                     if len(updated_subset) > max_subset_size:
                         max_subset_size = len(updated_subset)
-                        max_subset = sorted(list(updated_subset))
+                        max_subset = list(updated_subset)
                     nums_we_should_not_visit |= subset            
             subsets_after_each_num[end_num] = subsets_after_curr_num          
 
-        return max_subset
+        return sorted(max_subset)
 
     def get_factors(self, num):
         sqrt = int(num ** 0.5)
