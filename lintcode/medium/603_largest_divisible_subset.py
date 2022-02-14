@@ -89,4 +89,54 @@ class Solution:
         return factors
                 
 
+# Solution from jiuzhang.com, which I modified by myself. Time complexity is very good, and memory footprint is far less than my own solution above.
+class Solution:
+    """
+    @param nums: a set of distinct positive integers
+    @return: the largest subset 
+    """
+    def largestDivisibleSubset(self, nums):
+        if not nums:
+            return []
+        nums.sort()
+        num_to_largest_divisible_subset_size, num_to_the_factor_with_largest_subset = dict(), dict()
+        num_with_largest_divisible_subset = nums[0]
+        for num in nums:
+            num_to_largest_divisible_subset_size[num] = 1
+            num_to_the_factor_with_largest_subset[num] = -1
+        for num in nums:
+            for factor in self.get_factors(num):
+                if factor not in num_to_largest_divisible_subset_size:
+                    continue
+                if num_to_largest_divisible_subset_size[num] >= num_to_largest_divisible_subset_size[factor] + 1:
+                    continue
+                num_to_largest_divisible_subset_size[num] = num_to_largest_divisible_subset_size[factor] + 1
+                num_to_the_factor_with_largest_subset[num] = factor
+            if num_to_largest_divisible_subset_size[num] > num_to_largest_divisible_subset_size[num_with_largest_divisible_subset]:
+                num_with_largest_divisible_subset = num
+        return self.get_reverse_path(num_with_largest_divisible_subset, num_to_the_factor_with_largest_subset)
+
+    def get_reverse_path(self, num_with_largest_divisible_subset, num_to_the_factor_with_largest_subset):
+        path = []
+        while num_with_largest_divisible_subset != -1:
+            path.append(num_with_largest_divisible_subset)
+            num_with_largest_divisible_subset = num_to_the_factor_with_largest_subset[num_with_largest_divisible_subset]
         
+        return path[::-1]
+
+    def get_factors(self, num):
+        # This if statement to handle num == 1 is very important. Otherwise we'll cause memory limit exceeded exception.
+        if num == 1:
+            return []
+        sqrt = int(num ** 0.5)
+        factors = []
+        for i in range(1, sqrt + 1):
+            if num % i != 0:
+                continue
+            factors.append(i)
+            if num // i != i and i != 1:
+                factors.append(num // i)
+        factors.sort(reverse=True)
+        return factors
+   
+      
