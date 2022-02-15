@@ -80,6 +80,59 @@ class Solution:
         return -1
     
     
+# Solution from jiuzhang.com using bidirectional BFS. More modularized and cleaner than my code above.
+from collections import deque
+DELTA = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
+class Solution:
+    """
+    @param grid: a chessboard included 0 (false) and 1 (true)
+    @param source: a point
+    @param destination: a point
+    @return: the shortest path 
+    """
+    def shortestPath(self, grid, source, destination):
+        if not grid or not grid[0]:
+            return -1
+        if grid[destination.x][destination.y] == 1:
+            return -1
+        if source.x == destination.x and source.y == destination.y:
+            return 0
+        forward_queue = deque([(source.x, source.y)])
+        forward_visited = set([(source.x, source.y)])
+        backward_queue = deque([(destination.x, destination.y)])
+        backward_visited = set([(destination.x, destination.y)])
+        length = 0
+        while forward_queue and backward_queue:
+            length += 1
+            if self.extend_queue(forward_queue, forward_visited, backward_visited, grid):
+                return length
+            length += 1
+            if self.extend_queue(backward_queue, backward_visited, forward_visited, grid):
+                return length
+        return -1
+    
+    def extend_queue(self, queue, visited, opposite_visited, grid):
+        size = len(queue)
+        for _ in range(size):
+            x, y = queue.popleft()
+            for delta in DELTA:
+                new_x, new_y = x + delta[0], y + delta[1]
+                if not self.is_valid(grid, new_x, new_y, visited):
+                    continue
+                if (new_x, new_y) in opposite_visited:
+                    return True
+                queue.append((new_x, new_y))
+                visited.add((new_x, new_y))
+        return False
+
+    def is_valid(self, grid, x, y, visited):
+        if (x, y) in visited:
+            return False
+        if min(x, y) < 0 or x >= len(grid) or y >= len(grid[0]):
+            return False
+        return grid[x][y] == 0    
+    
+    
 # My own solution. Uses 2d dynamic programming. Has O(n^2) time complexity. 
 DELTA = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
 class Solution:
