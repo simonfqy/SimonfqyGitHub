@@ -126,4 +126,40 @@ class Solution:
         return -1
     
     
+# My own solution. Using BFS.
+from collections import deque
+DELTA = [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)]
+class Solution:
+    """
+    @param grid: a chessboard included 0 (false) and 1 (true)
+    @param source: a point
+    @param destination: a point
+    @return: the shortest path 
+    """
+    def shortestPath(self, grid, source, destination):
+        # write your code here
+        if grid is None or len(grid) <= 0 or len(grid[0]) <= 0:
+            return -1
+        n, m = len(grid), len(grid[0])
+        queue = deque([(source.x, source.y)])
+        visited = set([(source.x, source.y)])
+        for length in range(n * m):
+            size = len(queue)
+            for _ in range(size):
+                x, y = queue.popleft()
+                if x == destination.x and y == destination.y:
+                    if grid[x][y] == 0:
+                        return length
+                    return -1
+                for delta in DELTA:
+                    new_x, new_y = x + delta[0], y + delta[1]
+                    if (new_x, new_y) in visited:
+                        continue
+                    if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
+                        continue
+                    if grid[new_x][new_y] == 1:
+                        continue
+                    queue.append((new_x, new_y))
+                    visited.add((new_x, new_y))
+        return -1
     
