@@ -106,3 +106,36 @@ class Solution:
         memo[(x, y)] = min(left, right) + triangle[x][y]
         return memo[(x, y)]
     
+    
+# My own solution, uses DP. Has O(n^2) time complexity and O(n) space complexity.
+from typing import (
+    List,
+)
+
+class Solution:
+    """
+    @param triangle: a list of lists of integers
+    @return: An integer, minimum path sum
+    """
+    def minimum_total(self, triangle: List[List[int]]) -> int:
+        if not triangle or not triangle[0]:
+            return 0
+        n = len(triangle)
+        dp = [0] * n
+        prev_row = [0] * n
+        for row_ind in range(n):
+            row = triangle[row_ind]
+            for col_ind in range(row_ind + 1):
+                dp[col_ind] = row[col_ind]
+                if col_ind == 0:
+                    dp[col_ind] += prev_row[col_ind]
+                    continue
+                if col_ind == row_ind:
+                    dp[col_ind] += prev_row[col_ind - 1]
+                    continue
+                dp[col_ind] += min(prev_row[col_ind - 1], prev_row[col_ind])
+            if row_ind == n - 1:
+                return min(dp)
+            dp, prev_row = prev_row, dp
+
+            
