@@ -116,6 +116,78 @@ class LRUCache:
             del self.key_to_prev[head_node.key]
             
          
+# My own solution. Similar to the one above, but much more modularized. 
+class ListNode:
+    def __init__(self, key=None, value=None, next_pointer=None):
+        self.key = key
+        self.value = value
+        self.next_pointer = next_pointer
+
+class LRUCache:
+    """
+    @param: capacity: An integer
+    """
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.head = ListNode()
+        self.tail = self.head
+        self.key_to_prev_node = dict()
+
+    """
+    @param: key: An integer
+    @return: An integer
+    """
+    def get(self, key):
+        if key not in self.key_to_prev_node:
+            return -1        
+        self.move_to_tail(key)
+        return self.tail.value        
+
+    """
+    @param: key: An integer
+    @param: value: An integer
+    @return: nothing
+    """
+    def set(self, key, value):
+        if key not in self.key_to_prev_node:
+            self.add_to_tail(ListNode(key=key, value=value))            
+            self.evict_old()
+        else:
+            self.move_to_tail(key)
+            self.tail.value = value
+
+    # Move the node with key == key to the tail of the list.
+    def move_to_tail(self, key):
+        # Don't need to change anything if key is already the tail's key.
+        if key == self.tail.key:
+            return
+        node_to_move = self.remove_from_list(key)
+        self.add_to_tail(node_to_move)
+    
+    # Remove and return a node from the linked list.
+    def remove_from_list(self, key):
+        prev_node = self.key_to_prev_node[key]
+        curr_node = prev_node.next_pointer
+        del self.key_to_prev_node[key]
+        next_node = curr_node.next_pointer
+        if next_node and next_node.key is not None:
+            self.key_to_prev_node[next_node.key] = prev_node
+        prev_node.next_pointer = next_node
+        curr_node.next_pointer = None
+        return curr_node
+
+    def add_to_tail(self, new_tail_node):
+        self.key_to_prev_node[new_tail_node.key] = self.tail
+        self.tail.next_pointer = new_tail_node
+        new_tail_node.next_pointer = None
+        self.tail = new_tail_node      
+
+    def evict_old(self):
+        if len(self.key_to_prev_node) <= self.capacity:
+            return
+        self.remove_from_list(self.head.next_pointer.key)        
+        
+        
 # Solution from jiuzhang.com. In reality it's doing the same thing as my own implementation above.       
 class LinkedNode:
     
