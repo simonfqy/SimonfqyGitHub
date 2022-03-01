@@ -51,7 +51,8 @@ class Solution:
         return current_best
     
     
-# My own solution, uses Dynamic Programming.
+# My own solution, uses Dynamic Programming. When updating the dp array, it gracefully starts from the end and reaches the front, which ensures
+# the correctness and makes sure we only need 1 array for storing the dp values.
 class Solution:
     """
     @param triangle: a list of lists of integers
