@@ -2,8 +2,8 @@
 Link: https://www.lintcode.com/problem/165/
 '''
 
-# My own solution. This question got asked in the Wish virtual onsite interview and caught me somewhat off guard. I implemented
-# a linked list class by myself, which is actually unnecessary. 
+# My own solution. This question got asked in the Wish virtual onsite interview and caught me somewhat off guard. The difference from this
+# problem is that, we might need to implement the linked list by ourselves. Here it is not necessary.
 from lintcode import (
     ListNode,
 )
