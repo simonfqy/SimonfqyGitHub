@@ -164,3 +164,56 @@ class StackNode:
         self.value = v
         self.prev = p
         self.next = n
+
+        
+# My own solution. Pretty straightforward, allocates 3 sections in the array, each hosting a stack.
+class ThreeStacks:
+    """
+    @param: size: An integer
+    """
+    def __init__(self, size):
+        self.array = [None] * (3 * size)
+        self.size = size
+        self.next_elements_pos = [0, size, 2 * size]
+        self.max_pos = [size - 1, 2 * size - 1, 3 * size - 1]
+
+    """
+    @param: stackNum: An integer
+    @param: value: An integer
+    @return: nothing
+    """
+    def push(self, stackNum, value):
+        if self.next_elements_pos[stackNum] > self.max_pos[stackNum]:
+            return
+        self.array[self.next_elements_pos[stackNum]] = value
+        self.next_elements_pos[stackNum] += 1
+
+    """
+    @param: stackNum: An integer
+    @return: the top element
+    """
+    def pop(self, stackNum):
+        if self.next_elements_pos[stackNum] == stackNum * self.size:
+            return None        
+        self.next_elements_pos[stackNum] -= 1
+        last_element = self.array[self.next_elements_pos[stackNum]]
+        self.array[self.next_elements_pos[stackNum]] = None
+        return last_element
+
+    """
+    @param: stackNum: An integer
+    @return: the top element
+    """
+    def peek(self, stackNum):
+        if self.next_elements_pos[stackNum] == stackNum * self.size:
+            return None
+        return self.array[self.next_elements_pos[stackNum] - 1]
+
+    """
+    @param: stackNum: An integer
+    @return: true if the stack is empty else false
+    """
+    def isEmpty(self, stackNum):
+        return self.peek(stackNum) is None
+
+        
