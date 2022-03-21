@@ -234,3 +234,70 @@ class Solution:
                 continue            
             self.search(board, x_, y_, node.children.get(board[x_][y_]), results, new_visited)
 
+
+# My own solution, following the solution above. Also uses trie, and the implementation is largely the same.           
+class TrieNode:
+    def __init__(self, letter=None, is_word_end=False):
+        self.letter = letter
+        self.is_word_end = is_word_end
+        self.children = dict()
+    
+    def find_child(self, letter):        
+        return self.children.get(letter)
+    
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def add_word(self, word):
+        node = self.root
+        for i, letter in enumerate(word):
+            child = node.find_child(letter)
+            if not child:
+                child = TrieNode(letter=letter)
+                node.children[letter] = child
+            if i == len(word) - 1:
+                child.is_word_end = True
+                break
+            node = child
+            
+
+DELTA = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+class Solution:
+    def wordSearchII(self, board, words):
+        results = set()
+        trie = Trie()
+        for word in words:
+            trie.add_word(word)
+        self.search_word(board, results, trie)
+        return list(results)
+
+    def search_word(self, board, results, trie):
+        n, m = len(board), len(board[0])
+        for i in range(n):
+            for j in range(m):
+                trie_node = trie.root.find_child(board[i][j])                
+                self.search_word_in_trie(board, i, j, board[i][j], set([(i, j)]), results, trie_node)
+    
+    def search_word_in_trie(self, board, i, j, prefix, visited, results, trie_node):
+        if not trie_node:
+            return
+        if trie_node.is_word_end:
+            results.add(prefix)            
+        if not trie_node.children:
+            return
+        for delta_x, delta_y in DELTA:
+            new_x, new_y = i + delta_x, j + delta_y
+            if not self.is_position_permissible(board, new_x, new_y, visited):
+                continue
+            new_letter = board[new_x][new_y]
+            child_node = trie_node.find_child(new_letter)            
+            self.search_word_in_trie(board, new_x, new_y, prefix + new_letter, visited | {(new_x, new_y)}, results, child_node)            
+    
+    def is_position_permissible(self, board, x, y, visited):
+        n, m = len(board), len(board[0])
+        if min(x, y) < 0 or x >= n or y >= m:
+            return False
+        return (x, y) not in visited
+
+         
