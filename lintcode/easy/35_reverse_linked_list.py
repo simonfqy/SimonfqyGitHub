@@ -30,3 +30,20 @@ class Solution:
             head_of_reversed_list = new_head
             cursor = next_node
         return head_of_reversed_list
+    
+    
+# Recursive solution from jiuzhang.com.    
+class Solution:
+    """
+    @param head: n
+    @return: The new head of reversed linked list.
+    """
+    def reverse(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        reversed_head = self.reverse(head.next)
+        head.next.next = head
+        head.next = None
+        return reversed_head
+    
+    
