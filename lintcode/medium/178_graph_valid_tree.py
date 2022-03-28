@@ -33,3 +33,36 @@ class Solution:
         return len(visited) == n
       
       
+# Solution from jiuzhang.com. Uses union find.
+class Solution:
+    """
+    @param n: An integer
+    @param edges: a list of undirected edges
+    @return: true if it's a valid tree, or false
+    """
+    def valid_tree(self, n: int, edges: List[List[int]]) -> bool:
+        if len(edges) != n - 1:
+            return False
+        self.size = n
+        self.father = {i: i for i in range(n)}
+        for a, b in edges:
+            self.union(a, b)
+        return self.size == 1
+
+    def union(self, a, b):
+        root_a = self.find_root(a)
+        root_b = self.find_root(b)
+        if root_a != root_b:
+            self.size -= 1
+            self.father[root_a] = root_b
+            
+    def find_root(self, node):
+        path = []
+        while node != self.father[node]:
+            path.append(node)
+            node = self.father[node]
+        for n in path:
+            self.father[n] = node
+        return node
+    
+    
