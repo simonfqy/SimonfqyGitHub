@@ -56,3 +56,28 @@ class Solution:
                 intervals[left].end = max(intervals[left].end, intervals[right].end)
                 right += 1
         return intervals[:left + 1]     
+    
+    
+# My own solution.
+class Solution:
+    """
+    @param intervals: interval list.
+    @return: A new interval list.
+    """
+    def merge(self, intervals):
+        if len(intervals) <= 1:
+            return intervals
+        intervals.sort(key=lambda x: x.start)
+        left, right = 0, 0
+        results = []
+        while right < len(intervals):
+            start = intervals[left].start
+            end = intervals[left].end
+            while right < len(intervals) and intervals[right].start <= end:
+                end = max(end, intervals[right].end)
+                right += 1
+            results.append(Interval(start, end))
+            left = right
+        return results
+    
+    
