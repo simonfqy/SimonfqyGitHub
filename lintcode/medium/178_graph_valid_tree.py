@@ -53,6 +53,7 @@ class Solution:
         root_a = self.find_root(a)
         root_b = self.find_root(b)
         if root_a != root_b:
+            # Merge the two subtrees together.
             self.size -= 1
             self.father[root_a] = root_b
             
@@ -61,6 +62,7 @@ class Solution:
         while node != self.father[node]:
             path.append(node)
             node = self.father[node]
+        # Overwrite the father of all the elements in the path to be the root.
         for n in path:
             self.father[n] = node
         return node
