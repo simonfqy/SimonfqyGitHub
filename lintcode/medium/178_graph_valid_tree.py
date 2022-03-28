@@ -68,3 +68,34 @@ class Solution:
         return node
     
     
+# Another solution using union find. It is based on another solution from jiuzhang.com and I modified it a bit.
+class Solution:
+    """
+    @param n: An integer
+    @param edges: a list of undirected edges
+    @return: true if it's a valid tree, or false
+    """
+    def valid_tree(self, n: int, edges: List[List[int]]) -> bool:
+        roots = set()
+        self.father = {i: i for i in range(n)}
+        for a, b in edges:
+            root_a = self.find_root(a)
+            root_b = self.find_root(b)
+            if root_a == root_b:
+                return False
+            self.father[root_a] = root_b
+
+        for node in range(n):
+            roots.add(self.find_root(node))
+        return len(roots) == 1
+    
+    def find_root(self, node):
+        path = []
+        while node != self.father[node]:
+            path.append(node)
+            node = self.father[node]
+        for n in path:
+            self.father[n] = node
+        return node
+    
+    
