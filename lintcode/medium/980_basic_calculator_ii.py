@@ -86,3 +86,34 @@ class Solution:
             stack.append(int(curr_res / curr_num))
         return stack
 
+    
+# Solution from jiuzhang.com. Very similar to my solution above, but more succinct.
+class Solution:
+    """
+    @param s: the given expression
+    @return: the result of expression
+    """
+    def calculate(self, s):
+        if not s:
+            return 0
+        stack, num, sign = [], 0, "+"
+        for i in range(len(s)):
+            if s[i].isdigit():
+                num = num * 10 + ord(s[i]) - ord("0")
+            if (not s[i].isdigit() and not s[i].isspace()) or i == len(s)-1:
+                if sign == "-":
+                    stack.append(-num)
+                elif sign == "+":
+                    stack.append(num)
+                # When we encounter "*" or "/", make sure that the last element in the stack is always the result of the
+                # multiplication/division block.
+                elif sign == "*":
+                    stack.append(stack.pop() * num)
+                else:                  
+                    stack.append(int(stack.pop()/num))
+                sign = s[i]
+                num = 0
+        return sum(stack)
+
+
+    
