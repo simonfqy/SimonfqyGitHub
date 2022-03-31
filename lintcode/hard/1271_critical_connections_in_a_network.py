@@ -40,7 +40,7 @@ class Solution:
                         depth + 1, ranks, critical_connections, node_to_neighbors))
             else:
                 ranks[node] = min(ranks[node], ranks[child])
-        # If father-node edge is a part of a cycle, it should have ranks[node] == depth. See the documentation inside the if-block.
+        # If the node-father edge is a part of a cycle, it should have ranks[node] == depth. See the documentation inside the if-block.
         if node != 0 and ranks[node] == depth:
             critical_connections.add(tuple(sorted((father, node))))
         return ranks[node]
