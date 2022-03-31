@@ -53,3 +53,36 @@ class Solution:
         return local_result
 
       
+# My implementation based on the instruction from jiuzhang.com. Uses stack and is much more succinct than my solution above.
+# We just need to sum up the elements inside the stack to get the final result.
+class Solution:
+    """
+    @param s: the given expression
+    @return: the result of expression
+    """
+    def calculate(self, s: str) -> int:
+        stack = []
+        curr_num = 0
+        curr_operator = None
+        for i, char in enumerate(s):
+            if char.isnumeric():
+                curr_num = curr_num * 10 + int(char)                
+            if char in {"+", "-", "*", "/"} or i == len(s) - 1:
+                self.modify_stack(stack, curr_operator, curr_num)
+                curr_operator = char
+                curr_num = 0          
+        
+        return sum(stack)
+
+    def modify_stack(self, stack, curr_operator, curr_num):        
+        if not curr_operator or curr_operator == "+" or curr_operator == "-":
+            sign = -1 if curr_operator == "-" else 1
+            stack.append(sign * curr_num)
+            return        
+        curr_res = stack.pop()
+        if curr_operator == "*":            
+            stack.append(curr_res * curr_num)
+        elif curr_operator == "/":
+            stack.append(int(curr_res / curr_num))
+        return stack
+
