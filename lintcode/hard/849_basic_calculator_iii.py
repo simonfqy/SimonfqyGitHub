@@ -107,3 +107,52 @@ class Solution:
             stack.append(int(stack.pop() / num))                          
               
               
+# Solution from a student on jiuzhang.com.
+class Solution:
+    """
+    @param s: the expression string
+    @return: the answer
+    """
+    def calculate(self, s: str) -> int:
+        priority = {'+': 0, "-": 0, "*": 1, "/": 1}
+        stack = []
+        n = len(s)
+        curr_num = 0        
+        for i, char in enumerate(s):
+            if char in "+-*/":                               
+                while len(stack) and stack[-1] in priority and priority[stack[-1]] >= priority[char]:
+                    curr_num = self.calculate_stack_end(stack, curr_num)
+                # We only push the curr_num to the stack when char is "+-*/". 
+                stack.append(curr_num)
+                stack.append(char)                
+                curr_num = 0                 
+            elif char == "(":
+                stack.append(char)
+            elif char == ")":                
+                while stack and stack[-1] != "(":
+                    curr_num = self.calculate_stack_end(stack, curr_num)                
+                stack.pop()                 
+            elif char.isnumeric():
+                curr_num = curr_num * 10 + int(char)     
+                
+        while stack:            
+            curr_num = self.calculate_stack_end(stack, curr_num)
+        return curr_num
+    
+    def calculate_stack_end(self, stack, curr_num):        
+        sign = stack.pop()
+        prev_num = stack.pop()
+        return self.calculate_last_element(prev_num, sign, curr_num)
+
+    def calculate_last_element(self, prev_num, sign, curr_num):
+        if sign == "+":
+            return prev_num + curr_num
+        if sign == "-":
+            return prev_num - curr_num
+        if sign == "*":
+            return prev_num * curr_num
+        if sign == "/":
+            return int(prev_num / curr_num)
+        
+        
+        
