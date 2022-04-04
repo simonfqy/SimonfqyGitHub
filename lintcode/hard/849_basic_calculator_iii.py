@@ -108,6 +108,10 @@ class Solution:
               
               
 # Solution from a student on jiuzhang.com.
+# 用栈来存放之前的num 和 operator, 当前只保存一个number
+# 基本逻辑: 当遇到一个新的operator时, 只要新的operator比栈顶的operator级别低, 弹栈并处理, 直到栈空, 或栈顶的operator级别低于当前.最后把处理的结果(一个数)和当前operator一并入栈.
+# 对括号的处理: 1. '('直接入栈. 2. 弹栈时如果遇到'('则停止. 3. 如果遇到')', 则将栈中直到上一个'('的operation全部处理掉, 结果保存在当前number中, 最后将栈顶的'('弹出.
+# 全部做完后最后再处理一下还在栈内的operation.
 class Solution:
     """
     @param s: the expression string
