@@ -32,6 +32,8 @@ class Solution:
          
         return sum(stack)
     
+    # Refer to https://github.com/simonfqy/SimonfqyGitHub/blob/af5b30e7c1d5fceb6438837f0e497a0567af0b3d/lintcode/medium/980_basic_calculator_ii.py#L91.
+    # This implementation is copied from that one.
     def modify_stack(self, stack, sign, curr_num):
         if not sign:
             return
