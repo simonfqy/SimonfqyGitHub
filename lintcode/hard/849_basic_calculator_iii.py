@@ -3,6 +3,8 @@ Link: https://www.lintcode.com/problem/849
 '''
 
 # My own solution. Uses stack.
+# When we encounter "(", we push the sign (+, -, *, /) right before it into the stack. When we encounter ")", we pop all the way until the sign before the 
+# "(" is removed from the stack. The only case where we push the sign (+, -, *, /) into the stack is when seeing parentheses. 
 class Solution:
     """
     @param s: the expression string
