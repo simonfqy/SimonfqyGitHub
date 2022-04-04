@@ -50,7 +50,59 @@ class Solution:
             if last_element in {"+", "-", "*", "/"}:
                 self.modify_stack(stack, last_element, result)
                 break
-            result += last_element                
-                            
+            result += last_element                                            
                 
+
+# My own solution, but largely inspired by the idea from jiuzhang.com. Uses a recursive solution.
+class Solution:
+    """
+    @param s: the expression string
+    @return: the answer
+    """
+    def calculate(self, s: str) -> int:
+        # It is better as a global variable like here, rather than an input parameter. 
+        # Because next_ind never goes back, only forward.
+        self.next_ind = 0
+        return self.calculate_recursively(s)
         
+    def calculate_recursively(self, s):
+        stack = []
+        n = len(s)
+        num = 0
+        sign = "+"
+        while self.next_ind < n:
+            char = s[self.next_ind]
+            if char.isnumeric():
+                num = num * 10 + int(char)
+                self.next_ind += 1
+            elif char == "(":
+                self.next_ind += 1
+                num = self.calculate_recursively(s)
+            elif char == ")":
+                self.calculate_last_elements(stack, num, sign)
+                self.next_ind += 1
+                num = 0
+                break
+            elif char in "+-*/":
+                self.calculate_last_elements(stack, num, sign)
+                sign = char
+                num = 0
+                self.next_ind += 1     
+            else:
+                self.next_ind += 1      
+        if num != 0:
+            self.calculate_last_elements(stack, num, sign)
+
+        return sum(stack)
+
+    def calculate_last_elements(self, stack, num, sign):
+        if sign == "+":
+            stack.append(num)
+        elif sign == "-":
+            stack.append(-num)
+        elif sign == "*":
+            stack.append(stack.pop() * num)
+        elif sign == "/":
+            stack.append(int(stack.pop() / num))                           
+              
+              
