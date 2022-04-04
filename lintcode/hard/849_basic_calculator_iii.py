@@ -81,17 +81,18 @@ class Solution:
             elif char == ")":
                 self.calculate_last_elements(stack, num, sign)
                 self.next_ind += 1
-                num = 0
-                break
+                # Whenever we encounter a closing parenthesis, we stop the current recursion and return the result.
+                return sum(stack)
             elif char in "+-*/":
                 self.calculate_last_elements(stack, num, sign)
                 sign = char
                 num = 0
                 self.next_ind += 1     
             else:
-                self.next_ind += 1      
-        if num != 0:
-            self.calculate_last_elements(stack, num, sign)
+                self.next_ind += 1       
+        
+        # We don't have a closing parenthesis encountered in the current recursion level.         
+        self.calculate_last_elements(stack, num, sign)
 
         return sum(stack)
 
@@ -103,6 +104,6 @@ class Solution:
         elif sign == "*":
             stack.append(stack.pop() * num)
         elif sign == "/":
-            stack.append(int(stack.pop() / num))                           
+            stack.append(int(stack.pop() / num))                          
               
               
