@@ -1,7 +1,5 @@
 '''
 Link: https://www.lintcode.com/problem/merge-intervals/description
-Both solutions are provided by @Tin from jiuzhang.com. The problem is fairly similar to 
-https://www.lintcode.com/problem/insert-interval/description.
 
 '''
 
@@ -13,6 +11,8 @@ class Interval(object):
         self.end = end
 """
 
+# This solution and the next one are provided by @Tin from jiuzhang.com. The problem is fairly similar to 
+# https://www.lintcode.com/problem/insert-interval/description.
 class Solution:
     """
     @param intervals: interval list.
