@@ -49,3 +49,38 @@ class Solution:
         return reversed_section_head
       
       
+# Also my own solution. Slightly modified from the one above. 
+class Solution:
+    """
+    @param head: ListNode head is the head of the linked list 
+    @param m: An integer
+    @param n: An integer
+    @return: The head of the reversed ListNode
+    """
+    def reverse_between(self, head: ListNode, m: int, n: int) -> ListNode:        
+        new_head = head
+        reversed_section_head, reversed_section_tail = None, None
+        i = 1
+        node_right_before_reversed_section = None
+        while head:
+            next_node = head.next
+            if i == m - 1:
+                node_right_before_reversed_section = head
+            if i >= m and i <= n:
+                prev_reversed_head = reversed_section_head
+                reversed_section_head = head
+                reversed_section_head.next = prev_reversed_head
+            if i == m:                 
+                reversed_section_tail = head
+            if i > n:
+                reversed_section_tail.next = head
+                break            
+            head = next_node
+            i += 1
+        if m > 1:
+            node_right_before_reversed_section.next = reversed_section_head
+        
+        return new_head if m > 1 else reversed_section_head
+    
+    
+    
