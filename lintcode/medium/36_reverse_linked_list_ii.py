@@ -83,4 +83,38 @@ class Solution:
         return new_head if m > 1 else reversed_section_head
     
     
+# Slightly modified version of the above solution. Uses a dummy node in the beginning. 
+class Solution:
+    """
+    @param head: ListNode head is the head of the linked list 
+    @param m: An integer
+    @param n: An integer
+    @return: The head of the reversed ListNode
+    """
+    def reverse_between(self, head: ListNode, m: int, n: int) -> ListNode:        
+        dummy = ListNode(-1)
+        dummy.next = head
+        reversed_section_head, reversed_section_tail = None, None
+        i = 0
+        node_right_before_reversed_section = None
+        head = dummy
+        while head:
+            next_node = head.next
+            if i == m - 1:
+                node_right_before_reversed_section = head
+            if i >= m and i <= n:
+                prev_reversed_head = reversed_section_head
+                reversed_section_head = head
+                reversed_section_head.next = prev_reversed_head
+            if i == m:                 
+                reversed_section_tail = head
+            if i > n:
+                reversed_section_tail.next = head
+                break            
+            head = next_node
+            i += 1
+        
+        node_right_before_reversed_section.next = reversed_section_head
+        
+        return dummy.next
     
