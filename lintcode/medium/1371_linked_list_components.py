@@ -51,3 +51,21 @@ class Solution:
         return count
 
 
+# Solution from jiuzhang.com. Uses set, because we don't need to care about the order of elements inside g.
+class Solution:
+    """
+    @param head: the head
+    @param g: an array
+    @return: the number of connected components in G
+    """
+    def num_components(self, head: ListNode, g: List[int]) -> int:
+        set_g = set(g)
+        count = 0
+        while head:
+            if head.val in set_g and (not head.next or head.next.val not in set_g):
+                count += 1
+            head = head.next
+        return count
+    
+    
+    
