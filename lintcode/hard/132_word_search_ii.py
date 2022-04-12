@@ -235,7 +235,8 @@ class Solution:
             self.search(board, x_, y_, node.children.get(board[x_][y_]), results, new_visited)
 
 
-# My own solution, following the solution above. Also uses trie, and the implementation is largely the same.           
+# My own solution, following the solution above. Also uses trie, and the implementation is largely the same. This question was asked
+# during the Uber phone interview.
 class TrieNode:
     def __init__(self, letter=None, is_word_end=False):
         self.letter = letter
