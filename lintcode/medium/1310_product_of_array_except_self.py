@@ -26,4 +26,24 @@ class Solution:
         return output
       
       
-      
+# My own solution for the challenge. Gets rid of the prefix and suffix product arrays. Has O(n) time complexity
+# and O(1) extra space complexity.
+class Solution:
+    """
+    @param nums: an array of integers
+    @return: the product of all the elements of nums except nums[i].
+    """
+    def product_except_self(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        output = [1] * n
+        front_product = 1
+        rear_product = 1
+        for i in range(1, n):
+            front_product *= nums[i - 1]
+            output[i] *= front_product
+            rear_product *= nums[n - i]
+            output[n - i - 1] *= rear_product
+        
+        return output
+
+    
