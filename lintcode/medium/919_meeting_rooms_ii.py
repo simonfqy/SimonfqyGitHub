@@ -30,3 +30,24 @@ class Solution:
         return len(heap)
       
       
+# My implementation of a solution from a student on jiuzhang.com. Uses sweep line.
+import bisect
+class Solution:
+    """
+    @param intervals: an array of meeting time intervals
+    @return: the minimum number of conference rooms required
+    """
+    def min_meeting_rooms(self, intervals: List[Interval]) -> int:
+        events = []
+        for interval in intervals:
+            bisect.insort(events, (interval.start, 1))
+            bisect.insort(events, (interval.end, -1))
+        max_count = 0
+        concurrent_count = 0
+        for _, delta in events:
+            concurrent_count += delta
+            max_count = max(max_count, concurrent_count)
+        return max_count
+    
+    
+    
