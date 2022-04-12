@@ -63,3 +63,27 @@ class MyCalendar:
             self.root = Node(start, end)
             return True
         return self.root.insert(Node(start, end))  
+    
+    
+# Solution from a student on jiuzhang.com, I simplified it. Uses the bisect library. book() function has O(n) time complexity.
+import bisect
+class MyCalendar:
+
+    def __init__(self):
+        self.events = []        
+
+    def book(self, start, end):
+        """
+        :type start: int
+        :type end: int
+        :rtype: bool
+        """        
+        index = bisect.bisect_left(self.events, (start, end))
+        if index >= 1 and self.events[index - 1][1] > start:
+            return False
+        if index < len(self.events) and self.events[index][0] < end:
+            return False
+        self.events.insert(index, (start, end))
+        return True 
+    
+    
