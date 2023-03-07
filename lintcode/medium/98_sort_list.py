@@ -63,4 +63,52 @@ class Solution:
 
         return head
 
-      
+# My implementation based on a solution from Jiuzhang.com. Uses quicksort, but partitions the list into 3 sections.      
+class Solution:
+    """
+    @param head: The head of linked list.
+    @return: You should return the head of the sorted linked list, using constant space complexity.
+    """
+    def sort_list(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        dummy_l, dummy_m, dummy_r = ListNode(-1), ListNode(-1), ListNode(-1)
+        tail_l, tail_m, tail_r = dummy_l, dummy_m, dummy_r
+        mid_node = self.find_mid(head)
+        pivot = mid_node.val
+        temp = head
+        while temp:
+            if temp.val < pivot:
+                tail_l.next = temp
+                tail_l = tail_l.next
+            elif temp.val == pivot:
+                tail_m.next = temp
+                tail_m = tail_m.next
+            else:
+                tail_r.next = temp
+                tail_r = tail_r.next
+            temp = temp.next
+        tail_l.next, tail_m.next, tail_r.next = None, None, None
+        left = self.sort_list(dummy_l.next)
+        right = self.sort_list(dummy_r.next)
+        return self.concat(left, dummy_m.next, right)
+
+    
+    def find_mid(self, head):
+        fast, slow = head, head
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+        return slow
+
+    def concat(self, left, mid, right):
+        dummy = ListNode(-1, left)
+        curr = dummy
+        while curr.next:
+            curr = curr.next
+        curr.next = mid
+        while curr.next:
+            curr = curr.next
+        curr.next = right
+        return dummy.next
+    
