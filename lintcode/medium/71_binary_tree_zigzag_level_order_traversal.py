@@ -53,3 +53,34 @@ class Solution:
             left_child_first = not left_child_first
 
         return results
+
+
+# My implementation of a solution from jiuzhang.com. It is simpler than my own solution above.
+from collections import deque
+class Solution:
+    """
+    @param root: A Tree
+    @return: A list of lists of integer include the zigzag level order traversal of its nodes' values.
+    """
+    def zigzag_level_order(self, root: TreeNode) -> List[List[int]]:
+        results = []
+        if not root:
+            return results
+        queue = deque([root])
+        left_to_right = 1
+        while queue:
+            this_level_vals = []
+            size = len(queue)
+            for _ in range(size):
+                node = queue.popleft()
+                this_level_vals.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            this_level_vals = this_level_vals[::left_to_right]
+            results.append(this_level_vals)
+            left_to_right *= -1
+
+        return results
+    
