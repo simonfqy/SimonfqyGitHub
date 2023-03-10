@@ -46,3 +46,24 @@ class Solution:
             if num not in num_to_ind_list:
                 num_to_ind_list[num] = []
             num_to_ind_list[num].append(ind)
+            
+            
+# My implementation of the solution from jiuzhang.com.
+class Solution:
+    """
+    @param numbers: An array of Integer
+    @param target: target = numbers[index1] + numbers[index2]
+    @return: [index1, index2] (index1 < index2)
+    """
+    def twoSum(self, numbers, target):
+        # write your code here
+        nums_and_indices = [(num, ind) for ind, num in enumerate(numbers)]
+        nums_and_indices.sort()
+        left, right = 0, len(numbers) - 1
+        while left < right:
+            if nums_and_indices[left][0] + nums_and_indices[right][0] < target:
+                left += 1
+            elif nums_and_indices[left][0] + nums_and_indices[right][0] > target:
+                right -= 1
+            else:
+                return sorted([nums_and_indices[left][1], nums_and_indices[right][1]])
