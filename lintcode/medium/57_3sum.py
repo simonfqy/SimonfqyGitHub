@@ -74,3 +74,35 @@ class Solution:
                 else:
                     left += 1
         return results
+    
+    
+# Answer from jiuzhang.com.
+class Solution:
+    """
+    @param numbers: Give an array numbers of n integer
+    @return: Find all unique triplets in the array which gives the sum of zero.
+    """
+    def threeSum(self, numbers):
+        # write your code here
+        numbers.sort()
+        n = len(numbers)
+        results = []
+        for i, num in enumerate(numbers):
+            if i > 0 and numbers[i - 1] == num:
+                continue
+            self.twoSum(numbers, i + 1, n - 1, -num, results)
+        return results
+        
+    def twoSum(self, numbers, left, right, target, results):
+        last_pair = (None, None)
+        while left < right:
+            if numbers[left] + numbers[right] == target:
+                if (numbers[left], numbers[right]) != last_pair:
+                    results.append([-target, numbers[left], numbers[right]])
+                last_pair = (numbers[left], numbers[right])
+                left += 1
+                right -= 1
+            elif numbers[left] + numbers[right] < target:
+                left += 1
+            else:
+                right -= 1
