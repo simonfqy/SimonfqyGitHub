@@ -301,4 +301,53 @@ class Solution:
             return False
         return (x, y) not in visited
 
-         
+
+# My own solution using DFS. It is based on the solution I used for problem no.123.   
+DELTA = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+class Solution:
+    """
+    @param board: A list of lists of character
+    @param words: A list of string
+    @return: A list of string
+             we will sort your return value in output
+    """
+    def word_search_i_i(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # write your code here
+        if not board or not board[0]:
+            return []
+        n = len(board)
+        m = len(board[0])
+        results = []
+        for word in words:
+            if self.is_word_present(board, n, m, word):
+                results.append(word)
+        return results
+    
+    def is_word_present(self, board, n, m, word):
+        self.visited = [[False for _ in range(m)] for _ in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if board[i][j] != word[0]:
+                    continue
+                self.visited[i][j] = True
+                if self.is_partial_word_present(board, n, m, i, j, word[1:]):
+                    return True
+                self.visited[i][j] = False
+        return False 
+
+    def is_partial_word_present(self, board, n, m, i, j, word):
+        if word == "":
+            return True
+        for delta_x, delta_y in DELTA:
+            new_x, new_y = i + delta_x, j + delta_y
+            if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
+                continue
+            if self.visited[new_x][new_y] or board[new_x][new_y] != word[0]:
+                continue
+            self.visited[new_x][new_y] = True
+            if self.is_partial_word_present(board, n, m, new_x, new_y, word[1:]):
+                return True
+            self.visited[new_x][new_y] = False
+        return False
+    
+    
