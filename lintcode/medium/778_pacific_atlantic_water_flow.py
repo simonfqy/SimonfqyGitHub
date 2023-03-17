@@ -143,4 +143,42 @@ class Solution:
             self.get_water_source(matrix, n, m, new_x, new_y, water_source, visited)
             visited[new_x][new_y] = False 
             
+           
+# Simplified solution based on the one above, learned from jiuzhang.com. Here we can remove the visited flag
+# 2D array and simply use the water_source set for pruning.
+DELTA = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+class Solution:
+    """
+    @param matrix: the given matrix
+    @return: The list of grid coordinates
+             we will sort your return value in output
+    """
+    def pacific_atlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        atlantic_sources = set()
+        pacific_sources = set()
+        if not matrix or not matrix[0]:
+            return []
+        n, m = len(matrix), len(matrix[0])
+        for i in range(n):
+            for j in range(m):
+                if i == 0 or j == 0:
+                    self.get_water_source(matrix, n, m, i, j, atlantic_sources)
+                if i == n - 1 or j == m - 1:
+                    self.get_water_source(matrix, n, m, i, j, pacific_sources)
+        results_set = atlantic_sources & pacific_sources
+        return [list(tup) for tup in results_set]
+
+    def get_water_source(self, matrix, n, m, i, j, water_source):
+        water_source.add((i, j))       
+        prev_height = matrix[i][j]
+        for delta_x, delta_y in DELTA:
+            new_x, new_y = i + delta_x, j + delta_y
+            if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
+                continue
+            if matrix[new_x][new_y] < prev_height:
+                continue
+            if (new_x, new_y) in water_source:
+                continue
+            self.get_water_source(matrix, n, m, new_x, new_y, water_source)
+            
             
