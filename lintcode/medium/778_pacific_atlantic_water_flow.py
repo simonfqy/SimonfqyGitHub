@@ -98,7 +98,53 @@ class Solution:
                 water_source.add((new_x, new_y))
                 queue.append((new_x, new_y))  
                 
-   
+
+# Simplified version of the solution above. Now we can go without the visited 2D array and still get to the 
+# correct answer, because the water_source set acts as a "visited" set to prune the excessive branches.              
+from collections import deque
+DELTA = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+class Solution:
+    """
+    @param matrix: the given matrix
+    @return: The list of grid coordinates
+             we will sort your return value in output
+    """
+    def pacific_atlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        atlantic_sources = set()
+        pacific_sources = set()
+        atlantic_queue, pacific_queue = deque(), deque()
+        if not matrix or not matrix[0]:
+            return []
+        n, m = len(matrix), len(matrix[0])
+        for i in range(n):
+            for j in range(m):
+                if i == 0 or j == 0:
+                    atlantic_queue.append((i, j))
+                    atlantic_sources.add((i, j))
+                    self.get_water_source(matrix, n, m, atlantic_sources, atlantic_queue)
+                if i == n - 1 or j == m - 1:
+                    pacific_queue.append((i, j))
+                    pacific_sources.add((i, j))
+                    self.get_water_source(matrix, n, m, pacific_sources, pacific_queue)
+        results_set = atlantic_sources & pacific_sources
+        return [list(tup) for tup in results_set]
+
+    def get_water_source(self, matrix, n, m, water_source, queue):
+        while queue:
+            i, j = queue.popleft()       
+            prev_height = matrix[i][j]
+            for delta_x, delta_y in DELTA:
+                new_x, new_y = i + delta_x, j + delta_y
+                if min(new_x, new_y) < 0 or new_x >= n or new_y >= m:
+                    continue
+                if matrix[new_x][new_y] < prev_height:
+                    continue
+                if (new_x, new_y) in water_source:
+                    continue
+                water_source.add((new_x, new_y))
+                queue.append((new_x, new_y))
+                
+                
 # My own solution based on the teachings from jiuzhang.com. Taking DFS from edges to the centre.
 DELTA = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 class Solution:
