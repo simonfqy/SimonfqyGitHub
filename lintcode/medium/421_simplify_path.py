@@ -32,4 +32,21 @@ class Solution:
             stack.append('')
         return '/'.join(stack)
       
-      
+   
+# Solution from jiuzhang.com. Conceptually similar to my solution above, but simpler and cleaner.
+class Solution:
+    """
+    @param path: the original path
+    @return: the simplified path
+    """
+    def simplify_path(self, path: str) -> str:
+        path_entities = path.split('/')
+        stack = []
+        for entity in path_entities:
+            if entity == "..":
+                if len(stack) > 0:
+                    stack.pop()
+            elif entity != "." and entity != "":
+                stack.append(entity)
+        return "/" + "/".join(stack)
+    
