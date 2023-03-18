@@ -223,6 +223,7 @@ class Solution:
             visited.add(tuple(perm + [nums[i]]))
             self.helper(nums, perm + [nums[i]], perm_indices + [i], results)
             
+            
 # DFS using perm_indices to deduplicate. Similar to the one above but more elegant.
 from typing import (
     List,
@@ -246,7 +247,33 @@ class Solution:
                 continue
             if i > 0 and nums[i] == nums[i - 1] and i - 1 not in perm_indices:
                 continue
-            self.helper(nums, perm + [nums[i]], perm_indices + [i], results)            
+            self.helper(nums, perm + [nums[i]], perm_indices + [i], results)   
+            
+            
+# My own DFS solution after reading https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-c26da/.
+# Similar to the solution above, but more elegant. Uses a list "used" rather than perm_indices.
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of unique permutations
+    """
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        self.permutations = []
+        self.used = [False for _ in nums]
+        self.dfs(nums, [])
+        return self.permutations
+    
+    def dfs(self, nums, prefix):
+        if len(prefix) == len(nums):
+            self.permutations.append(prefix)
+            return
+        for i, num in enumerate(nums):
+            if self.used[i] or (i > 0 and num == nums[i - 1] and not self.used[i - 1]):
+                continue
+            self.used[i] = True
+            self.dfs(nums, prefix + [num])
+            self.used[i] = False
             
             
 # BFS. Also uses a set to store the visited combinations. Note the place where it is used and the way we traverse the queue. 
