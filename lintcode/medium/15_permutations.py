@@ -177,3 +177,26 @@ class Solution:
                 visited.remove(nums[node])
 
         return permutations
+
+    
+# My solution after reading the explanation on 
+# https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-c26da/.    
+class Solution:
+    """
+    @param nums: A list of integers.
+    @return: A list of permutations.
+    """
+    def permute(self, nums):
+       self.permutations = []
+       self.dfs(nums, [])
+       return self.permutations
+
+    def dfs(self, nums, prefix):
+        if len(prefix) == len(nums):
+            self.permutations.append(prefix)
+            return
+        for num in nums:
+            if num in prefix:
+                continue
+            self.dfs(nums, prefix + [num])
+            
