@@ -305,3 +305,32 @@ class Solution:
                     visited.add(tuple(perm + [nums[i]]))
                     queue.append((perm + [nums[i]], perm_indices + [i])) 
         return results
+    
+  
+# My own BFS solution after reading https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-c26da/.
+# Similar to the latest DFS solution above.
+from collections import deque
+class Solution:
+    """
+    @param nums: A list of integers
+    @return: A list of unique permutations
+    """
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        self.permutations = []
+        queue = deque([([], set())])
+        self.bfs(nums, queue)
+        return self.permutations
+    
+    def bfs(self, nums, queue):
+        while queue:
+            prefix, used_ind = queue.popleft()
+            if len(prefix) == len(nums):
+                self.permutations.append(prefix)
+                continue
+            for i, num in enumerate(nums):
+                if i in used_ind or (i > 0 and num == nums[i - 1] and i - 1 not in used_ind):
+                    continue
+                queue.append((prefix + [num], used_ind | {i}))
+                
+                
