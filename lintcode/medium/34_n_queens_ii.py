@@ -51,3 +51,34 @@ class Solution:
                 forbidden_positions.add((row + i, col - i))
         self.queen_pos_to_forbidden_positions[(row, col)] = forbidden_positions
         return forbidden_positions
+    
+    
+# My own solution based on https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-c26da/.    
+class Solution:
+    """
+    @param n: The number of queens.
+    @return: The total number of distinct solutions.
+    """
+    def totalNQueens(self, n):
+        self.results = 0
+        self.helper(n, [])
+        return self.results
+
+    def helper(self, n, col_list):
+        if len(col_list) == n:
+            self.results += 1
+            return
+        row = len(col_list)
+        for col in range(n):
+            if not self.is_valid_arrangement(n, row, col, col_list):
+                continue
+            self.helper(n, col_list + [col])
+
+    def is_valid_arrangement(self, n, row, col, col_list):
+        for r, c in enumerate(col_list):
+            if col == c:
+                return False
+            if r + c == row + col or r - c == row - col:
+                return False
+        return True
+    
