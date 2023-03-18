@@ -319,3 +319,48 @@ class Solution:
                 this_row += char
             this_solution.append(this_row)
         return this_solution
+    
+    
+# My own solution after reading https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-c26da/.
+# Basically the same as the one above.
+class Solution:
+    """
+    @param n: The number of queens
+    @return: All distinct solutions
+             we will sort your return value in output
+    """
+    def solve_n_queens(self, n: int) -> List[List[str]]:
+        self.results = []
+        self.dfs(n, [])
+        return self.generate_output(n)
+
+    def dfs(self, n, queen_coords):
+        if len(queen_coords) == n:
+            self.results.append(queen_coords)
+            return
+        row = len(queen_coords)
+        for col in range(n):
+            if not self.is_valid_arrangement(queen_coords, row, col):
+                continue
+            self.dfs(n, queen_coords + [(row, col)])
+
+    def is_valid_arrangement(self, queen_coords, row, col):
+        for x, y in queen_coords:
+            if x == row or y == col:
+                return False
+            if row - x == col - y:
+                return False
+            if x + y == row + col:
+                return False
+        return True
+
+    def generate_output(self, n):
+        output = []
+        for queen_coords in self.results:
+            arrangement = []
+            for _, col in queen_coords:
+                row_list = ["." for _ in range(n)]
+                row_list[col] = "Q"
+                arrangement.append(''.join(row_list))
+            output.append(arrangement)
+        return output
