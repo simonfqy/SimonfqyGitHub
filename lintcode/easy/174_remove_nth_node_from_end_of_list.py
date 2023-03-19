@@ -106,3 +106,24 @@ class Solution:
             slow = slow.next
         slow.next = slow.next.next
         return dummy.next
+
+    
+# This solution is very similar from the one above. Just the fast pointer is initialized to dummy rather than head.    
+class Solution:
+    """
+    @param head: The first node of linked list.
+    @param n: An integer
+    @return: The head of linked list.
+    """
+    def remove_nth_from_end(self, head: ListNode, n: int) -> ListNode:        
+        dummy = ListNode(None, head)
+        fast, slow = dummy, dummy
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
+    
+    
