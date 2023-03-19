@@ -30,4 +30,18 @@ class Solution:
             fast = fast.next
         return slow
       
-      
+    
+# My own solution. Conceptually the same as the one above, but more succinct.    
+class Solution:
+    """
+    @param head: the head node
+    @return: the middle node
+    """
+    def middle_node(self, head: ListNode) -> ListNode:
+        fast, slow = head, head
+        while fast and fast.next:                 
+            fast = fast.next.next
+            slow = slow.next
+        return slow
+    
+    
