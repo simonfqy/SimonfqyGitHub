@@ -91,3 +91,50 @@ class Solution:
         for i in range(start, end + 1):
             # Copy the values from temp array to the original array.
             A[i] = temp[i]
+            
+           
+# My solution based on https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-66994/gui-bing-p-1387f/.
+# Essentially the same as the solution above.
+class Solution:
+    """
+    @param a: an integer array
+    @return: nothing
+    """
+    def sort_integers2(self, a: List[int]):
+        if not a:
+            return
+        self.temp = list(a)
+        self.sort(a, 0, len(a) - 1)
+        return a
+
+    def sort(self, a, start, end):
+        if start >= end:
+            return
+        mid = (start + end) // 2
+        self.sort(a, start, mid)
+        self.sort(a, mid + 1, end)
+        self.merge(a, start, end)
+
+    def merge(self, a, start, end):
+        self.temp[start : end + 1] = a[start : end + 1]
+        left_end = (start + end) // 2
+        a_ind = start
+        left_ind = start
+        right_ind = left_end + 1
+
+        while left_ind <= left_end and right_ind <= end:
+            if self.temp[left_ind] <= self.temp[right_ind]:
+                a[a_ind] = self.temp[left_ind]
+                left_ind += 1
+            else:
+                a[a_ind] = self.temp[right_ind]
+                right_ind += 1
+            a_ind += 1
+
+        if left_ind <= left_end:
+            a[a_ind : end + 1] = self.temp[left_ind : left_end + 1]
+
+        if right_ind <= end:
+            a[a_ind : end + 1] = self.temp[right_ind : end + 1]
+            
+            
