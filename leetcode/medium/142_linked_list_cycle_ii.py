@@ -22,10 +22,11 @@ class Solution:
             return None
         # We're now searching for the starting position of the cycle.
         # Assume that the position of fast pointer is m length away from the beginning of the cycle, and we know that
-        # it is k length away from the head, so the beginning of the cycle is k - m length away from the head. When moving
-        # along the cycle, after moving for k - m steps, we have moved m + k - m = k steps from the beginning of the cycle,
-        # which goes right back to the beginning of the cycle. And at the same moment, the slow pointer has moved k - m length
-        # from the head, hence the two pointers now meet at the beginning of the cycle.
+        # it is k length away from the head, so the beginning of the cycle is k - m length away from the head. When another
+        # pointer is moving along the cycle from the current position, after moving for k - m steps, we have moved 
+        # m + k - m = k steps from the beginning of the cycle, which goes right back to the beginning of the cycle. And at 
+        # the same moment, the slow pointer has moved k - m length from the head, hence the two pointers now meet at the 
+        # beginning of the cycle.
         slow = head
         while slow != fast:
             slow = slow.next
