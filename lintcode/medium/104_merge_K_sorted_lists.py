@@ -228,3 +228,38 @@ class Solution:
     # Identical to the function of the same name in the previous solution, so omitted here.
     def merge_two_sorted_linked_lists(self, left_head, right_head):
         pass
+    
+    
+# My solution based on https://labuladong.github.io/algo/di-ling-zh-bfe1b/shuang-zhi-0f7cc/.
+# Very similar to the first solution in this .py file, we also use comparator overriding here,
+# but this implementation uses dummy node.
+import heapq
+ListNode.__lt__ = lambda x, y: (x.val < y.val)
+class Solution:
+    """
+    @param lists: a list of ListNode
+    @return: The head of one sorted list.
+    """
+    def mergeKLists(self, lists):
+        # write your code here
+        heap = []
+        dummy = ListNode(None)
+        head = dummy
+        for li in lists:
+            if not li:
+                continue
+            heapq.heappush(heap, li)
+
+        while heap:
+            node = heapq.heappop(heap)
+            head.next = node
+            head = head.next
+            # The order of the below 2 lines cannot be switched, otherwise there will
+            # be errors.
+            node = node.next            
+            head.next = None
+            if node:
+                heapq.heappush(heap, node)
+        return dummy.next
+    
+    
