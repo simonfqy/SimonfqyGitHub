@@ -263,3 +263,24 @@ class Solution:
         return dummy.next
     
     
+    # Alternative implementation to the one above. Here in the while loop, we're only pushing the
+    # node.next, so node = node.next assignment is no longer needed. It simplifies the logic a bit, because
+    # we no longer need to assign None value to head.next.
+    def mergeKLists2(self, lists):
+        # write your code here
+        heap = []
+        dummy = ListNode(None)
+        head = dummy
+        for li in lists:
+            if not li:
+                continue
+            heapq.heappush(heap, li)
+
+        while heap:
+            node = heapq.heappop(heap)
+            head.next = node
+            head = head.next  
+            if node.next:
+                heapq.heappush(heap, node.next)
+        return dummy.next
+    
