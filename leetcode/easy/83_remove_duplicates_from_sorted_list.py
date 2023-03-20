@@ -43,3 +43,20 @@ class Solution:
             slow.next = None           
         return head
       
+        
+# Solution from https://labuladong.github.io/algo/di-ling-zh-bfe1b/shuang-zhi-fa4bd/. Simpler than my own solution,
+# because it now considers separately the case where head is None, and it uses slow.val directly, rather than using
+# a variable curr_val to record the value of the slow pointer.
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+        fast, slow = head, head
+        while fast:
+            if fast.val != slow.val:
+                slow.next = fast
+                slow = slow.next            
+            fast = fast.next
+        slow.next = None           
+        return head
+    
