@@ -26,4 +26,21 @@ class Solution:
             slow.next = fast            
         return head
       
+    # A slight variation of the solution above. Now we take the assignment operation slow.next = fast out of
+    # the while loop, making its intention clearer.
+    def deleteDuplicates2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        fast, slow = head, head
+        prev_val = None
+        while fast:
+            curr_val = fast.val
+            if prev_val is None:
+                prev_val = curr_val
+            elif curr_val != prev_val:
+                slow.next = fast
+                slow = slow.next
+                prev_val = curr_val            
+            fast = fast.next            
+        if slow:
+            slow.next = fast           
+        return head
       
