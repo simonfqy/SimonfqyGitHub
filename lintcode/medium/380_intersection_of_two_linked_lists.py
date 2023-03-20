@@ -150,3 +150,29 @@ class Solution:
             node1 = node1.next
             node2 = node2.next
         return node1    
+    
+    
+# Solution based on https://labuladong.github.io/algo/di-ling-zh-bfe1b/shuang-zhi-0f7cc/.
+# Basically, append headB to the end of list 1, and vice versa for headA. They'll meet at the same node, which is the
+# first intersection node. This logic can also handle the case where there's no intersection: both node_a and node_b will
+# be None, hence they'll exit the while loop and None will be returned.
+class Solution:
+    """
+    @param headA: the first list
+    @param headB: the second list
+    @return: a ListNode
+    """
+    def getIntersectionNode(self, headA, headB):
+        # write your code here
+        node_a, node_b = headA, headB
+        while node_a != node_b:
+            if not node_a:
+                node_a = headB
+            else:
+                node_a = node_a.next
+            if not node_b:
+                node_b = headA
+            else:
+                node_b = node_b.next                  
+        return node_a
+    
