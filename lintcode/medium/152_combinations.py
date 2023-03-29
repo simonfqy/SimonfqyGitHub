@@ -77,6 +77,30 @@ class Solution:
         return combinations
     
     
+# My solution after reading https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-56e11/.
+class Solution:
+    """
+    @param n: Given the range of numbers
+    @param k: Given the numbers of combinations
+    @return: All the combinations of k numbers out of 1..n
+             we will sort your return value in output
+    """
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        # write your code here
+        self.results = []
+        self.dfs(n, k, [], 1)
+        return self.results
+
+    def dfs(self, n, k, combo, curr_num):
+        for i in range(curr_num, n + 1):
+            new_combo = combo + [i]
+            # This is a slight optimization, so we don't need to go one layer deeper.
+            if len(new_combo) == k:
+                self.results.append(new_combo)
+                continue
+            self.dfs(n, k, new_combo, i + 1)    
+    
+    
 # Using DP.
 class Solution:
     """
