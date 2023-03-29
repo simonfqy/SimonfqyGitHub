@@ -47,6 +47,32 @@ class Solution:
             self.helper(nums, i + 1, subset)
             self.results.append(subset)
             
+           
+# My solution after reading https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-56e11/.
+# The self.used array isn't needed here.
+class Solution:
+    """
+    @param nums: A set of numbers.
+    @return: A list of lists. All valid subsets.
+             we will sort your return value in output
+    """
+    def subsets_with_dup(self, nums: List[int]) -> List[List[int]]:
+        # write your code here
+        self.results = []
+        nums.sort()
+        self.used = [False] * len(nums)
+        self.dfs([], nums, 0)
+        return self.results
+
+    def dfs(self, subset, nums, ind):
+        self.results.append(subset)
+        for i in range(ind, len(nums)):
+            if i > ind and nums[i] == nums[i - 1] and not self.used[i - 1]:
+                continue
+            self.used[i] = True
+            self.dfs(subset + [nums[i]], nums, i + 1)
+            self.used[i] = False            
+            
          
 # An iterative solution.
 # 本参考程序来自九章算法，由 @刘钟泽 提供。版权所有，转发请注明出处。
@@ -54,8 +80,6 @@ class Solution:
 # - 现有的面试培训课程包括：九章算法班，系统设计班，算法强化班，Java入门与基础算法班，Android 项目实战班，
 # - Big Data 项目实战班，算法面试高频题班, 动态规划专题班
 # - 更多详情请见官方网站：http://www.jiuzhang.com/?source=code
-
-
 class Solution:
     """
     @param nums: A set of numbers.
